@@ -1,0 +1,298 @@
+import { lazy } from "react";
+
+import { useRoutes, Navigate } from "react-router-dom";
+import MainLayout from "../layouts/Main";
+
+import Loadable from "../components/Loadable";
+
+const Login = Loadable(lazy(() => import("../views/Login/Main")));
+const Forgot = Loadable(lazy(() => import("../views/Login/Forgot")));
+const ResetPass = Loadable(lazy(() => import("../views/Login/ResetPass")));
+const ErrorPage = Loadable(lazy(() => import("../views/ErrorPage/Main")));
+
+const EmpDashBoard = Loadable(lazy(() => import("../views/dashboard/EmpMain")));
+
+const AdminDashBoard = Loadable(
+  lazy(() => import("../views/dashboard/AdminMain"))
+);
+
+const Admins = Loadable(lazy(() => import("../views/Admins/Main")));
+
+const Employees = Loadable(lazy(() => import("../views/Employees/Main")));
+const EmpActivity = Loadable(lazy(() => import("../views/Employees/Activity")));
+
+
+const Clients = Loadable(lazy(() => import("../views/Clients/Main")));
+const Cancel = Loadable(lazy(() => import("../views/Cancel/Main")));
+const Calls = Loadable(lazy(() => import("../views/Calls/Main")));
+const AddCalls = Loadable(lazy(() => import("../views/Calls/AddCalls")));
+const SearchCalls = Loadable(lazy(() => import("../views/Calls/SearchCalls")));
+
+const Profile = Loadable(lazy(() => import("../views/dashboard/Profile")));
+
+const EditCalls = Loadable(lazy(() => import("../views/Calls/EditCalls")));
+const AllReports = Loadable(lazy(() => import("../views/Reports/Main")));
+
+const CustomReports = Loadable(
+  lazy(() => import("../views/Reports/CustomMain"))
+);
+
+const Report = Loadable(lazy(() => import("../views/Reports/Report")));
+const Notification = Loadable(lazy(() => import("../views/Notification/Main")));
+const Calendars = Loadable(lazy(() => import("../views/Calendar/Main")));
+const SlackChat = Loadable(lazy(() => import("../views/Slack/Main")));
+
+const SlackUsers = Loadable(lazy(() => import("../views/Slack/Users")));
+const SlackConversion = Loadable(
+  lazy(() => import("../views/Slack/Conversion"))
+);
+const Settings = Loadable(lazy(() => import("../views/Settings/Main")));
+
+import { loginState } from "../state/login-atom";
+import { useRecoilValue } from "recoil";
+
+//import Calendar from "../views/calendar/Main";
+
+function Router() {
+  const login = useRecoilValue(loginState);
+
+  //  console.log("loginStrore", login);
+
+  let auth = login.token ? true : false;
+
+  const superAdminRoutes = [
+    {
+      path: "/",
+      element: auth ? <MainLayout /> : <Navigate to="/login" />,
+      children: [
+        {
+          path: "/",
+          element: <AdminDashBoard />,
+        },
+        {
+          path: "/admins",
+          element: <Admins />,
+        },
+        {
+          path: "/employees",
+          element: <Employees />,
+        },
+
+        {
+          path: "/emp_activity/:id",
+          element: <EmpActivity />,
+        },
+        {
+          path: "/slack/chat",
+          element: <SlackChat />,
+        },
+        {
+          path: "/slack/users",
+          element: <SlackUsers />,
+        },
+        {
+          path: "/slack/conversion",
+          element: <SlackConversion />,
+        },
+        {
+          path: "/calendar",
+          element: <Calendars />,
+        },
+        {
+          path: "/profile/:id",
+          element: <Profile />,
+        },
+        {
+          path: "/calls/:id",
+          element: <Calls />,
+        },
+        {
+          path: "/calls/add",
+          element: <AddCalls />,
+        },
+        {
+          path: "/calls/search",
+          element: <SearchCalls />,
+        },
+        {
+          path: "/calls/edit/:id",
+          element: <EditCalls />,
+        },
+
+        {
+          path: "/reports/",
+          element: <AllReports />,
+        },
+        {
+          path: "/creport/",
+          element: <CustomReports />,
+        },
+        {
+          path: "/reports/:id",
+          element: <Report />,
+        },
+
+        {
+          path: "/cancel",
+          element: <Cancel />,
+        },
+        {
+          path: "/clients",
+          element: <Clients />,
+        },
+        {
+          path: "/notifications",
+          element: <Notification />,
+        },
+
+        {
+          path: "/settings",
+          element: <Settings />,
+        },
+      ],
+    },
+
+    {
+      path: "/login",
+      element: auth ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "*",
+      element: <ErrorPage />,
+    },
+  ];
+
+  const adminRoutes = [
+    {
+      path: "/",
+      element: auth ? <MainLayout /> : <Navigate to="/login" />,
+      children: [
+        {
+          path: "/",
+          element: <AdminDashBoard />,
+        },
+
+        {
+          path: "/employees",
+          element: <Employees />,
+        },
+        {
+          path: "/profile/:id",
+          element: <Profile />,
+        },
+        {
+          path: "/calls/:id",
+          element: <Calls />,
+        },
+        {
+          path: "/calls/add",
+          element: <AddCalls />,
+        },
+        {
+          path: "/calls/edit/:id",
+          element: <EditCalls />,
+        },
+
+        {
+          path: "/reports/",
+          element: <AllReports />,
+        },
+        {
+          path: "/reports/:id",
+          element: <Report />,
+        },
+
+        {
+          path: "/cancel",
+          element: <Cancel />,
+        },
+        {
+          path: "/clients",
+          element: <Clients />,
+        },
+        {
+          path: "/notifications",
+          element: <Notification />,
+        },
+      ],
+    },
+
+    {
+      path: "/login",
+      element: auth ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "*",
+      element: <ErrorPage />,
+    },
+  ];
+  const employeeRoutes = [
+    {
+      path: "/",
+      element: auth ? <MainLayout /> : <Navigate to="/login" />,
+      children: [
+        {
+          path: "/",
+          element: <AdminDashBoard />,
+        },
+        {
+          path: "/calls/:id",
+          element: <Calls />,
+        },
+        {
+          path: "/calls/add",
+          element: <AddCalls />,
+        },
+        {
+          path: "/calls/edit/:id",
+          element: <EditCalls />,
+        },
+
+        {
+          path: "/reports/",
+          element: <AllReports />,
+        },
+        {
+          path: "/reports/:id",
+          element: <Report />,
+        },
+
+        {
+          path: "/cancel",
+          element: <Cancel />,
+        },
+        {
+          path: "/clients",
+          element: <Clients />,
+        },
+        {
+          path: "/calendar",
+          element: <Calendars />,
+        },
+        {
+          path: "/notes",
+          element: <Calendars />,
+        },
+      ],
+    },
+
+    {
+      path: "/login",
+      element: auth ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "*",
+      element: <ErrorPage />,
+    },
+  ];
+
+  if (login.role == 1) {
+    return useRoutes(superAdminRoutes);
+  } else if (login.role == 2) {
+    return useRoutes(adminRoutes);
+  } else {
+    return useRoutes(employeeRoutes);
+  }
+}
+
+export default Router;
