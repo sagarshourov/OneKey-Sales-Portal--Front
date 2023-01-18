@@ -81,7 +81,7 @@ const CustomMain = (props) => {
   const [cols, setCol] = useState(null);
 
   const handleChange = (value) => {
-    console.log("value", value);
+   
     setCol(value);
   };
 

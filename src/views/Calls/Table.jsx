@@ -56,7 +56,7 @@ const UsersTable = (props) => {
 
   const handelSingleCheck = (e) => {
     const { id, checked } = e.target;
-    console.log(checked);
+  
     setAllCheck([...allCheck, parseInt(id)]);
     if (!checked) {
       setAllCheck(allCheck.filter((item) => item !== parseInt(id)));

@@ -35,21 +35,15 @@ const UserMain = () => {
       alert("Password and retype password not matching !");
       return;
     }
-
     setLoading(true);
     const LOGIN_URL = getBaseApi() + "users";
-
-
     //console.log(authHeader);
-
     try {
-  
       const response = await axios.put(LOGIN_URL, val, {
         headers,
       });
       setLoading(false);
       setEdit(true);
-
       console.log(response);
      // setValue();
       //window.location.reload();
@@ -215,7 +209,7 @@ const UserMain = () => {
                 </div>
                 <div>
                   <label htmlFor="regular-form-1" className="form-label">
-                    Gendar
+                    Gender
                   </label>
                   <div className="flex flex-col sm:flex-row mt-2">
                     <div className="form-check mr-2">
@@ -276,7 +270,6 @@ const UserMain = () => {
                         className="w-4 h-4 text-slate-500 ml-auto"
                       />
                     </div>
-
                     <Input
                       setValue={setValue}
                       type="text"
@@ -356,7 +349,6 @@ const UserMain = () => {
                               className="w-4 h-4 text-slate-500 ml-auto"
                             />
                           </div>
-
                           <Input
                             setValue={setValue}
                             type="text"
