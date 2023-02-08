@@ -25,6 +25,10 @@ const Clients = Loadable(lazy(() => import("../views/Clients/Main")));
 const Cancel = Loadable(lazy(() => import("../views/Cancel/Main")));
 const Calls = Loadable(lazy(() => import("../views/Calls/Main")));
 const AddCalls = Loadable(lazy(() => import("../views/Calls/AddCalls")));
+
+const ImportCalls = Loadable(lazy(() => import("../views/Calls/ImportCalls")));
+
+
 const SearchCalls = Loadable(lazy(() => import("../views/Calls/SearchCalls")));
 
 const Profile = Loadable(lazy(() => import("../views/dashboard/Profile")));
@@ -129,6 +133,13 @@ function Router() {
           path: "/calls/add",
           element: <AddCalls />,
         },
+        {
+          path: "/calls/import",
+          element: <ImportCalls />,
+        },
+
+
+        
         {
           path: "/calls/search",
           element: <SearchCalls />,

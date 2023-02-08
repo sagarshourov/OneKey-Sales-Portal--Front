@@ -310,12 +310,18 @@ const AdminUsers = (props) => {
       <div className="grid grid-cols-1 lg:grid-cols-4  gap-4 mt-5">
         <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
           <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-            <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-5 gap-2">
+            <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
               <Link
                 className="btn btn-elevated-primary shadow-md mr-2 py-2"
                 to="/calls/add"
               >
                 Add New Call
+              </Link>
+              <Link
+                className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                to="/calls/import"
+              >
+                Import Excel
               </Link>
 
               {allCheck.length == 1 && (
