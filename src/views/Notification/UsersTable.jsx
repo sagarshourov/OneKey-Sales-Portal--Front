@@ -16,8 +16,14 @@ const formatDate = (dat) => {
 };
 
 const UsersTable = (props) => {
-  const { users, rowCount, handelView, setDeleteConfirmationModal, setNotiId } =
-    props;
+  const {
+    users,
+    rowCount,
+    handelView,
+    setDeleteConfirmationModal,
+    setUserId,
+    setNotiId,
+  } = props;
 
   return (
     <>
@@ -52,7 +58,7 @@ const UsersTable = (props) => {
                   {user.user && (
                     <Link
                       className="flex items-center text-info mr-3"
-                      to={"/profile/" + user?.user?.id}
+                      to={"/profile/" + user?.user_id}
                     >
                       <Lucide icon="User" className="w-4 h-4 mr-1 " />{" "}
                       {user.user.first_name} {user.user.last_name}
@@ -63,13 +69,17 @@ const UsersTable = (props) => {
                   <div className="flex justify-center items-center">
                     <button
                       className="flex items-center text-info mr-3"
-                      onClick={(e) => handelView(user)}
+                      onClick={(e) => {
+                        setUserId(user.user_id);
+                        handelView(user);
+                      }}
                     >
                       <Lucide icon="Info" className="w-4 h-4 mr-1 " /> View
                     </button>
 
                     <a
                       onClick={(e) => {
+                        setUserId(user.user_id);
                         setNotiId(user?.id);
                         setDeleteConfirmationModal(true);
                       }}

@@ -16,12 +16,15 @@ import {
   allUserListState,
 } from "../../state/admin-atom";
 
+//Plus
+
 import axios from "axios";
 import { adminApi } from "../../configuration";
 import { helper } from "@/utils/helper";
 import { loginState } from "../../state/login-atom";
 import { settingState } from "../../state/setting-atom";
 import FollowUpSection from "./FollowUpSection";
+import ConfirmedGpa from "./ConfirmedGpa";
 
 function employeeFilters(array) {
   return filter(array, (_items) => {
@@ -65,6 +68,26 @@ const AddCalls = (props) => {
         {
           value: "",
         },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    },
+  ]);
+
+  const [confirmGpaState, setConfirmGpaState] = useState([
+    {
+      id: 0,
+      values: [
         {
           value: "",
         },
@@ -202,12 +225,24 @@ const AddCalls = (props) => {
       document.getElementById(name).classList.remove("hidden");
     }
   };
+  const onChange = (val, index, sec) => {
+    let newAte = JSON.stringify(followUpState);
+    let newState = JSON.parse(newAte);
+    newState[index].values[sec].value = val;
+    sectFollowUpSec(newState);
+  };
+
+  const onChangeGpa = (val, index, sec) => {
+    let newAte = JSON.stringify(confirmGpaState);
+    let newState = JSON.parse(newAte);
+    newState[index].values[sec].value = val;
+    setConfirmGpaState(newState);
+  };
 
   const handelFollow = (e, index) => {
-    console.log("handelSelect", e.target.value);
-
-    let name = e.target.name;
+    //let name = e.target.name;
     let value = parseInt(e.target.value);
+    //onChange(e.target.value, index, 1);
     if (value === 3 || value === 4) {
       let newObj = {
         id: followUpState[followUpState.length - 1].id + 1,
@@ -221,22 +256,20 @@ const AddCalls = (props) => {
           {
             value: "",
           },
+          {
+            value: "",
+          },
+          {
+            value: "",
+          },
         ],
       };
-
-      sectFollowUpSec([...followUpState, newObj]);
+      let followUp = followUpState;
+      followUp[index].values[1].value = value;
+      sectFollowUpSec([...followUp, newObj]);
     } else {
       onChange(e.target.value, index, 1);
     }
-  };
-  const onChange = (val, index, sec) => {
-    let newAte = JSON.stringify(followUpState);
-
-    let newState = JSON.parse(newAte);
-
-    newState[index].values[sec].value = val;
-
-    sectFollowUpSec(newState);
   };
 
   const deleteFollowUp = (e) => {
@@ -245,6 +278,30 @@ const AddCalls = (props) => {
       sectFollowUpSec(newArr);
     }
   };
+
+  const deleteConGpa = (e) => {
+    if (confirmGpaState.length > 1) {
+      let newArr = removeArr(confirmGpaState, e);
+      setConfirmGpaState(newArr);
+    }
+  };
+
+  const addConGpa = (e) => {
+    let newObj = {
+      id: confirmGpaState[confirmGpaState.length - 1].id + 1,
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    };
+
+    setConfirmGpaState([...confirmGpaState, newObj]);
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Add Calls</h2>
@@ -438,38 +495,23 @@ const AddCalls = (props) => {
                   />
                 </div>
               </div>
-              <div className="intro-x">
-                <label className="form-label">Applying for</label>
+              <div className="intro-y  col-span-2">
+                {confirmGpaState.map((val, indx) => (
+                  <ConfirmedGpa
+                    index={indx}
+                    setting={setting}
+                    data={val}
+                    deleteConGpa={deleteConGpa}
+                    onChange={onChangeGpa}
+                    key={indx}
+                  />
+                ))}
 
-                <select name="applying_for" className="form-control">
-                  <option value="0">Select...</option>
-                  {setting.applying_for &&
-                    setting.applying_for.map((val, indx) => (
-                      <option key={indx} value={val?.id}>
-                        {val?.title}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              <div className="intro-x">
-                <label className="form-label">Confirmed GPA</label>
-
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                  name="confirmed_gpa"
-                />
-                {/* <input
-                  type="text"
-                  className="form-label"
-                  placeholder="Confirmed MAster  GPA "
-                />
-                <input
-                  type="text"
-                  className="form-label"
-                  placeholder="Confirmed HS   GPA "
-                /> */}
+                <div className="col-span-2 mt-5 flex  justify-center">
+                  <a onClick={addConGpa} className=" btn btn-elevated-primary">
+                    <Lucide icon="Plus" className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
               <div className="intro-x">
                 <label className="form-label">Immigration Fillings </label>
@@ -596,6 +638,24 @@ const AddCalls = (props) => {
                     name="last_status_notes"
                     className=" form-control"
                     placeholder=""
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 mt-5 gap-4">
+                <div className="intro-y">
+                  <label className="form-label"> Agreement Sent</label>
+                  <select name="agreement_sent" className="form-control">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                  </select>
+                </div>
+                <div className="intro-y">
+                  <label className="form-label">Date Agreement Sent</label>
+                  <input
+                    type="date"
+                    name="agree_date_sent"
+                    className="form-control"
                   />
                 </div>
               </div>

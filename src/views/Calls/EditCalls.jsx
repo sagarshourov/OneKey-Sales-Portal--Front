@@ -22,7 +22,7 @@ import { helper } from "@/utils/helper";
 import { loginState } from "../../state/login-atom";
 import { settingState } from "../../state/setting-atom";
 import FollowUpSection from "./FollowUpSection";
-
+import ConfirmedGpa from "./ConfirmedGpa";
 function employeeFilters(array) {
   return filter(array, (_items) => {
     return _items.is_admin == 3;
@@ -103,6 +103,39 @@ const EditCalls = (props) => {
   const [followUpState, sectFollowUpSec] = useState(
     call[0] ? call[0].extra : [{ id: 0 }]
   );
+
+  const [confirmGpaState, setConfirmGpaState] = useState(
+    call[0] ? call[0].extra : [{ id: 0 }]
+  );
+
+  const deleteConGpa = (e) => {
+    if (confirmGpaState.length > 1) {
+      let newArr = removeArr(confirmGpaState, e);
+      setConfirmGpaState(newArr);
+    }
+  };
+
+  const addConGpa = (e) => {
+    console.log("addConGpa");
+    let newObj = {
+      id: confirmGpaState[confirmGpaState.length - 1].id + 1,
+      groups: "con_gpa",
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    };
+    // let newAte = JSON.stringify(confirmGpaState);
+    // let newState = JSON.parse(newAte);
+
+    // console.log('addConGpa',newState);
+    // //console.log('addConGpa',confirmGpaState);
+    setConfirmGpaState([...confirmGpaState, newObj]);
+  };
 
   //let followUp = Object.assign({}, followUpState);
 
@@ -245,7 +278,14 @@ const EditCalls = (props) => {
     if (value === 3 || value === 4) {
       let newObj = {
         id: followUpState[followUpState.length - 1].id + 1,
+        groups: "follow_up",
         values: [
+          {
+            value: "",
+          },
+          {
+            value: "",
+          },
           {
             value: "",
           },
@@ -258,7 +298,10 @@ const EditCalls = (props) => {
         ],
       };
 
-      sectFollowUpSec([...followUpState, newObj]);
+      let newAte = JSON.stringify(followUpState);
+      let followUp = JSON.parse(newAte);
+      followUp[index].values[1].value = value;
+      sectFollowUpSec([...followUp, newObj]);
     } else {
       onChange(e.target.value, index, 1);
     }
@@ -273,12 +316,15 @@ const EditCalls = (props) => {
 
   const onChange = (val, index, sec) => {
     let newAte = JSON.stringify(followUpState);
-
     let newState = JSON.parse(newAte);
-
     newState[index].values[sec].value = val;
-
     sectFollowUpSec(newState);
+  };
+  const onChangeGpa = (val, index, sec) => {
+    let newAte = JSON.stringify(confirmGpaState);
+    let newState = JSON.parse(newAte);
+    newState[index].values[sec].value = val;
+    setConfirmGpaState(newState);
   };
 
   return (
@@ -501,7 +547,7 @@ const EditCalls = (props) => {
                   </div>
                 </div>
                 <div className="intro-x">
-                  <label className="form-label">Applying for</label>
+                  <label className="form-label">Education Level</label>
 
                   <select
                     name="applying_for"
@@ -519,27 +565,32 @@ const EditCalls = (props) => {
                       ))}
                   </select>
                 </div>
-                <div className="intro-x">
-                  <label className="form-label">Confirmed GPA</label>
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder=""
-                    name="confirmed_gpa"
-                    defaultValue={call[0]?.confirmed_gpa}
-                  />
-                  {/* <input
-                  type="text"
-                  className="form-label"
-                  placeholder="Confirmed MAster  GPA "
-                />
-                <input
-                  type="text"
-                  className="form-label"
-                  placeholder="Confirmed HS   GPA "
-                /> */}
+                <div className="intro-y  col-span-2">
+                  {confirmGpaState.map(
+                    (val, indx) =>
+                      val.groups == "con_gpa" && (
+                        <ConfirmedGpa
+                          index={indx}
+                          setting={setting}
+                          data={val}
+                          deleteConGpa={deleteConGpa}
+                          onChange={onChangeGpa}
+                          key={indx}
+                        />
+                      )
+                  )}
+
+                  <div className="col-span-2 mt-5 flex  justify-center">
+                    <a
+                      onClick={addConGpa}
+                      className=" btn btn-elevated-primary"
+                    >
+                      <Lucide icon="Plus" className="w-4 h-4" />
+                    </a>
+                  </div>
                 </div>
+
                 <div className="intro-x">
                   <label className="form-label">Immigration Filings </label>
                   <div className="flex flex-col sm:flex-row mt-2">
@@ -691,23 +742,46 @@ const EditCalls = (props) => {
                     />
                   </div>
                 </div>
+                <div className="grid grid-cols-4 mt-5 gap-4">
+                  <div className="intro-y">
+                    <label className="form-label"> Agreement Sent</label>
+                    <select
+                      name="agreement_sent"
+                      className="form-control"
+                      defaultValue={call[0]?.agreement_sent}
+                    >
+                      <option value="0">No</option>
+                      <option value="1">Yes</option>
+                    </select>
+                  </div>
+                  <div className="intro-y">
+                    <label className="form-label">Date Agreement Sent</label>
+                    <input
+                      type="date"
+                      name="agree_date_sent"
+                      className="form-control"
+                      defaultValue={call[0]?.agree_date_sent}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="border mt-5 px-5 pb-5 border-dashed border-2">
                 {callData.state == "hasValue" &&
-                  followUpState.map((val, index) => {
-                    return (
-                      <FollowUpSection
-                        index={index}
-                        key={index}
-                        handelSelect={handelFollow}
-                        setting={setting}
-                        data={val}
-                        deleteFollowUp={deleteFollowUp}
-                        onChange={onChange}
-                      />
-                    );
-                  })}
+                  followUpState.map(
+                    (val, index) =>
+                      val.groups == "follow_up" && (
+                        <FollowUpSection
+                          index={index}
+                          key={index}
+                          handelSelect={handelFollow}
+                          setting={setting}
+                          data={val}
+                          deleteFollowUp={deleteFollowUp}
+                          onChange={onChange}
+                        />
+                      )
+                  )}
               </div>
 
               <div className="border border-dashed border-2 p-5 md:mt-5">

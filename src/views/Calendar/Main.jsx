@@ -34,9 +34,7 @@ function applySortFilters(array, searchValue) {
   return filter(array, (_items) => {
     if (_items !== null) {
       return _items?.title
-        ? _items?.title
-            .toLowerCase()
-            .indexOf(searchValue.toLowerCase()) !== -1
+        ? _items?.title.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
         : true;
     }
   });
@@ -49,9 +47,9 @@ function event_format(data) {
       obj.push({
         id: dat.id,
         ev_id: dat.id,
-        start: dat.follow_up_date,
-        title: dat.first_name + " " + dat.last_name,
-        description: dat.memo,
+        start: dat.values[0].value,
+        title: dat.calls && dat.calls?.first_name + " " + dat.calls?.last_name,
+        description:dat.values[2] ? dat.values[2].value : " ",
       });
     });
 
@@ -145,7 +143,7 @@ const Events = (props) => {
 
   let filterData = applySortFilters(event_format(eventDatas.contents), search);
 
-  // console.log("filter data", filterData);
+   console.log("filter data", filterData);
 
   return (
     <>
@@ -179,7 +177,10 @@ const Events = (props) => {
                         <div className="flex items-center">
                           <div className="w-2 h-2 bg-warning rounded-full mr-3"></div>
                           <div className="event__title font-medium truncate">
-                            {event.first_name}
+                            {event.calls &&
+                              event.calls?.first_name +
+                                " " +
+                                event.calls?.last_name}
                           </div>
                           {/* <Lucide
                               icon="Edit"
@@ -194,7 +195,7 @@ const Events = (props) => {
                             />
 
                             {helper.formatDate(
-                              event?.follow_up_date,
+                              event?.values[0].value,
                               "MMM D, YYYY"
                             )}
                           </div>
@@ -204,7 +205,7 @@ const Events = (props) => {
                               icon="Map"
                               className="w-4 h-4 text-slate-500 mr-2"
                             />
-                            {event?.memo}
+                            {event?.values[2] && event?.values[2].value}
                           </div>
                         </div>
                       </div>

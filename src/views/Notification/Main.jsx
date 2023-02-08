@@ -111,14 +111,14 @@ const CancelMain = (props) => {
     }
   };
   const approveUser = async (id) => {
-    console.log("approve");
+    console.log("approve", user_id);
 
     const LOGIN_URL = adminApi() + "calls/" + id;
 
     try {
       const response = await axios.put(
         LOGIN_URL,
-        { name: "deleted_at", value: null },
+        { name: "deleted_at", value: null, user_id: user_id, type: 3 },
         {
           headers,
         }
@@ -289,7 +289,7 @@ const CancelMain = (props) => {
             </button>
 
             <button
-              onClick={() => approveUser(call?.id)}
+              onClick={() => approveUser(call.id)}
               type="button"
               className="btn btn-success text-white"
             >

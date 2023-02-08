@@ -56,7 +56,7 @@ const UsersTable = (props) => {
 
   const handelSingleCheck = (e) => {
     const { id, checked } = e.target;
-  
+
     setAllCheck([...allCheck, parseInt(id)]);
     if (!checked) {
       setAllCheck(allCheck.filter((item) => item !== parseInt(id)));
@@ -123,22 +123,20 @@ const UsersTable = (props) => {
         <tbody>
           {users.slice(0, rowCount).map((user, key) => {
             let count = key + 1;
-
             var team_id = user?.user?.team;
-
             let dark = "";
-            if (
+            if (// IR
               user?.gpa &&
               team_id &&
               parseFloat(user.gpa) < 2.5 &&
-              team_id == 2
+              team_id == 1
             ) {
               dark = " alert-danger-soft ";
-            } else if (
+            } else if ( // TR
               user?.gpa &&
               team_id &&
               parseFloat(user.gpa) < 13 &&
-              team_id == 1
+              team_id == 2
             ) {
               dark = " alert-danger-soft ";
             } else {
@@ -275,7 +273,9 @@ const UsersTable = (props) => {
                 <td className="text-center">
                   {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
                 </td>
-                <td className="text-center">{user?.follow_up_call_results?.title}</td>
+                <td className="text-center">
+                  {user?.follow_up_call_results?.title}
+                </td>
 
                 <td>
                   <select

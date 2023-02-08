@@ -42,6 +42,27 @@ let supAdminObj = {
       ],
     },
     {
+      icon: "MessageCircle",
+      title: "WhatsApp - In Progress",
+      subMenu: [
+        {
+          icon: "User",
+          pathname: "/whatsapp/message",
+          title: "Send Bulk Message",
+        },
+        {
+          icon: "Users",
+          pathname: "/whatsapp/template",
+          title: "Message Template",
+        },
+        {
+          icon: "MessageCircle",
+          pathname: "/whatsapp/chat",
+          title: "Chat",
+        },
+      ],
+    },
+    {
       icon: "PhoneCall",
       title: "Calls",
       subMenu: [
@@ -253,11 +274,11 @@ let empObj = {
         },
       ],
     },
-    {
-      icon: "PhoneCall",
-      title: "Reports",
-      pathname: "/reports",
-    },
+    // {
+    //   icon: "PhoneCall",
+    //   title: "Reports",
+    //   pathname: "/reports",
+    // },
 
     {
       icon: "PhoneMissed",

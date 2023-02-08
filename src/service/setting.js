@@ -12,6 +12,7 @@ export async function getTables() {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
+    handelError(error)
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }

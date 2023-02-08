@@ -2,7 +2,8 @@ import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
 import { useState } from "react";
 
-import { useRecoilStateLoadable } from "recoil";
+import { useNavigate } from "react-router-dom";
+import { useRecoilStateLoadable, useRecoilState } from "recoil";
 import { allUserListState } from "../../state/admin-atom";
 
 import UsersTable from "./UsersTable";
@@ -11,6 +12,7 @@ import axios from "axios";
 import { adminApi } from "../../configuration";
 
 import { filter } from "lodash";
+import { loginState } from "../../state/login-atom";
 
 function applySortFilters(array, searchValue) {
   return filter(array, (_items) => {
@@ -25,6 +27,8 @@ function applySortFilters(array, searchValue) {
 import { authHeader } from "../../service/auth-header";
 
 const AdminUsers = (props) => {
+  let navigate = useNavigate();
+  const [loginstaste, setLoginState] = useRecoilState(loginState);
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(allUserListState);
@@ -136,6 +140,77 @@ const AdminUsers = (props) => {
       setLoading(false);
     }
   };
+
+  const viewAsEmployee = async (userId) => {
+    console.log("View Employee");
+
+    setLoading(true);
+    const URL = adminApi() + "token/" + userId;
+
+    try {
+      const response = await axios.get(URL, {
+        headers,
+      });
+
+      //  console.log("response", response);
+      if (response?.data?.success) {
+        setLoading(false);
+
+        let old_user_id = localStorage.userId;
+        localStorage.setItem("view", old_user_id);
+        // console.log("vewing 1", response);
+        const accessToken = response.data.data.token;
+        const roles = response.data.data.user.is_admin;
+    
+        if (roles == 1) {
+          localStorage.setItem("isAdmin", true);
+        }
+
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("user", JSON.stringify(response?.data?.data));
+
+        localStorage.setItem(
+          "first_name",
+          response?.data?.data?.user?.first_name
+        );
+        localStorage.setItem(
+          "last_name",
+          response?.data?.data?.user?.last_name
+        );
+        if (response.data.data.user?.profile_image?.file_path) {
+          localStorage.setItem(
+            "profile_image",
+            response.data.data.user?.profile_image?.file_path
+          );
+        }
+        if (response?.data?.data.user) {
+          localStorage.setItem("userId", response?.data?.data?.user?.id);
+        }
+
+        localStorage.setItem("role", roles);
+
+        setLoginState({
+          profile_image: response.data.data.user?.profile_image?.file_path,
+          email: response.data.data.user.email,
+          first_name: response.data.data.user.first_name,
+          last_name: response.data.data.user.last_name,
+          isAdmin: roles == 1 ? roles : 0,
+          role: roles,
+          token: accessToken,
+          userId: response.data.data.user.id,
+          view: old_user_id,
+        });
+
+        navigate("../", { replace: true });
+      } else {
+        alert("Something is wrong please try again later!");
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">List Of Employees</h2>
@@ -186,6 +261,7 @@ const AdminUsers = (props) => {
               setDeleteConfirmationModal={setDeleteConfirmationModal}
               users={filterData}
               setUserId={setUserId}
+              viewAsEmployee={viewAsEmployee}
             />
           )}
         </div>
@@ -317,8 +393,8 @@ const AdminUsers = (props) => {
                 </label>
                 <select name="team" required className="form-control">
                   <option value="0">Select .. </option>
-                  <option value="1">TR </option>
-                  <option value="2">IR </option>
+                  <option value="1">IR </option>
+                  <option value="2">TR </option>
                 </select>
               </div>
               <div className="form-inline mt-5">

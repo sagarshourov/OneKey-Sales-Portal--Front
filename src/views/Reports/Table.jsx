@@ -119,18 +119,18 @@ const UsersTable = (props) => {
             var team_id = user?.user?.team;
 
             let dark = "";
-            if (
+            if ( //IR
               user?.gpa &&
               team_id &&
               parseFloat(user.gpa) < 2.5 &&
-              team_id == 2
-            ) {
+              team_id == 1
+            ) {//TR
               dark = " alert-danger-soft ";
             } else if (
               user?.gpa &&
               team_id &&
               parseFloat(user.gpa) < 13 &&
-              team_id == 1
+              team_id == 2
             ) {
               dark = " alert-danger-soft ";
             } else {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { adminApi, getBaseApi } from "../configuration";
+import { adminApi, getBaseApi ,handelError} from "../configuration";
 
 const token = localStorage.getItem("token");
 
@@ -12,6 +12,7 @@ export async function getAllUsers() {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
+    handelError(error)
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
@@ -23,6 +24,7 @@ export async function getAllCalls() {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
+    handelError(error)
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
@@ -35,6 +37,7 @@ export async function getAllNoti() {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
+    handelError(error)
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }

@@ -8,16 +8,12 @@ import {
   AccordionGroup,
   AccordionItem,
 } from "@/base-components";
-
 import dom from "@left4code/tw-starter/dist/js/dom";
-
 import { useState } from "react";
-
 import { useParams, Link } from "react-router-dom";
 
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { callListState } from "../../state/admin-atom";
-
 
 import { loginState } from "../../state/login-atom";
 
@@ -28,37 +24,8 @@ import { adminApi } from "../../configuration";
 
 import { filter } from "lodash";
 import { helper } from "@/utils/helper";
-import FollowUp from "./FollowUp";
+
 import { settingState } from "../../state/setting-atom";
-
-function todayFilters(array) {
-  // var today = "";
-
-  var today = new Date();
-
-  var today = helper.formatDate(today, "YYYY-MM-DD");
-
-  return filter(array, (_items) => {
-    return Date.parse(_items.follow_up_date) === Date.parse(today);
-  });
-}
-
-function towFilters(array) {
-  var tomorrow = new Date();
-
-  tomorrow =
-    tomorrow.getFullYear() +
-    "-" +
-    (tomorrow.getMonth() + 1) +
-    "-" +
-    (tomorrow.getDate() + 1);
-
-  tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
-
-  return filter(array, (_items) => {
-    return Date.parse(_items.follow_up_date) === Date.parse(tomorrow);
-  });
-}
 
 function applySortFilters(array, searchValue, sec) {
   // console.log(sec);
@@ -129,42 +96,25 @@ const AdminUsers = (props) => {
 
   const [allCheck, setAllCheck] = useState([]);
 
+  const [allNumber, setAllNumber] = useState([]);
+
   const logindata = useRecoilValue(loginState);
 
   const [histoyText, setHistoryText] = useState("");
-  const [row, setRow] = useState([]);
-  const [rowId, setRowID] = useState(0);
 
   const setting = useRecoilValue(settingState);
 
-  const handelGo = (section) => {
-    document.getElementsByClassName(
-      "item" + section
-    )[0].parentNode.style.display = "block";
-  };
+  const [template, setTemplate] = useState("");
 
-  const dragStart = (e, id) => {
-    setRow(e.target);
-    setRowID(id);
-  };
-  const dragover = (e) => {
-    console.log("over");
-    e.preventDefault();
-    let children = Array.from(e.target.parentNode.parentNode.children);
-    // console.log("children", children);
-    // console.log("row", row);
+  const [msgSuccess, setMsgSuccess] = useState(false);
 
-    // console.log("parent", e.target.parentNode);
+  const [err, setErr] = useState("");
 
-    if (children.indexOf(e.target.parentNode) > children.indexOf(row)) {
-      e.target.parentNode.after(row);
-    } else {
-      e.target.parentNode.before(row);
-    }
-  };
+  const token =
+    "EAAX23vGL2ugBAEEneE2Il5NxZCn4cuZB2nliDXadt9RbMjBeGkc8VeDZCl8Y1y9iHNBl6M9YQKoedL1mtZB2eaLoR5HQdtjerIx5p3zAC7NNPhvMCSMjSTpbZCbIk9w9XlPzlreqkRJQ3ICyIVYq1rCvNZC722MZAdIePu3CN9XxBAuAfi63jG3fnc9IzjZALnneJc2ng9xP9AZDZD";
 
   const headers = {
-    Authorization: `Bearer ${logindata?.token}`,
+    Authorization: "Bearer " + token,
     ContentType: "application/json",
   };
 
@@ -189,82 +139,121 @@ const AdminUsers = (props) => {
       setLoading(false);
     }
   };
-  const tableDragOver = (e, section) => {
-    e.preventDefault();
-
-    updateFunc(rowId, "sections", section);
-  };
-
-  const AllTableDrop = (e) => {
-    e.preventDefault();
-    updateFunc(rowId, "sections", null);
-  };
-
-  const allowDrop = (ev) => {
-    ev.preventDefault();
-  };
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
-  };
-
-  const handelLoad = () => {
-    let count = rowCount + 20;
-
-    setRowCount(count);
   };
 
   const handelSearch = (e) => {
     setSearch(e.target.value);
   };
 
-  let filterData = applySortFilters(callData.contents, search, id);
-
-  const deleteAdmin = async () => {
+  const sendMessage = async () => {
     setLoading(true);
-    const URL = adminApi() + "calls/" + call_id;
+    const URL = "https://graph.facebook.com/v15.0/116203211365460/messages";
+    let data = {
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: "",
+      type: "template",
+      template: {
+        name: "hello_world",
+        language: {
+          code: "en_US",
+        },
+      },
+    };
 
-    try {
-      const response = await axios.delete(URL, {
-        headers,
-        data: allCheck,
-      });
-
-      if (response?.data?.success) {
-        setCallState(response?.data?.data);
-
-        setDeleteConfirmationModal(false);
-        setLoading(false);
-      } else {
-        alert("Something is wrong please try again later!");
-      }
-    } catch (err) {
-      setLoading(false);
+    if (template == "") {
+      alert("Select a template Please");
+      return false;
     }
-  };
 
-  const bulkUpdate = async (name, value) => {
-    const URL = adminApi() + "calls/0";
-    setLoading(true);
+    let count = 1;
 
-    try {
-      const response = await axios.put(
-        URL,
-        { ids: allCheck, name: name, value: value },
-        {
-          headers,
+    allCheck.length > 0 &&
+      callData.contents.map(async (dat, index) => {
+        if (allCheck.includes(dat.id)) {
+          //console.log(data.phone_number);
+          setLoading(true);
+          data.to = dat.phone_number;
+
+          if (template == "one_time_password") {
+            data.template = {
+              name: "one_time_password",
+              language: {
+                code: "en_US",
+              },
+              components: [
+                {
+                  type: "body",
+                  parameters: [
+                    {
+                      type: "text",
+                      text: dat.first_name ? dat.first_name : "User",
+                    },
+                    {
+                      type: "text",
+                      text: Math.floor(1000 + Math.random() * 9000),
+                    },
+                  ],
+                },
+              ],
+            };
+          } else if (template == "inviting_join_team") {
+            data.template = {
+              name: "inviting_join_team",
+              language: {
+                code: "en_US",
+              },
+              components: [
+                {
+                  type: "body",
+                  parameters: [
+                    {
+                      type: "text",
+                      text: dat.first_name ? dat.first_name : "User",
+                    },
+                  ],
+                },
+              ],
+            };
+          } else {
+            data.template = {
+              name: "hello_world",
+              language: {
+                code: "en_US",
+              },
+            };
+          }
+
+          try {
+            let response = await axios({
+              method: "POST", // Required, HTTP method, a string, e.g. POST, GET
+              url: URL + "?access_token=" + token,
+              data,
+              headers: { "Content-Type": "application/json" },
+            });
+
+            if (allCheck.length == count) {
+              setLoading(false);
+              //setDeleteConfirmationModal(false);
+              setMsgSuccess(true);
+              setAllCheck([]);
+            }
+            count++;
+          } catch (err) {
+            setLoading(false);
+            err?.response?.data?.error?.error_data?.details &&
+              setErr(
+                dat.phone_number +
+                  "->" +
+                  err.response.data.error.error_data.details
+              );
+            setAllCheck([]);
+          }
         }
-      );
-
-      if (response?.data?.success) {
-        setLoading(false);
-        setCallState(response?.data?.data);
-        setAllCheck([]);
-        setAcheck(false);
-      }
-    } catch (err) {
-      setLoading(false);
-    }
+      });
   };
 
   const setHistory = async (field, data, id) => {
@@ -304,95 +293,35 @@ const AdminUsers = (props) => {
     }
   };
 
-  const exportCsv = async () => {
-    const URL = adminApi() + "call_export";
-    setLoading(true);
-    try {
-      const response = await axios.post(
-        URL,
-        { ids: allCheck },
-        {
-          headers,
-        }
-      );
-    } catch (err) {
-      setLoading(false);
-    }
-  };
-
-  
-
   return (
     <>
-      <h2 className="intro-y text-lg font-medium mt-10 ">Search Call List</h2>
+      <h2 className="intro-y text-lg font-medium mt-10 ">Send Bulk Message</h2>
 
       <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
-            <Link
-              className="btn btn-elevated-primary shadow-md mr-2 py-2"
-              to="/calls/add"
-            >
-              Add New Call
-            </Link>
-
-            <button
-              className="btn btn-elevated-secondary shadow-md mr-2 py-2"
-              onClick={exportCsv}
-            >
-              Export Excel
-            </button>
-
-            {allCheck.length == 1 && (
-              <Link
-                className="btn btn-elevated-pending shadow-md mr-2 py-2"
-                to={"/calls/edit/" + allCheck[0]}
-              >
-                Edit
-              </Link>
-            )}
+          <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-5 gap-2">
             {allCheck.length > 0 && (
               <>
-                <button
-                  onClick={() => setDeleteConfirmationModal(true)}
-                  className="btn btn-elevated-danger"
-                >
-                  Delete
-                </button>
                 <select
                   name="results"
-                  onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
+                  onChange={(e) => setTemplate(e.target.value)}
                   className="form-select"
                 >
-                  <option value="0">Results..</option>
+                  <option value="0">Select Template..</option>
 
-                  {setting.results &&
-                    setting.results.map((val, indx) => (
-                      <option key={indx} value={val?.id}>
-                        {val?.title}
-                      </option>
-                    ))}
+                  <option value="one_time_password">One Time Password</option>
+                  <option value="inviting_join_team ">
+                    Team Joining Invitation
+                  </option>
 
-                  {/* 
-                    <option value="3">Open</option>
-                    <option value="4">No Answer</option>
-                    <option value="1">Cancel </option>
-                    <option value="2">Client</option> */}
+                  <option value="hello_world ">Hello World</option>
                 </select>
-                <select
-                  name="sections"
-                  onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
-                  className="form-select"
+                <button
+                  onClick={() => setDeleteConfirmationModal(true)}
+                  className="btn btn-elevated-success text-white"
                 >
-                  <option value="0">Move..</option>
-
-                  {setting.sections &&
-                    setting.sections.map((val, indx) => (
-                      <option key={indx} value={val?.id}>
-                        {val?.title}
-                      </option>
-                    ))}
-                </select>
+                  Send Message
+                </button>
               </>
             )}
           </div>
@@ -444,40 +373,23 @@ const AdminUsers = (props) => {
                   </div>
                 </div>
               )}
-              <div
-                onDrop={(e) => AllTableDrop(e)}
-                onDragOver={(e) => allowDrop(e)}
-              >
-                <AccordionGroup className="accordion-boxed ">
-                  <AccordionItem className="box">
-                    <Accordion>All</Accordion>
-                    <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
-                      <Table
-                        rowCount={rowCount}
-                        setDeleteConfirmationModal={setDeleteConfirmationModal}
-                        users={applySortFilters(
-                          callData.contents,
-                          search,
-                          "all"
-                        )}
-                        setUserId={setCallId}
-                        setCallState={setCallState}
-                        allCheck={allCheck}
-                        setAllCheck={setAllCheck}
-                        updateFunc={updateFunc}
-                        aheck={aheck}
-                        setAcheck={setAcheck}
-                        setHistory={setHistory}
-                        theme="bg-lite text-black"
-                        dragStart={dragStart}
-                        dragover={dragover}
-                        tableDragOver={tableDragOver}
-                        section={0}
-                        setting={setting}
-                      />
-                    </AccordionPanel>
-                  </AccordionItem>
-                </AccordionGroup>
+              <div>
+                <Table
+                  rowCount={rowCount}
+                  setDeleteConfirmationModal={setDeleteConfirmationModal}
+                  users={applySortFilters(callData.contents, search, "all")}
+                  setUserId={setCallId}
+                  setCallState={setCallState}
+                  allCheck={allCheck}
+                  setAllCheck={setAllCheck}
+                  setAllNumber={setAllNumber}
+                  updateFunc={updateFunc}
+                  aheck={aheck}
+                  setAcheck={setAcheck}
+                  setHistory={setHistory}
+                  theme="bg-lite text-black"
+                  setting={setting}
+                />
               </div>
             </>
           )}
@@ -503,45 +415,76 @@ const AdminUsers = (props) => {
         show={deleteConfirmationModal}
         onHidden={() => {
           setDeleteConfirmationModal(false);
+          setMsgSuccess(false);
+          setErr("");
         }}
       >
         <ModalBody className="p-0">
-          <div className="p-5 text-center">
-            <Lucide
-              icon="XCircle"
-              className="w-16 h-16 text-danger mx-auto mt-3"
-            />
-            <div className="text-3xl mt-5">Are you sure?</div>
-            <div className="text-slate-500 mt-2">
-              Do you really want to delete these records? <br />
-              This process cannot be undone.
-            </div>
-          </div>
-          <div className="px-5 pb-8 text-center">
-            <button
-              type="button"
-              onClick={() => {
-                setDeleteConfirmationModal(false);
-              }}
-              className="btn btn-outline-secondary w-24 mr-1"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={deleteAdmin}
-              type="button"
-              className="btn btn-danger w-24"
-            >
-              Delete
-              {loading && (
-                <LoadingIcon
-                  icon="three-dots"
-                  color="white"
-                  className="w-4 h-4 ml-2"
+          {msgSuccess ? (
+            <>
+              <div className="p-5 text-center">
+                <Lucide
+                  icon="CheckCircle"
+                  className="w-16 h-16 text-success mx-auto mt-3"
                 />
-              )}
-            </button>
-          </div>
+                <div className="text-3xl mt-5">Message Sent Successfully !</div>
+              </div>
+              <div className="px-5 pb-8 text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDeleteConfirmationModal(false);
+                    setMsgSuccess(false);
+                    setErr("");
+                  }}
+                  className="btn btn-outline-secondary w-24 mr-1"
+                >
+                  Close
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="p-5 text-center">
+                <Lucide
+                  icon="Send"
+                  className="w-16 h-16 text-warning  mx-auto mt-3"
+                />
+                <div className="text-3xl mt-5">Are you sure?</div>
+                <div className="text-slate-500 mt-2">
+                  Do you really want to send bulk message? <br />
+                </div>
+              </div>
+              <div className="px-5 pb-8 text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDeleteConfirmationModal(false);
+                    setMsgSuccess(false);
+                    setErr("");
+                  }}
+                  className="btn btn-outline-secondary w-24 mr-1"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={sendMessage}
+                  type="button"
+                  className="btn text-white btn-warning"
+                >
+                  Send Message
+                  {loading && (
+                    <LoadingIcon
+                      icon="three-dots"
+                      color="white"
+                      className="w-4 h-4 ml-2"
+                    />
+                  )}
+                </button>
+              </div>
+              <div className="px-5 pb-8 text-center  text-danger">{err}</div>
+            </>
+          )}
         </ModalBody>
       </Modal>
       {/* END: Delete Confirmation Modal */}

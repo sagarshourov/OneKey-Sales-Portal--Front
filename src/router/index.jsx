@@ -21,7 +21,6 @@ const Admins = Loadable(lazy(() => import("../views/Admins/Main")));
 const Employees = Loadable(lazy(() => import("../views/Employees/Main")));
 const EmpActivity = Loadable(lazy(() => import("../views/Employees/Activity")));
 
-
 const Clients = Loadable(lazy(() => import("../views/Clients/Main")));
 const Cancel = Loadable(lazy(() => import("../views/Cancel/Main")));
 const Calls = Loadable(lazy(() => import("../views/Calls/Main")));
@@ -40,12 +39,19 @@ const CustomReports = Loadable(
 const Report = Loadable(lazy(() => import("../views/Reports/Report")));
 const Notification = Loadable(lazy(() => import("../views/Notification/Main")));
 const Calendars = Loadable(lazy(() => import("../views/Calendar/Main")));
-const SlackChat = Loadable(lazy(() => import("../views/Slack/Main")));
 
+const SlackChat = Loadable(lazy(() => import("../views/Slack/Main")));
 const SlackUsers = Loadable(lazy(() => import("../views/Slack/Users")));
 const SlackConversion = Loadable(
   lazy(() => import("../views/Slack/Conversion"))
 );
+
+const WaChat = Loadable(lazy(() => import("../views/WhatsApp/Main")));
+const WaUsers = Loadable(lazy(() => import("../views/WhatsApp/Users")));
+const WaConversion = Loadable(
+  lazy(() => import("../views/WhatsApp/Conversion"))
+);
+
 const Settings = Loadable(lazy(() => import("../views/Settings/Main")));
 
 import { loginState } from "../state/login-atom";
@@ -93,6 +99,19 @@ function Router() {
         {
           path: "/slack/conversion",
           element: <SlackConversion />,
+        },
+
+        {
+          path: "/whatsapp/chat",
+          element: <WaChat />,
+        },
+        {
+          path: "/whatsapp/template",
+          element: <WaUsers />,
+        },
+        {
+          path: "/whatsapp/message",
+          element: <WaConversion />,
         },
         {
           path: "/calendar",
@@ -156,6 +175,15 @@ function Router() {
       path: "/login",
       element: auth ? <Navigate to="/" /> : <Login />,
     },
+
+    {
+      path: "/forgot",
+      element: auth ? <Navigate to="/" /> : <Forgot />,
+    },
+    {
+      path: "/password/:token/:id",
+      element: auth ? <Navigate to="/" /> : <ResetPass />,
+    },
     {
       path: "*",
       element: <ErrorPage />,
@@ -207,6 +235,10 @@ function Router() {
           element: <Cancel />,
         },
         {
+          path: "/calendar",
+          element: <Calendars />,
+        },
+        {
           path: "/clients",
           element: <Clients />,
         },
@@ -220,6 +252,15 @@ function Router() {
     {
       path: "/login",
       element: auth ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "/forgot",
+      element: auth ? <Navigate to="/" /> : <Forgot />,
+    },
+
+    {
+      path: "/password/:token/:id",
+      element: auth ? <Navigate to="/" /> : <ResetPass />,
     },
     {
       path: "*",
@@ -248,14 +289,14 @@ function Router() {
           element: <EditCalls />,
         },
 
-        {
-          path: "/reports/",
-          element: <AllReports />,
-        },
-        {
-          path: "/reports/:id",
-          element: <Report />,
-        },
+        // {
+        //   path: "/reports/",
+        //   element: <AllReports />,
+        // },
+        // {
+        //   path: "/reports/:id",
+        //   element: <Report />,
+        // },
 
         {
           path: "/cancel",
@@ -269,16 +310,21 @@ function Router() {
           path: "/calendar",
           element: <Calendars />,
         },
-        {
-          path: "/notes",
-          element: <Calendars />,
-        },
+    
       ],
     },
 
     {
       path: "/login",
       element: auth ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "/forgot",
+      element: auth ? <Navigate to="/" /> : <Forgot />,
+    },
+    {
+      path: "/password/:token/:id",
+      element: auth ? <Navigate to="/" /> : <ResetPass />,
     },
     {
       path: "*",
