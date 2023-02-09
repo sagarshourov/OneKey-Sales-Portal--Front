@@ -47,7 +47,7 @@ function event_format(data) {
       obj.push({
         id: dat.id,
         ev_id: dat.id,
-        start: dat.values[0].value,
+        start: dat.values[0] && dat.values[0].value,
         title: dat.calls && dat.calls?.first_name + " " + dat.calls?.last_name,
         description:dat.values[2] ? dat.values[2].value : " ",
       });
@@ -195,7 +195,7 @@ const Events = (props) => {
                             />
 
                             {helper.formatDate(
-                              event?.values[0].value,
+                              event?.values[0]?.value,
                               "MMM D, YYYY"
                             )}
                           </div>

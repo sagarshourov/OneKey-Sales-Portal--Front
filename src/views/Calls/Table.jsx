@@ -200,10 +200,10 @@ const UsersTable = (props) => {
                 </td>
                 <td className="text-center">{user?.referred_by}</td>
 
-                <td className="text-center">
+                <td className="text-center"  onClick={() => setHistory("memo", user.extra, user.id)}>
                   <div
                     className="text-center"
-                    onClick={() => setHistory("memo", user.extra, user.id)}
+                   
                   >
                     <Tippy
                       tag="a"

@@ -103,6 +103,11 @@ let supAdminObj = {
           pathname: "/calls/add",
           title: "Add",
         },
+        {
+          icon: "",
+          pathname: "/calls/import",
+          title: "Import",
+        },
       ],
     },
     {

@@ -162,7 +162,7 @@ const AdminUsers = (props) => {
     }
   };
 
-  const headers = {
+  const headers = { 
     Authorization: `Bearer ${logindata?.token}`,
     ContentType: "application/json",
   };
@@ -280,7 +280,7 @@ const AdminUsers = (props) => {
       alert("Text Required!");
     }
     setLoading(true);
-    const URL = adminApi() + "calls/" + call_id;
+    const URL = adminApi() + "call_single/" + call_id;
     try {
       const response = await axios.put(
         URL,
@@ -306,10 +306,7 @@ const AdminUsers = (props) => {
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Call List</h2>
-
-      <div className="grid grid-cols-1 lg:grid-cols-4  gap-4 mt-5">
-        <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
-          <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+      <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
             <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
               <Link
                 className="btn btn-elevated-primary shadow-md mr-2 py-2"
@@ -394,11 +391,11 @@ const AdminUsers = (props) => {
               </select>
 
               <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-                <div className="relative w-52 text-slate-500">
+                <div className="relative md:w-36 lg:w-52 text-slate-500">
                   <input
                     onChange={handelSearch.bind(this)}
                     type="text"
-                    className="form-control w-52 box"
+                    className="form-control md:w-36 lg:w-52 box"
                     placeholder="Search..."
                   />
                   <Lucide
@@ -409,6 +406,9 @@ const AdminUsers = (props) => {
               </div>
             </div>
           </div>
+      <div className="grid grid-cols-1 lg:grid-cols-4  gap-4 mt-5">
+        <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
+          
           {/* BEGIN: Data List */}
 
           <div className="intro-y mt-5 col-span-12 ">
