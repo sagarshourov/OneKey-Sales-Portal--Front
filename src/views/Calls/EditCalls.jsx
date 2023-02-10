@@ -69,36 +69,7 @@ const EditCalls = (props) => {
     call[0] ? (call[0].package?.id === 5 ? true : false) : false
   );
 
-  //console.log('package', call[0].package?.id);
 
-  // const [followUpState, sectFollowUpSec] = useState([{ id: 1 }]);
-
-  // if (id) {
-  //   setCall(getSingleCalls(callData, parseInt(id)));
-  // } else {
-  //   setCall([]);
-  // }
-
-  // useEffect(() => {
-  //   // do stuff here...
-
-  //   if (id) {
-  //     if (callData.state == "hasValue") {
-  //       var data = callData.contents;
-
-  //       getSingleCalls(data, parseInt(id));
-  //       if (data.length > 0) {
-  //         setCall(data);
-
-  //         // console.log(data[0].extra);
-
-  //         data[0].extra && sectFollowUpSec(data[0].extra);
-  //       }
-  //     }
-  //   } else {
-  //     setCall([]);
-  //   }
-  // }, []);
 
   const [followUpState, sectFollowUpSec] = useState(
     call[0] ? call[0].extra : [{ id: 0 }]
@@ -129,11 +100,7 @@ const EditCalls = (props) => {
         },
       ],
     };
-    // let newAte = JSON.stringify(confirmGpaState);
-    // let newState = JSON.parse(newAte);
 
-    // console.log('addConGpa',newState);
-    // //console.log('addConGpa',confirmGpaState);
     setConfirmGpaState([...confirmGpaState, newObj]);
   };
 
@@ -149,12 +116,7 @@ const EditCalls = (props) => {
     e.preventDefault();
     var data = new FormData(e.target);
 
-    //console.log("data", data);
-
-    // data.append("follow_up_date", helper.formatDate(followdate, "YYYY-MM-DD"));
-    //data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
-
-    //data.append("last_status_date", lastStatus);
+  
 
     data.append("user_id", logindata?.userId);
 
