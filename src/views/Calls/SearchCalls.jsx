@@ -410,6 +410,7 @@ const AdminUsers = (props) => {
               <option value="25">25</option>
               <option value="35">35</option>
               <option value="50">50</option>
+              <option value="10000">All</option>
             </select>
 
             <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
