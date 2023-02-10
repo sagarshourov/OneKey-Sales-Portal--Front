@@ -10,23 +10,19 @@ import {
 
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import { adminApi } from "../../configuration";
-
+import { loginState } from "../../state/login-atom";
 
 import { useEffect, useRef } from "react";
 const token = localStorage.token && localStorage.getItem("token");
 const ImportCalls = (props) => {
   let { id } = useParams();
   let navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-
-
+  const logindata = useRecoilValue(loginState);
   const dropzoneSingleRef = useRef();
-  const dropzoneMultipleRef = useRef();
-  const dropzoneValidationRef = useRef();
+
 
   return (
     <>
@@ -42,12 +38,13 @@ const ImportCalls = (props) => {
           thumbnailWidth: 150,
           maxFiles: 1,
           headers: { Authorization: `Bearer ${token}` },
+          params: { user_id: logindata.userId },
           init: function () {
             this.on("addedfile", function (file) {}),
               this.on("success", function (file, res) {
                setTimeout(function(){
 
-                window.location.reload();
+               // window.location.reload();
                },500);
               });
           },

@@ -148,7 +148,7 @@ const UsersTable = (props) => {
                 className={"border-t pt-2" + dark}
                 draggable={true}
                 onDragStart={(e) => dragStart(e, user.id)}
-                // onDragOver={(e) => dragover(e)}
+              // onDragOver={(e) => dragover(e)}
               >
                 <td>
                   <div className="form-check mt-2">
@@ -200,10 +200,10 @@ const UsersTable = (props) => {
                 </td>
                 <td className="text-center">{user?.referred_by}</td>
 
-                <td className="text-center"  onClick={() => setHistory("memo", user.extra, user.id)}>
+                <td className="text-center" onClick={() => setHistory("memo", user.extra, user.id)}>
                   <div
                     className="text-center"
-                   
+
                   >
                     <Tippy
                       tag="a"
@@ -253,12 +253,12 @@ const UsersTable = (props) => {
                       ))}
                   </select>
                 </td>
-                <td className="text-center">
+                <td onClick={() =>
+                  setHistory("last_status_notes", user.extra, user.id)
+                } className="text-center">
                   <div
                     className="text-center"
-                    onClick={() =>
-                      setHistory("last_status_notes", user.extra, user.id)
-                    }
+
                   >
                     <Tippy
                       tag="a"
@@ -294,7 +294,9 @@ const UsersTable = (props) => {
                       ))}
                   </select>
                 </td>
-                <td className="text-center">
+                <td className="text-center" onClick={() =>
+                  setHistory("feedbacks", user.extra, user.id)
+                }>
                   <div className="text-center">
                     <Tippy
                       tag="a"
