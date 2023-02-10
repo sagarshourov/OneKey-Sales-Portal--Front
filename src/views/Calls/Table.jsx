@@ -13,6 +13,7 @@ const fText = (text) => {
 };
 
 const UsersTable = (props) => {
+
   const {
     users,
     rowCount,
@@ -85,7 +86,7 @@ const UsersTable = (props) => {
                   name="allcheck"
                   id={0}
                   handleClick={handelAllCheck}
-                  isChecked={aheck}
+                  // isChecked={allCheck.length > 0 ? true : false}
                 />
               </div>
             </th>

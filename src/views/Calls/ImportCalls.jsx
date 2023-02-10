@@ -44,7 +44,7 @@ const ImportCalls = (props) => {
               this.on("success", function (file, res) {
                setTimeout(function(){
 
-               // window.location.reload();
+                window.location.reload();
                },500);
               });
           },

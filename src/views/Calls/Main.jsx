@@ -388,6 +388,7 @@ const AdminUsers = (props) => {
                 <option value="25">25</option>
                 <option value="35">35</option>
                 <option value="50">50</option>
+                <option value="10000">All</option>
               </select>
 
               <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
@@ -515,96 +516,7 @@ const AdminUsers = (props) => {
                     </div>
                   ))}
 
-                {/* <AccordionGroup
-                  draggable={true}
-                  className="accordion-boxed mt-5"
-                  selectedIndex={1}
-                  onDragOver={(e) => tableDragOver(e, 1)}
-                >
-                  <AccordionItem className="box">
-                    <Accordion> Did Not Answer</Accordion>
-                    <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
-                      <Table
-                        rowCount={rowCount}
-                        setDeleteConfirmationModal={setDeleteConfirmationModal}
-                        users={applySortFilters(callData.contents, search, 3)}
-                        setUserId={setCallId}
-                        setCallState={setCallState}
-                        allCheck={allCheck}
-                        setAllCheck={setAllCheck}
-                        updateFunc={updateFunc}
-                        aheck={aheck}
-                        setAcheck={setAcheck}
-                        setHistory={setHistory}
-                        theme="bg-danger text-white"
-                        dragStart={dragStart}
-                        dragover={dragover}
-                        tableDragOver={tableDragOver}
-                        section={3}
-                      />
-                    </AccordionPanel>
-                  </AccordionItem>
-                </AccordionGroup> */}
-
-                {/* <AccordionGroup
-                  className="accordion-boxed mt-5"
-                  selectedIndex={1}
-                  onDragOver={(e) => tableDragOver(e, 1)}
-                >
-                  <AccordionItem className="box">
-                    <Accordion>Agreement</Accordion>
-                    <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
-                      <Table
-                        rowCount={rowCount}
-                        setDeleteConfirmationModal={setDeleteConfirmationModal}
-                        users={applySortFilters(callData.contents, search, 2)}
-                        setUserId={setCallId}
-                        setCallState={setCallState}
-                        allCheck={allCheck}
-                        setAllCheck={setAllCheck}
-                        updateFunc={updateFunc}
-                        aheck={aheck}
-                        setAcheck={setAcheck}
-                        setHistory={setHistory}
-                        theme="bg-success text-white"
-                        dragStart={dragStart}
-                        dragover={dragover}
-                        tableDragOver={tableDragOver}
-                        section={2}
-                      />
-                    </AccordionPanel>
-                  </AccordionItem>
-                </AccordionGroup> */}
-                {/* <AccordionGroup
-                  className="accordion-boxed mt-5"
-                  selectedIndex={1}
-                  onDragOver={(e) => tableDragOver(e, 1)}
-                >
-                  <AccordionItem className="box">
-                    <Accordion>Promotions</Accordion>
-                    <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
-                      <Table
-                        rowCount={rowCount}
-                        setDeleteConfirmationModal={setDeleteConfirmationModal}
-                        users={applySortFilters(callData.contents, search, 4)}
-                        setUserId={setCallId}
-                        setCallState={setCallState}
-                        allCheck={allCheck}
-                        setAllCheck={setAllCheck}
-                        updateFunc={updateFunc}
-                        aheck={aheck}
-                        setAcheck={setAcheck}
-                        setHistory={setHistory}
-                        theme="bg-info text-white"
-                        dragStart={dragStart}
-                        dragover={dragover}
-                        tableDragOver={tableDragOver}
-                        section={4}
-                      />
-                    </AccordionPanel>
-                  </AccordionItem>
-                </AccordionGroup> */}
-              </>
+               </>
             )}
           </div>
 
