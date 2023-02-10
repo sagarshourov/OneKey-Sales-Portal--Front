@@ -69,8 +69,6 @@ const EditCalls = (props) => {
     call[0] ? (call[0].package?.id === 5 ? true : false) : false
   );
 
-
-
   const [followUpState, sectFollowUpSec] = useState(
     call[0] ? call[0].extra : [{ id: 0 }]
   );
@@ -116,9 +114,7 @@ const EditCalls = (props) => {
     e.preventDefault();
     var data = new FormData(e.target);
 
-  
-
-    data.append("user_id", logindata?.userId);
+    data.append("user_id", call[0].user_id);
 
     const URL = adminApi() + "calls";
 
@@ -757,6 +753,24 @@ const EditCalls = (props) => {
                       placeholder=""
                       defaultValue={call[0]?.feedbacks}
                     />
+                  </div>
+                  <div className=" pl-6 lg:pl-[51px] before:content-[''] before:absolute before:w-20 before:h-px before:mt-8 before:left-[60px] before:bg-slate-200 before:dark:bg-darkmode-400 before:rounded-full before:inset-x-0 before:mx-auto before:z-[-1]">
+                    <div className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 mt-10 before:content-[''] before:absolute before:w-6 before:h-6 before:bg-primary/20 before:rounded-full before:inset-x-0 lg:before:ml-auto before:mr-auto lg:before:animate-ping after:content-[''] after:absolute after:w-6 after:h-6 after:bg-primary after:rounded-full after:inset-x-0 lg:after:ml-auto after:mr-auto after:border-4 after:border-white/60 after:dark:border-darkmode-300">
+                      <div className="mr-3">
+                        <div className="image-fit w-12 h-12">
+                          <img className="rounded-full" src="" />
+                        </div>
+                      </div>
+                      <div>
+                        <a href="" className="text-primary font-medium">
+                          admin name
+                        </a>
+                        comment
+                        <div className="text-slate-500 text-xs mt-1.5">
+                          12th May 2023
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
