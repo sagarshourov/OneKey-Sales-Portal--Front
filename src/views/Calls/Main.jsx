@@ -70,7 +70,7 @@ function applySortFilters(array, searchValue, sec) {
         _items.sections == null &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-            -1) ||
+          -1) ||
           (_items.first_name &&
             _items.first_name
               .toLowerCase()
@@ -88,7 +88,7 @@ function applySortFilters(array, searchValue, sec) {
           _items.sections == parseInt(sec) &&
           ((_items.email &&
             _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-              -1) ||
+            -1) ||
             (_items.first_name &&
               _items.first_name
                 .toLowerCase()
@@ -136,6 +136,10 @@ const AdminUsers = (props) => {
 
   const setting = useRecoilValue(settingState);
 
+  const exportExcel=()=>{
+    console.log('Export Excel');
+  }
+
   const handelGo = (section) => {
     document.getElementsByClassName(
       "item" + section
@@ -162,7 +166,7 @@ const AdminUsers = (props) => {
     }
   };
 
-  const headers = { 
+  const headers = {
     Authorization: `Bearer ${logindata?.token}`,
     ContentType: "application/json",
   };
@@ -307,109 +311,115 @@ const AdminUsers = (props) => {
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Call List</h2>
       <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-            <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
-              <Link
-                className="btn btn-elevated-primary shadow-md mr-2 py-2"
-                to="/calls/add"
+        <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
+          <Link
+            className="btn btn-elevated-primary shadow-md mr-2 py-2"
+            to="/calls/add"
+          >
+            Add New Call
+          </Link>
+
+
+          {allCheck.length == 1 && (
+            <Link
+              className="btn btn-elevated-pending shadow-md mr-2 py-2"
+              to={"/calls/edit/" + allCheck[0]}
+            >
+              Edit
+            </Link>
+          )}
+          {allCheck.length > 0 ? (
+            <>
+              <button
+                onClick={() => setDeleteConfirmationModal(true)}
+                className="btn btn-elevated-danger"
               >
-                Add New Call
-              </Link>
-              <Link
-                className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
-                to="/calls/import"
+                Delete
+              </button>
+              <select
+                name="results"
+                onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
+                className="form-select"
               >
-                Import Excel
-              </Link>
+                <option value="0">Results..</option>
 
-              {allCheck.length == 1 && (
-                <Link
-                  className="btn btn-elevated-pending shadow-md mr-2 py-2"
-                  to={"/calls/edit/" + allCheck[0]}
-                >
-                  Edit
-                </Link>
-              )}
-              {allCheck.length > 0 && (
-                <>
-                  <button
-                    onClick={() => setDeleteConfirmationModal(true)}
-                    className="btn btn-elevated-danger"
-                  >
-                    Delete
-                  </button>
-                  <select
-                    name="results"
-                    onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
-                    className="form-select"
-                  >
-                    <option value="0">Results..</option>
+                {setting.results &&
+                  setting.results.map((val, indx) => (
+                    <option key={indx} value={val?.id}>
+                      {val?.title}
+                    </option>
+                  ))}
 
-                    {setting.results &&
-                      setting.results.map((val, indx) => (
-                        <option key={indx} value={val?.id}>
-                          {val?.title}
-                        </option>
-                      ))}
-
-                    {/* 
+                {/* 
                     <option value="3">Open</option>
                     <option value="4">No Answer</option>
                     <option value="1">Cancel </option>
                     <option value="2">Client</option> */}
-                  </select>
-                  <select
-                    name="sections"
-                    onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
-                    className="form-select"
-                  >
-                    <option value="0">Move..</option>
+              </select>
+              <select
+                name="sections"
+                onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
+                className="form-select"
+              >
+                <option value="0">Move..</option>
 
-                    {setting.sections &&
-                      setting.sections.map((val, indx) => (
-                        <option key={indx} value={val?.id}>
-                          {val?.title}
-                        </option>
-                      ))}
-                  </select>
-                </>
-              )}
-            </div>
-            {/* <div className="hidden md:block mx-auto text-slate-500">
+                {setting.sections &&
+                  setting.sections.map((val, indx) => (
+                    <option key={indx} value={val?.id}>
+                      {val?.title}
+                    </option>
+                  ))}
+              </select>
+            </>
+          ) : (
+            <>
+            <Link
+              className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+              to="/calls/import"
+            >
+              Import Excel
+            </Link>
+
+            <button onClick={exportExcel} className="btn btn-elevated-warning text-white shadow-md mr-2 py-2">Export Excel</button>
+            </>
+          )}
+        </div>
+        {/* <div className="hidden md:block mx-auto text-slate-500">
                {filterData.length} {" /"}
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
 
-            <div className="lg:basis-2/12   grid  grid-cols-2">
-              <select
-                onChange={handelPageCount.bind(this)}
-                className="w-full lg:w-20 form-select box mt-3 sm:mt-0"
-              >
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="35">35</option>
-                <option value="50">50</option>
-                <option value="10000">All</option>
-              </select>
+        <div className="lg:basis-2/12   grid  grid-cols-2">
+          <select
+            onChange={handelPageCount.bind(this)}
+            className="w-full lg:w-20 form-select box mt-3 sm:mt-0"
+          >
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="35">35</option>
+            <option value="50">50</option>
+            <option value="10000">All</option>
+          </select>
 
-              <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-                <div className="relative md:w-36 lg:w-52 text-slate-500">
-                  <input
-                    onChange={handelSearch.bind(this)}
-                    type="text"
-                    className="form-control md:w-36 lg:w-52 box"
-                    placeholder="Search..."
-                  />
-                  <Lucide
-                    icon="Search"
-                    className="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0"
-                  />
-                </div>
-              </div>
+          <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+            <div className="relative md:w-36 lg:w-52 text-slate-500">
+              <input
+                onChange={handelSearch.bind(this)}
+                type="text"
+                className="form-control md:w-36 lg:w-52 box"
+                placeholder="Search..."
+              />
+              <Lucide
+                icon="Search"
+                className="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0"
+              />
             </div>
           </div>
+        </div>
+      </div>
       <div className="grid grid-cols-1 lg:grid-cols-4  gap-4 mt-5">
         <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
-          
+
           {/* BEGIN: Data List */}
 
           <div className="intro-y mt-5 col-span-12 ">
@@ -516,7 +526,7 @@ const AdminUsers = (props) => {
                     </div>
                   ))}
 
-               </>
+              </>
             )}
           </div>
 
