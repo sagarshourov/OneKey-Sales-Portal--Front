@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useRecoilStateLoadable } from "recoil";
 import { filter } from "lodash";
+import { getBaseApi } from "../../configuration";
 import {
   callListState,
   notiState,
@@ -69,13 +70,52 @@ const EditCalls = (props) => {
     call[0] ? (call[0].package?.id === 5 ? true : false) : false
   );
 
+  // const [followUpState, sectFollowUpSec] = useState(
+  //   call[0] ? call[0].extra : [{ id: 0 }]
+  // );
+
   const [followUpState, sectFollowUpSec] = useState(
-    call[0] ? call[0].extra : [{ id: 0 }]
+    call[0].extra.length > 1 ? call[0].extra : [{
+      id: 0,
+      groups: "follow_up",
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    }]
   );
+console.log('follow',followUpState);
+
 
   const [confirmGpaState, setConfirmGpaState] = useState(
-    call[0] ? call[0].extra : [{ id: 0 }]
+    call[0].extra.length > 0 ? call[0].extra : [{
+      id: 0,
+      groups: "con_gpa",
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    }]
   );
+
+
 
   const deleteConGpa = (e) => {
     if (confirmGpaState.length > 1) {
@@ -754,24 +794,40 @@ const EditCalls = (props) => {
                       defaultValue={call[0]?.feedbacks}
                     />
                   </div>
-                  <div className=" pl-6 lg:pl-[51px] before:content-[''] before:absolute before:w-20 before:h-px before:mt-8 before:left-[60px] before:bg-slate-200 before:dark:bg-darkmode-400 before:rounded-full before:inset-x-0 before:mx-auto before:z-[-1]">
-                    <div className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 mt-10 before:content-[''] before:absolute before:w-6 before:h-6 before:bg-primary/20 before:rounded-full before:inset-x-0 lg:before:ml-auto before:mr-auto lg:before:animate-ping after:content-[''] after:absolute after:w-6 after:h-6 after:bg-primary after:rounded-full after:inset-x-0 lg:after:ml-auto after:mr-auto after:border-4 after:border-white/60 after:dark:border-darkmode-300">
+
+
+                  {call[0].history && call[0].history.map((data, index) =>
+
+
+
+
+
+                    <div key={index} className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 ">
                       <div className="mr-3">
                         <div className="image-fit w-12 h-12">
-                          <img className="rounded-full" src="" />
+                          <img className="rounded-full" src={
+                            getBaseApi() + "file/" + data?.user?.profile?.file_path
+                          } />
                         </div>
                       </div>
                       <div>
-                        <a href="" className="text-primary font-medium">
-                          admin name
+                        <a href="" className="text-primary font-medium mr-3">
+                          {data?.user?.first_name}   {data?.user?.last_name}
                         </a>
-                        comment
+                        {data?.value}
                         <div className="text-slate-500 text-xs mt-1.5">
-                          12th May 2023
+
+                          {helper.formatDate(data?.created_at, "ddd, MMMM D, YYYY h:mm A")}
                         </div>
                       </div>
                     </div>
-                  </div>
+
+                  )}
+
+
+
+
+
                 </div>
               </div>
 

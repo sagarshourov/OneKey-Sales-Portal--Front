@@ -299,6 +299,10 @@ function Router() {
           path: "/calls/edit/:id",
           element: <EditCalls />,
         },
+        {
+          path: "/calls/import",
+          element: <ImportCalls />,
+        },
 
         // {
         //   path: "/reports/",
