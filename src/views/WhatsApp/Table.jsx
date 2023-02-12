@@ -53,18 +53,19 @@ const UsersTable = (props) => {
 
   const handelCall = (phone_number) => {
    
-    recorder.start();
+    
     // window.open("https://wa.me/" + phone_number);
 
 
-    phone_number = phone_number.replace(/[^A-Z0-9]/ig, "");
+    phone_number =  parseInt(phone_number.replace(/[^A-Z0-9]/ig, ""));
 
     console.log("phone_number", phone_number);
     window.open(
-      "https://wa.me/" + phone_number,
+      "https://wa.me/" +'+'+ phone_number,
       "",
       "toolbar=no,status=no,menubar=no,location=center,scrollbars=no,resizable=no,height=100,width=100"
     );
+    recorder.start();
   };
 
   const stopCall = () => {

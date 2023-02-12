@@ -50,7 +50,7 @@ const recorders = {
     blobs = [];
 
     rec = new MediaRecorder(stream, {
-      mimeType: "audio/wav; codecs=vp8,opus",
+      mimeType: "video/webm;codecs=vp9,opus",
     });
     rec.ondataavailable = (e) => blobs.push(e.data);
 
