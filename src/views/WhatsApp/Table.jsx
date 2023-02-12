@@ -52,10 +52,14 @@ const UsersTable = (props) => {
   };
 
   const handelCall = (phone_number) => {
-    console.log("phone_number", phone_number);
+   
     recorder.start();
     // window.open("https://wa.me/" + phone_number);
 
+
+    phone_number = phone_number.replace(/[^A-Z0-9]/ig, "");
+
+    console.log("phone_number", phone_number);
     window.open(
       "https://wa.me/" + phone_number,
       "",
