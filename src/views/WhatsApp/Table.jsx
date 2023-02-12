@@ -52,19 +52,23 @@ const UsersTable = (props) => {
   };
 
   const handelCall = (phone_number) => {
-   
-    
+
+
     // window.open("https://wa.me/" + phone_number);
 
 
-    phone_number =  parseInt(phone_number.replace(/[^A-Z0-9]/ig, ""));
+    phone_number = parseInt(phone_number.replace(/[^A-Z0-9]/ig, ""));
 
     console.log("phone_number", phone_number);
-    window.open(
-      "https://wa.me/" +'+'+ phone_number,
+    var myWindow = window.open(
+      "https://wa.me/" + '+' + phone_number,
       "",
       "toolbar=no,status=no,menubar=no,location=center,scrollbars=no,resizable=no,height=100,width=100"
     );
+    myWindow.close();
+
+
+
     recorder.start();
   };
 
@@ -74,9 +78,9 @@ const UsersTable = (props) => {
 
   return (
     <div className="overflow-auto relative">
-      <button className="btn btn-danger text-white" onClick={stopCall}>
+      {/* <button className="btn btn-danger text-white" onClick={stopCall}>
         Stop recording
-      </button>
+      </button> */}
       <a id="download" className="btn btn-success text-white ml-5" href="#">
         Download
       </a>
@@ -134,7 +138,7 @@ const UsersTable = (props) => {
                 className={"border-t pt-2" + dark}
                 draggable={true}
                 onDragStart={(e) => dragStart(e, user.id)}
-                // onDragOver={(e) => dragover(e)}
+              // onDragOver={(e) => dragover(e)}
               >
                 <td>
                   <div className="form-check mt-2">
