@@ -20,7 +20,7 @@ import { loginState } from "../../state/login-atom";
 import Table from "./Table";
 
 import axios from "axios";
-import { adminApi } from "../../configuration";
+import { adminApi, getBaseApi } from "../../configuration";
 
 import { filter } from "lodash";
 import { helper } from "@/utils/helper";
@@ -138,6 +138,9 @@ const AdminUsers = (props) => {
 
   const exportExcel=()=>{
     console.log('Export Excel');
+
+    window.open(getBaseApi()+'call/export', '_blank');
+
   }
 
   const handelGo = (section) => {
