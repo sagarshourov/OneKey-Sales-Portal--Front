@@ -39,7 +39,7 @@ const recorders = {
     });
 
     const tracks = [
-      ...desktopStream.getVideoTracks(),
+      ...desktopStream.getAudioTracks(),
       ...this.mergeAudioStreams(desktopStream, voiceStream),
     ];
 
