@@ -29,7 +29,7 @@ const recorders = {
     return hasDesktop || hasVoice ? destination.stream.getAudioTracks() : [];
   },
 
-  async start() {
+  async start(user_id, id) {
     let desktopStream = await navigator.mediaDevices.getDisplayMedia({
       video: true,
       audio: true,
@@ -59,38 +59,37 @@ const recorders = {
       console.log("on Stop");
       //blobs.push(MediaRecorder.requestData());
       blob = new Blob(blobs, { type: "audio/wav" });
-      let url = window.URL.createObjectURL(blob);
-      const download = document.getElementById("download");
-      console.log("url", url);
-      download.href = url;
-      download.download = "test.wav";
-
-      var data = new FormData()
-data.append('file', blob)
-
-
-fetch(getBaseApi()+'record_upload', {
-  method: 'POST',
-  body: data
-})
+  
+    
+      var data = new FormData();
+      data.append("file", blob);
+      data.append("user_id", user_id);
+      data.append("id", id);
+      fetch(getBaseApi() + "record_upload", {
+        method: "POST",
+        body: data,
+      });
     };
 
     rec.start();
 
     stream.getVideoTracks()[0].onended = function () {
       // doWhatYouNeedToDo();
-      stream.getTracks().forEach((s) =>{   s.stop();} );
+      stream.getTracks().forEach((s) => {
+        s.stop();
+      });
       rec.stop();
-      console.log('Stop video track');
+      console.log("Stop video track");
       stream = null;
     };
-
   },
   stop() {
     console.log("clicked stop");
     rec.stop();
-    stream.getTracks().forEach((s) =>{    s.stop();} );
-    
+    stream.getTracks().forEach((s) => {
+      s.stop();
+    });
+
     stream = null;
   },
 };

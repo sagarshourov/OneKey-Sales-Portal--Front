@@ -1,10 +1,26 @@
 import { atom, selector, selectorFamily } from "recoil";
 
-import { chatHistory } from "../service/whatsapp";
+import { chatHistory ,recordHistory} from "../service/whatsapp";
 
 /**
  * Populate the default selector return value with a service call.
  */
+
+
+export const CallRecordHistory = selectorFamily({
+  key: "recordHistory",
+  get:
+    (id) =>
+    async ({ get }) => {
+      try {
+        const response = await recordHistory(id);
+        return response.data || [];
+      } catch (error) {
+        console.error(`getUserInfo -> getUsers() ERROR: \n${error}`);
+        return [];
+      }
+    },
+});
 
 
 

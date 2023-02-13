@@ -51,25 +51,20 @@ const UsersTable = (props) => {
     }
   };
 
-  const handelCall = (phone_number) => {
-
-
+  const handelCall = (phone_number, user_id, id) => {
     // window.open("https://wa.me/" + phone_number);
 
-
-    phone_number = parseInt(phone_number.replace(/[^A-Z0-9]/ig, ""));
+    phone_number = parseInt(phone_number.replace(/[^A-Z0-9]/gi, ""));
 
     console.log("phone_number", phone_number);
     var myWindow = window.open(
-      "https://wa.me/" + '+' + phone_number,
+      "https://wa.me/" + "+" + phone_number,
       "",
       "toolbar=no,status=no,menubar=no,location=center,scrollbars=no,resizable=no,height=100,width=100"
     );
-    myWindow.close();
+   // myWindow.close();
 
-
-
-    recorder.start();
+    recorder.start(user_id, id);
   };
 
   const stopCall = () => {
@@ -81,9 +76,9 @@ const UsersTable = (props) => {
       {/* <button className="btn btn-danger text-white" onClick={stopCall}>
         Stop recording
       </button> */}
-      <a id="download" className="btn btn-success text-white ml-5" href="#">
+      {/* <a id="download" className="btn btn-success text-white ml-5" href="#">
         Download
-      </a>
+      </a> */}
       <table className="table  mt-2">
         <thead className={theme}>
           <tr>
@@ -106,6 +101,7 @@ const UsersTable = (props) => {
             <th className=" whitespace-nowrap">Phone</th>
             <th className="whitespace-nowrap">Call</th>
             <th className="whitespace-nowrap">Chat</th>
+            <th className="whitespace-nowrap">History</th>
           </tr>
         </thead>
         <tbody>
@@ -138,7 +134,7 @@ const UsersTable = (props) => {
                 className={"border-t pt-2" + dark}
                 draggable={true}
                 onDragStart={(e) => dragStart(e, user.id)}
-              // onDragOver={(e) => dragover(e)}
+                // onDragOver={(e) => dragover(e)}
               >
                 <td>
                   <div className="form-check mt-2">
@@ -170,7 +166,9 @@ const UsersTable = (props) => {
                 <td>{user?.phone_number}</td>
                 <td>
                   <button
-                    onClick={(e) => handelCall(user?.phone_number)}
+                    onClick={(e) =>
+                      handelCall(user?.phone_number, user?.user_id, user?.id)
+                    }
                     className="btn btn-success mr-1 mb-2"
                   >
                     <Lucide icon="PhoneCall" className="w-5 h-5 text-white" />
@@ -183,6 +181,15 @@ const UsersTable = (props) => {
                       className="w-5 h-5 text-white"
                     />
                   </button>
+                </td>
+                <td>
+                  <Link
+                    to={"/whatsapp/message/history/" + user?.id}
+                    className="btn btn-primary mr-1 mb-2"
+                  >
+                    View
+                    <Lucide icon="Video" className="w-5 h-5 ml-3 text-white" />
+                  </Link>
                 </td>
               </tr>
             );

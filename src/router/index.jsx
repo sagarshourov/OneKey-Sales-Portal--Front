@@ -60,6 +60,7 @@ const Settings = Loadable(lazy(() => import("../views/Settings/Main")));
 
 import { loginState } from "../state/login-atom";
 import { useRecoilValue } from "recoil";
+import HistoryView from "../views/WhatsApp/HistoryView";
 
 //import Calendar from "../views/calendar/Main";
 
@@ -117,6 +118,12 @@ function Router() {
           path: "/whatsapp/message",
           element: <WaConversion />,
         },
+          {
+          path: "/whatsapp/message/history/:id",
+          element: <HistoryView />,
+        },
+
+        
         {
           path: "/calendar",
           element: <Calendars />,

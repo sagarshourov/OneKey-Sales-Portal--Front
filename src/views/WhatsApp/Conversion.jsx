@@ -109,7 +109,11 @@ const AdminUsers = (props) => {
   const [msgSuccess, setMsgSuccess] = useState(false);
 
   const [err, setErr] = useState("");
+  const handelLoad = () => {
+    let count = rowCount + 100;
 
+    setRowCount(count);
+  };
   const token =
     "EAAX23vGL2ugBAEEneE2Il5NxZCn4cuZB2nliDXadt9RbMjBeGkc8VeDZCl8Y1y9iHNBl6M9YQKoedL1mtZB2eaLoR5HQdtjerIx5p3zAC7NNPhvMCSMjSTpbZCbIk9w9XlPzlreqkRJQ3ICyIVYq1rCvNZC722MZAdIePu3CN9XxBAuAfi63jG3fnc9IzjZALnneJc2ng9xP9AZDZD";
 
@@ -398,13 +402,13 @@ const AdminUsers = (props) => {
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
 
-        {/* {callData.state === "hasValue" && (
-            <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+        {callData.state === "hasValue" && (
+            <div className="intro-y col-span-12 mt-3 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
               <button onClick={handelLoad} className="btn">
                 Load more..
               </button>
             </div>
-          )} */}
+          )}
 
         {/* END: Pagination */}
       </div>
