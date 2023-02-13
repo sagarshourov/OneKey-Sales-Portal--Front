@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getBaseApi , adminApi} from "../configuration";
+import { getBaseApi, adminApi } from "../configuration";
 
 const token = localStorage.getItem("token");
 
@@ -38,9 +38,7 @@ export async function recordHistory(id) {
   try {
     //const response = await axios.get(userApiUrl, { headers });
 
-    const response = await axios.get(userApiUrl, {
-      headers,
-    });
+    const response = await axios.get(userApiUrl, { headers });
 
     return response.data || [];
   } catch (error) {
