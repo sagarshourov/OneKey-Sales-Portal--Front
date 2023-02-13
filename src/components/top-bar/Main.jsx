@@ -137,8 +137,23 @@ const Logout = (props) => {
             </li>
           </ol>
         </nav>
+        
+
+        {/* END: Breadcrumb */}
+        {/* BEGIN: Mobile Menu */}
+        <div className="-intro-x xl:hidden mr-3 sm:mr-6">
+          <div
+            className="mobile-menu-toggler cursor-pointer"
+            onClick={props.toggleMobileMenu}
+          >
+            <Lucide
+              icon="BarChart2"
+              className="mobile-menu-toggler__icon transform rotate-90 dark:text-slate-500"
+            />
+          </div>
+        </div>
         {loginsta.view && loginsta.view !== "false" && (
-          <Alert className="alert-pending w-96  ml-96 mt-3 flex items-center mb-2">
+          <Alert className="alert-pending w-full xl:w-96  ml-1 xl:ml-32 2xl:ml-32 mt-3 flex items-center mb-2">
             {loading ? (
               <h3>Loading...</h3>
             ) : (
@@ -157,20 +172,6 @@ const Logout = (props) => {
             )}
           </Alert>
         )}
-
-        {/* END: Breadcrumb */}
-        {/* BEGIN: Mobile Menu */}
-        <div className="-intro-x xl:hidden mr-3 sm:mr-6">
-          <div
-            className="mobile-menu-toggler cursor-pointer"
-            onClick={props.toggleMobileMenu}
-          >
-            <Lucide
-              icon="BarChart2"
-              className="mobile-menu-toggler__icon transform rotate-90 dark:text-slate-500"
-            />
-          </div>
-        </div>
         {/* END: Mobile Menu */}
         {/* BEGIN: Search */}
         <div className="intro-x relative ml-auto sm:mx-auto"></div>

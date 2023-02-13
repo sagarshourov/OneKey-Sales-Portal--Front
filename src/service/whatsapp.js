@@ -23,7 +23,7 @@ export async function postChat(data) {
     //const response = await axios.get(userApiUrl, { headers });
 
     const response = await axios.put(userApiUrl, data, {
-      headers,
+      headers
     });
 
     return response.data || [];

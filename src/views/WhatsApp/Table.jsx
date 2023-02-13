@@ -56,13 +56,20 @@ const UsersTable = (props) => {
 
     phone_number = parseInt(phone_number.replace(/[^A-Z0-9]/gi, ""));
 
-    console.log("phone_number", phone_number);
+   // console.log("phone_number", phone_number);
     var myWindow = window.open(
       "https://wa.me/" + "+" + phone_number,
       "",
       "toolbar=no,status=no,menubar=no,location=center,scrollbars=no,resizable=no,height=100,width=100"
     );
+
+    setTimeout(function(){
+      myWindow.close();
+
+    },1000);
    // myWindow.close();
+
+  // myWindow.document.write('<script>window.location.href="https://wa.me/'+phone_number+'";  setTimeout(function(){  window.close(); },1000) ;  </script>');
 
     recorder.start(user_id, id);
   };
