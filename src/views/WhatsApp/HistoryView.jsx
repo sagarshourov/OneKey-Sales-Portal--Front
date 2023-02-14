@@ -1,31 +1,26 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useRecoilStateLoadable } from "recoil";
+import { useRecoilStateLoadable, useRecoilValueLoadable } from "recoil";
 import { getBaseApi } from "../../configuration";
 import { CallRecordHistory } from "../../state/whatsapp-state";
-import { useEffect } from 'react';
-import {recordHistory} from "../../service/whatsapp";
+import { useEffect } from "react";
+import { recordHistory } from "../../service/whatsapp";
 
 const HistoryView = () => {
   let { id } = useParams();
 
-  
+  //const [callData, setCallData] = useRecoilStateLoadable(CallRecordHistory(id))
 
-  const [callData, setCallData] = useRecoilStateLoadable(CallRecordHistory(id))
-
-
-
+  const callData = useRecoilValueLoadable(CallRecordHistory(id));
 
   useEffect(() => {
-
     //recordHistory(id);
     // currentState changed.
     // save the current state
     // callData = useRecoilStateLoadable(CallRecordHistory(id))
-   // console.log('call data', navigate);
-
+    // console.log('call data', navigate);
     //  navigate;
     //setUserName(id);
-  }, [setCallData,recordHistory])
+  }, [recordHistory]);
 
   //
 
@@ -41,12 +36,12 @@ const HistoryView = () => {
         {callData.state == "hasValue" &&
           callData.contents.map((file, key) => {
             return (
-              <div
-                key={key}
-                className="inbox"
-              >
+              <div key={key} className="inbox">
                 <video width="320" height="240" controls>
-                  <source src={getBaseApi() + 'file/' + file.file_path} type="video/mp4" />
+                  <source
+                    src={getBaseApi() + "file/" + file.file_path}
+                    type="video/mp4"
+                  />
                   Your browser does not support the video tag.
                 </video>
               </div>
