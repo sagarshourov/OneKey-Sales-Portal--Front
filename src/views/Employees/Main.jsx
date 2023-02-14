@@ -203,6 +203,10 @@ const AdminUsers = (props) => {
         });
 
         navigate("../", { replace: true });
+        setTimeout(function(){
+            window.location.reload();
+
+        },500);
       } else {
         alert("Something is wrong please try again later!");
       }
