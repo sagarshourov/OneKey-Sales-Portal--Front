@@ -107,7 +107,7 @@ const UsersTable = (props) => {
             <th className="whitespace-nowrap">Client</th>
             <th className=" whitespace-nowrap">Phone</th>
             <th className="whitespace-nowrap">Call</th>
-            <th className="whitespace-nowrap">Chat</th>
+            {/* <th className="whitespace-nowrap">Chat</th> */}
             <th className="whitespace-nowrap">History</th>
           </tr>
         </thead>
@@ -181,14 +181,14 @@ const UsersTable = (props) => {
                     <Lucide icon="PhoneCall" className="w-5 h-5 text-white" />
                   </button>
                 </td>
-                <td>
+                {/* <td>
                   <button className="btn btn-success mr-1 mb-2">
                     <Lucide
                       icon="MessageCircle"
                       className="w-5 h-5 text-white"
                     />
                   </button>
-                </td>
+                </td> */}
                 <td>
                   <Link
                     to={"/whatsapp/message/history/" + user?.id}
