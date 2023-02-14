@@ -12,6 +12,10 @@ const HistoryView = () => {
 
   const callData = useRecoilValueLoadable(CallRecordHistory(id));
 
+  const rec = recordHistory(id);
+
+  console.log("call data", rec);
+
   useEffect(() => {
     //recordHistory(id);
     // currentState changed.
@@ -24,7 +28,7 @@ const HistoryView = () => {
 
   //
 
-  console.log(callData);
+ // console.log(callData);
 
   return (
     <>

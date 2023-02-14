@@ -60,7 +60,9 @@ const Settings = Loadable(lazy(() => import("../views/Settings/Main")));
 
 import { loginState } from "../state/login-atom";
 import { useRecoilValue } from "recoil";
-import HistoryView from "../views/WhatsApp/HistoryView";
+//import HistoryView from "../views/WhatsApp/HistoryView";
+
+const HistoryView = Loadable(lazy(() => import("../views/WhatsApp/HistoryView")));
 
 //import Calendar from "../views/calendar/Main";
 
