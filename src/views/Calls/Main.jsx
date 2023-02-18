@@ -139,7 +139,7 @@ const AdminUsers = (props) => {
   const setting = useRecoilValue(settingState);
 
 
-  console.log('logindata',logindata);
+ // console.log('callData',callData);
 
   const exportExcel = () => {
     console.log("Export Excel");

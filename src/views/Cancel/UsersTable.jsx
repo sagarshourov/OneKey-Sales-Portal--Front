@@ -11,22 +11,55 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const formatDate = (dat) => {
+
+  return dat;
   //const date = dat.split(" ");
-  return dat.split("T")[0];
+//  return dat.split("T")[0];
 };
 
 const UsersTable = (props) => {
-  const { users, rowCount, updateFunc } = props;
+  const { users, rowCount, allCheck, setAllCheck } = props;
 
   const handelChange = (e, id) => {
     e.preventDefault();
   };
+  const handelSingleCheck = (e) => {
+    const { id, checked } = e.target;
 
+    setAllCheck([...allCheck, parseInt(id)]);
+    if (!checked) {
+      setAllCheck(allCheck.filter((item) => item !== parseInt(id)));
+    }
+  };
+  const handelAllCheck = (e) => {
+    const { checked } = e.target;
+
+    if (checked) {
+      setAllCheck(users.map((li) => li.id));
+      // setAcheck(true);
+    } else {
+      setAllCheck([]);
+      // setAcheck(false);
+    }
+  };
   return (
     <>
       <table className="table table-report -mt-2">
         <thead>
           <tr>
+            <th className="whitespace-nowrap">
+              <div className=" mt-2">
+                <Checkbox
+                  className="form-check-input"
+                  key={0}
+                  type="checkbox"
+                  name="allcheck"
+                  id={0}
+                  handleClick={handelAllCheck}
+                  // isChecked={allCheck.length > 0 ? true : false}
+                />
+              </div>
+            </th>
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
             <th className="text-center whitespace-nowrap">Priority</th>
@@ -65,6 +98,19 @@ const UsersTable = (props) => {
             let count = key + 1;
             return (
               <tr key={key} className="intro-x border-t">
+                <td>
+                  <div className="form-check mt-2">
+                    <Checkbox
+                      className="form-check-input "
+                      key={key}
+                      type="checkbox"
+                      name="select"
+                      id={user.id}
+                      handleClick={handelSingleCheck}
+                      isChecked={allCheck.includes(user.id)}
+                    />
+                  </div>
+                </td>
                 <td className="w-40">{count}</td>
                 <td>
                   <Link to="#" className="font-medium whitespace-nowrap">
@@ -106,12 +152,7 @@ const UsersTable = (props) => {
 
                 <td className="text-center">
                   <div className="text-center">
-                    <Tippy
-                      tag="a"
-                      href="#"
-                      className="tooltip"
-                      content=""
-                    >
+                    <Tippy tag="a" href="#" className="tooltip" content="">
                       11.23 Mojarrad,..
                     </Tippy>
                   </div>
@@ -135,12 +176,7 @@ const UsersTable = (props) => {
                 <td>{user?.cancel_reason?.title}</td>
                 <td className="text-center">
                   <div className="text-center">
-                    <Tippy
-                      tag="a"
-                      href="#"
-                      className="tooltip"
-                      content=""
-                    >
+                    <Tippy tag="a" href="#" className="tooltip" content="">
                       11.23 Mojarrad,..
                     </Tippy>
                   </div>

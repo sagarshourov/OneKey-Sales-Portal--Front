@@ -59,7 +59,7 @@ const EditCalls = (props) => {
   const [emailErr, setEmailErr] = useState([]);
 
   let call = getSingleCalls(callData.contents, parseInt(id));
-
+  console.log("ditcall", call[0]);
   const [ecall, setEcall] = useState([]);
 
   const [show, setShow] = useState(false);
@@ -75,47 +75,52 @@ const EditCalls = (props) => {
   // );
 
   const [followUpState, sectFollowUpSec] = useState(
-    call[0].extra.length > 1 ? call[0].extra : [{
-      id: 0,
-      groups: "follow_up",
-      values: [
-        {
-          value: "",
-        },
-        {
-          value: "",
-        },
-        {
-          value: "",
-        },
-        {
-          value: "",
-        },
-        {
-          value: "",
-        },
-      ],
-    }]
+    call[0].extra.length > 1
+      ? call[0].extra
+      : [
+          {
+            id: 0,
+            groups: "follow_up",
+            values: [
+              {
+                value: "",
+              },
+              {
+                value: "",
+              },
+              {
+                value: "",
+              },
+              {
+                value: "",
+              },
+              {
+                value: "",
+              },
+            ],
+          },
+        ]
   );
-console.log('follow',followUpState);
-
+  console.log("follow", followUpState);
 
   const [confirmGpaState, setConfirmGpaState] = useState(
-    call[0].extra.length > 0 ? call[0].extra : [{
-      id: 0,
-      groups: "con_gpa",
-      values: [
-        {
-          value: "",
-        },
-        {
-          value: "",
-        },
-      ],
-    }]
+    call[0].extra.length > 0
+      ? call[0].extra
+      : [
+          {
+            id: 0,
+            groups: "con_gpa",
+            values: [
+              {
+                value: "",
+              },
+              {
+                value: "",
+              },
+            ],
+          },
+        ]
   );
-
-
 
   const deleteConGpa = (e) => {
     if (confirmGpaState.length > 1) {
@@ -795,39 +800,38 @@ console.log('follow',followUpState);
                     />
                   </div>
 
-
-                  {call[0].history && call[0].history.map((data, index) =>
-
-
-
-
-
-                    <div key={index} className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 ">
-                      <div className="mr-3">
-                        <div className="image-fit w-12 h-12">
-                          <img className="rounded-full" src={
-                            getBaseApi() + "file/" + data?.user?.profile?.file_path
-                          } />
+                  {call[0].history &&
+                    call[0].history.map((data, index) => (
+                      <div
+                        key={index}
+                        className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
+                      >
+                        <div className="mr-3">
+                          <div className="image-fit w-12 h-12">
+                            <img
+                              className="rounded-full"
+                              src={
+                                getBaseApi() +
+                                "file/" +
+                                data?.user?.profile?.file_path
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <a href="" className="text-primary font-medium mr-3">
+                            {data?.user?.first_name} {data?.user?.last_name}
+                          </a>
+                          {data?.value}
+                          <div className="text-slate-500 text-xs mt-1.5">
+                            {helper.formatDate(
+                              data?.created_at,
+                              "ddd, MMMM D, YYYY h:mm A"
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <a href="" className="text-primary font-medium mr-3">
-                          {data?.user?.first_name}   {data?.user?.last_name}
-                        </a>
-                        {data?.value}
-                        <div className="text-slate-500 text-xs mt-1.5">
-
-                          {helper.formatDate(data?.created_at, "ddd, MMMM D, YYYY h:mm A")}
-                        </div>
-                      </div>
-                    </div>
-
-                  )}
-
-
-
-
-
+                    ))}
                 </div>
               </div>
 

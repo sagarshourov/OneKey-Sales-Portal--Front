@@ -62,7 +62,7 @@ export const cancelSelect = selector({
 
 
 
-      return response || [];
+      return response.data || [];
     } catch (error) {
       console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
       return [];
@@ -78,7 +78,7 @@ export const clientSelect = selector({
   get: async ({ get }) => {
     try {
       const response = await getCallsFilter(2);
-      return response || [];
+      return response.data || [];
     } catch (error) {
       console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
       return [];
