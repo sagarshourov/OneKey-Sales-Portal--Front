@@ -29,6 +29,22 @@ export async function getAllCalls() {
   }
 }
 
+export async function getCallsFilter(results) {
+  const userApiUrl = adminApi() + "call_filter/results/"+results;
+
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    handelError(error)
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
+
+
+
+
+
 
 export async function getAllNoti() {
   const userApiUrl = adminApi() + "notifications";

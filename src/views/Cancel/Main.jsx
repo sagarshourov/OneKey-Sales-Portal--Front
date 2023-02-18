@@ -3,7 +3,7 @@ import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 import { useState } from "react";
 
 import { useRecoilStateLoadable } from "recoil";
-import { callListState } from "../../state/admin-atom";
+import { cancelListState } from "../../state/admin-atom";
 
 import UsersTable from "./UsersTable";
 
@@ -40,7 +40,7 @@ const headers = {
 const CancelMain = (props) => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);
-  const [usersData, setUserState] = useRecoilStateLoadable(callListState);
+  const [usersData, setUserState] = useRecoilStateLoadable(cancelListState);
   const [rowCount, setRowCount] = useState(10);
   const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");
@@ -62,6 +62,9 @@ const CancelMain = (props) => {
   };
 
   let filterData = applySortFilters(usersData.contents, search);
+
+
+  console.log('cancel',usersData);
 
   const deleteAdmin = async () => {
     setLoading(true);

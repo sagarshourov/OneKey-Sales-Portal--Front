@@ -68,9 +68,10 @@ function applySortFilters(array, searchValue, sec) {
     return filter(array, (_items) => {
       return (
         _items.sections == null &&
+        _items.results.id == 3 &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-          -1) ||
+            -1) ||
           (_items.first_name &&
             _items.first_name
               .toLowerCase()
@@ -83,24 +84,25 @@ function applySortFilters(array, searchValue, sec) {
     });
   } else {
     return filter(array, (_items) => {
-      if (_items.email) {
-        return (
-          _items.sections == parseInt(sec) &&
-          ((_items.email &&
-            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+      // if (_items.email) {
+      return (
+        _items.sections == parseInt(sec) &&
+        _items.results.id == 3 &&
+        ((_items.email &&
+          _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
             -1) ||
-            (_items.first_name &&
-              _items.first_name
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1) ||
-            (_items.phone_number &&
-              _items.phone_number
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1))
-        );
-      } else {
-        return true;
-      }
+          (_items.first_name &&
+            _items.first_name
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1) ||
+          (_items.phone_number &&
+            _items.phone_number
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1))
+      );
+      // } else {
+      //   return true;
+      // }
     });
   }
 }
@@ -136,12 +138,11 @@ const AdminUsers = (props) => {
 
   const setting = useRecoilValue(settingState);
 
-  const exportExcel=()=>{
-    console.log('Export Excel');
+  const exportExcel = () => {
+    console.log("Export Excel");
 
-    window.open(getBaseApi()+'call/export', '_blank');
-
-  }
+    window.open(getBaseApi() + "call/export", "_blank");
+  };
 
   const handelGo = (section) => {
     document.getElementsByClassName(
@@ -322,7 +323,6 @@ const AdminUsers = (props) => {
             Add New Call
           </Link>
 
-
           {allCheck.length == 1 && (
             <Link
               className="btn btn-elevated-pending shadow-md mr-2 py-2"
@@ -376,14 +376,19 @@ const AdminUsers = (props) => {
             </>
           ) : (
             <>
-            <Link
-              className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
-              to="/calls/import"
-            >
-              Import Excel
-            </Link>
+              <Link
+                className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                to="/calls/import"
+              >
+                Import Excel
+              </Link>
 
-            <button onClick={exportExcel} className="btn btn-elevated-warning text-white shadow-md mr-2 py-2">Export Excel</button>
+              <button
+                onClick={exportExcel}
+                className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
+              >
+                Export Excel
+              </button>
             </>
           )}
         </div>
@@ -401,7 +406,7 @@ const AdminUsers = (props) => {
             <option value="25">25</option>
             <option value="35">35</option>
             <option value="50">50</option>
-            <option value="10000">All</option>
+            <option value="100">100</option>
           </select>
 
           <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
@@ -422,7 +427,6 @@ const AdminUsers = (props) => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4  gap-4 mt-5">
         <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
-
           {/* BEGIN: Data List */}
 
           <div className="intro-y mt-5 col-span-12 ">
@@ -445,7 +449,7 @@ const AdminUsers = (props) => {
                 >
                   <AccordionGroup className="accordion-boxed ">
                     <AccordionItem className="box">
-                      <Accordion>All</Accordion>
+                      <Accordion>Non Section</Accordion>
                       <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
                         <Table
                           rowCount={rowCount}
@@ -478,57 +482,61 @@ const AdminUsers = (props) => {
                 </div>
 
                 {setting.sections &&
-                  setting.sections.map((val, indx) => (
-                    <div
-                      key={indx}
-                      onDrop={(e) => tableDragOver(e, val?.id)}
-                      onDragOver={(e) => allowDrop(e)}
-                    >
-                      <AccordionGroup
-                        draggable={true}
-                        className="accordion-boxed mt-5"
-                        selectedIndex={null}
-                      >
-                        <AccordionItem className={"box "}>
-                          <Accordion>{val?.title}</Accordion>
-                          <AccordionPanel
-                            id={"item" + val?.id}
-                            className={
-                              "text-slate-600 dark:text-slate-500 leading-relaxed item" +
-                              val?.id
-                            }
-                          >
-                            <Table
-                              rowCount={rowCount}
-                              setDeleteConfirmationModal={
-                                setDeleteConfirmationModal
-                              }
-                              users={applySortFilters(
-                                callData.contents,
-                                search,
-                                val?.id
-                              )}
-                              setUserId={setCallId}
-                              setCallState={setCallState}
-                              allCheck={allCheck}
-                              setAllCheck={setAllCheck}
-                              updateFunc={updateFunc}
-                              aheck={aheck}
-                              setAcheck={setAcheck}
-                              setHistory={setHistory}
-                              theme={val?.theme}
-                              dragStart={dragStart}
-                              dragover={dragover}
-                              tableDragOver={tableDragOver}
-                              section={val?.id}
-                              setting={setting}
-                            />
-                          </AccordionPanel>
-                        </AccordionItem>
-                      </AccordionGroup>
-                    </div>
-                  ))}
+                  setting.sections.map((val, indx) => {
+                    let calls = applySortFilters(
+                      callData.contents,
+                      search,
+                      val?.id
+                    );
+                    if (calls.length == 0) return;
 
+                    return (
+                      <div
+                        key={indx}
+                        onDrop={(e) => tableDragOver(e, val?.id)}
+                        onDragOver={(e) => allowDrop(e)}
+                      >
+                        <AccordionGroup
+                          draggable={true}
+                          className="accordion-boxed mt-5"
+                          selectedIndex={null}
+                        >
+                          <AccordionItem className={"box "}>
+                            <Accordion>{val?.title}</Accordion>
+                            <AccordionPanel
+                              id={"item" + val?.id}
+                              className={
+                                "text-slate-600 dark:text-slate-500 leading-relaxed item" +
+                                val?.id
+                              }
+                            >
+                              <Table
+                                rowCount={rowCount}
+                                setDeleteConfirmationModal={
+                                  setDeleteConfirmationModal
+                                }
+                                users={calls}
+                                setUserId={setCallId}
+                                setCallState={setCallState}
+                                allCheck={allCheck}
+                                setAllCheck={setAllCheck}
+                                updateFunc={updateFunc}
+                                aheck={aheck}
+                                setAcheck={setAcheck}
+                                setHistory={setHistory}
+                                theme={val?.theme}
+                                dragStart={dragStart}
+                                dragover={dragover}
+                                tableDragOver={tableDragOver}
+                                section={val?.id}
+                                setting={setting}
+                              />
+                            </AccordionPanel>
+                          </AccordionItem>
+                        </AccordionGroup>
+                      </div>
+                    );
+                  })}
               </>
             )}
           </div>

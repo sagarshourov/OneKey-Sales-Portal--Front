@@ -2,6 +2,7 @@ import { atom, selector, atomFamily, selectorFamily } from "recoil";
 import {
   getAllUsers,
   getAllCalls,
+  getCallsFilter,
   getAllNoti
 } from "../service/admin";
 
@@ -51,8 +52,39 @@ export const notiSelect = selector({
 });
 
 
+export const cancelSelect = selector({
+  key: "cancelSelect",
+  get: async ({ get }) => {
+    try {
+      const response = await getCallsFilter(1);
+
+      console.log('canN_res',response);
 
 
+
+      return response || [];
+    } catch (error) {
+      console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
+
+
+
+
+export const clientSelect = selector({
+  key: "clientSelect",
+  get: async ({ get }) => {
+    try {
+      const response = await getCallsFilter(2);
+      return response || [];
+    } catch (error) {
+      console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
 
 
 
@@ -73,8 +105,17 @@ export const notiState = atom({
 });
 
 
+export const cancelListState = atom({
+  key: "cancelListState",
+  default: cancelSelect,
+});
 
 
 
 
+
+export const clientListState = atom({
+  key: "clientListState",
+  default: clientSelect,
+});
 

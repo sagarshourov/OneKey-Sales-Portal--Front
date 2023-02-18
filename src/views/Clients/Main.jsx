@@ -3,7 +3,7 @@ import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 import { useState } from "react";
 
 import { useRecoilStateLoadable } from "recoil";
-import { callListState } from "../../state/admin-atom";
+import { clientListState } from "../../state/admin-atom";
 
 import UsersTable from "./UsersTable";
 
@@ -35,7 +35,7 @@ const headers = {
 const CancelMain = (props) => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);
-  const [usersData, setUserState] = useRecoilStateLoadable(callListState);
+  const [usersData, setUserState] = useRecoilStateLoadable(clientListState);
   const [rowCount, setRowCount] = useState(10);
   const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");

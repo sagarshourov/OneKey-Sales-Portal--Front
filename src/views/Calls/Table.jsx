@@ -13,10 +13,8 @@ const fText = (text) => {
 };
 
 const UsersTable = (props) => {
-
   const {
     users,
-    rowCount,
     setHistory,
     setUserId,
     setDeleteConfirmationModal,
@@ -32,7 +30,7 @@ const UsersTable = (props) => {
     section,
     setting,
   } = props;
-
+  const [rowCount, setRowCount] = useState(20);
   const handelChange = (e, id, type) => {
     e.preventDefault();
 
@@ -70,6 +68,10 @@ const UsersTable = (props) => {
     updateFunc(id, name, checked);
 
     console.log(checked);
+  };
+
+  const loadMore = () => {
+    setRowCount(rowCount + 20);
   };
 
   return (
@@ -126,14 +128,16 @@ const UsersTable = (props) => {
             let count = key + 1;
             var team_id = user?.user?.team;
             let dark = "";
-            if (// IR
+            if (
+              // IR
               user?.gpa &&
               team_id &&
               parseFloat(user.gpa) < 2.5 &&
               team_id == 1
             ) {
               dark = " alert-danger-soft ";
-            } else if ( // TR
+            } else if (
+              // TR
               user?.gpa &&
               team_id &&
               parseFloat(user.gpa) < 13 &&
@@ -149,7 +153,7 @@ const UsersTable = (props) => {
                 className={"border-t pt-2" + dark}
                 draggable={true}
                 onDragStart={(e) => dragStart(e, user.id)}
-              // onDragOver={(e) => dragover(e)}
+                // onDragOver={(e) => dragover(e)}
               >
                 <td>
                   <div className="form-check mt-2">
@@ -201,11 +205,11 @@ const UsersTable = (props) => {
                 </td>
                 <td className="text-center">{user?.referred_by}</td>
 
-                <td className="text-center" onClick={() => setHistory("memo", user.extra, user.id)}>
-                  <div
-                    className="text-center"
-
-                  >
+                <td
+                  className="text-center"
+                  onClick={() => setHistory("memo", user.extra, user.id)}
+                >
+                  <div className="text-center">
                     <Tippy
                       tag="a"
                       href="#"
@@ -254,13 +258,13 @@ const UsersTable = (props) => {
                       ))}
                   </select>
                 </td>
-                <td onClick={() =>
-                  setHistory("last_status_notes", user.extra, user.id)
-                } className="text-center">
-                  <div
-                    className="text-center"
-
-                  >
+                <td
+                  onClick={() =>
+                    setHistory("last_status_notes", user.extra, user.id)
+                  }
+                  className="text-center"
+                >
+                  <div className="text-center">
                     <Tippy
                       tag="a"
                       href="#"
@@ -295,9 +299,10 @@ const UsersTable = (props) => {
                       ))}
                   </select>
                 </td>
-                <td className="text-center" onClick={() =>
-                  setHistory("feedbacks", user.extra, user.id)
-                }>
+                <td
+                  className="text-center"
+                  onClick={() => setHistory("feedbacks", user.extra, user.id)}
+                >
                   <div className="text-center">
                     <Tippy
                       tag="a"
@@ -314,6 +319,11 @@ const UsersTable = (props) => {
           })}
         </tbody>
       </table>
+      {rowCount < users.length && (
+        <button className="btn btn-default m-5" onClick={loadMore}>
+          Load more ...
+        </button>
+      )}
     </div>
   );
 };
