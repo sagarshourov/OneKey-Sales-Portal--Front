@@ -113,6 +113,10 @@ const AddCalls = (props) => {
 
     data.append("user_id", logindata?.userId);
 
+    // data.append("results", 3);
+    data.append("f_results", 3);
+    data.append("results", 3);
+
     const URL = adminApi() + "calls";
 
     setLoading(true);
@@ -618,7 +622,7 @@ const AddCalls = (props) => {
                 <label className="form-label">First Call Result</label>
 
                 <select name="results" className="form-control">
-                  <option value="0">Select...</option>
+                  <option value="3">Select...</option>
 
                   {setting.results &&
                     setting.results.map((val, indx) => (

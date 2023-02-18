@@ -138,6 +138,9 @@ const AdminUsers = (props) => {
 
   const setting = useRecoilValue(settingState);
 
+
+  console.log('logindata',logindata);
+
   const exportExcel = () => {
     console.log("Export Excel");
 
@@ -375,7 +378,9 @@ const AdminUsers = (props) => {
               </select>
             </>
           ) : (
+           parseInt(logindata.role) !== 3 &&
             <>
+            
               <Link
                 className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
                 to="/calls/import"
