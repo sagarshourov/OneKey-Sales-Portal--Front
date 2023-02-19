@@ -271,11 +271,20 @@ const AdminUsers = (props) => {
         </div>
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
-        <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+        {/* <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
           <button onClick={handelLoad} className="btn">
             Load more..
           </button>
-        </div>
+        </div> */}
+
+        {rowCount < filterData.length && (
+        <button className="btn btn-default m-5" onClick={handelLoad}>
+          Load more ...
+        </button>
+      )}
+
+
+
         {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}

@@ -410,6 +410,15 @@ const EditCalls = (props) => {
                   />
                 </div>
                 <div className="intro-x ">
+                  <label className="form-label">WhatsApp Number</label>
+                  <input
+                    type="text"
+                    name="whatsapp"
+                    className=" form-control"
+                    defaultValue={call[0]?.whatsapp}
+                  />
+                </div>
+                <div className="intro-x ">
                   <label className="form-label">Age</label>
                   <input
                     type="text"
