@@ -21,6 +21,8 @@ const Admins = Loadable(lazy(() => import("../views/Admins/Main")));
 const Employees = Loadable(lazy(() => import("../views/Employees/Main")));
 const EmpActivity = Loadable(lazy(() => import("../views/Employees/Activity")));
 
+const Results = Loadable(lazy(() => import("../views/Results/Main")));
+
 const Clients = Loadable(lazy(() => import("../views/Clients/Main")));
 const Cancel = Loadable(lazy(() => import("../views/Cancel/Main")));
 const Calls = Loadable(lazy(() => import("../views/Calls/Main")));
@@ -178,6 +180,10 @@ function Router() {
         {
           path: "/clients",
           element: <Clients />,
+        },
+        {
+          path: "/results/:id",
+          element: <Results />,
         },
         {
           path: "/notifications",

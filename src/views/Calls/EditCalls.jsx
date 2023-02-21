@@ -59,7 +59,7 @@ const EditCalls = (props) => {
   const [emailErr, setEmailErr] = useState([]);
 
   let call = getSingleCalls(callData.contents, parseInt(id));
-  console.log("ditcall", call[0]);
+ 
   const [ecall, setEcall] = useState([]);
 
   const [show, setShow] = useState(false);
@@ -75,7 +75,7 @@ const EditCalls = (props) => {
   // );
 
   const [followUpState, sectFollowUpSec] = useState(
-    call[0].extra.length > 1
+    call[0] && call[0].extra.length > 1
       ? call[0].extra
       : [
           {
@@ -101,7 +101,7 @@ const EditCalls = (props) => {
           },
         ]
   );
-  console.log("follow", followUpState);
+
 
   const [confirmGpaState, setConfirmGpaState] = useState(
     call[0].extra.length > 0

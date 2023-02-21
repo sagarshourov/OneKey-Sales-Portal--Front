@@ -43,7 +43,7 @@ let supAdminObj = {
     },
     {
       icon: "MessageCircle",
-      title: "WhatsApp - In Progress",
+      title: "WhatsApp",
       subMenu: [
         {
           icon: "User",
@@ -144,6 +144,11 @@ let supAdminObj = {
       title: "Clients",
     },
     {
+      icon: "User",
+      pathname: "/results/5",
+      title: "Do Not Contact",
+    },
+    {
       icon: "Bell",
       pathname: "/notifications",
       title: "Notifications",
@@ -230,6 +235,11 @@ let adminObj = {
       title: "Clients",
     },
     {
+      icon: "User",
+      pathname: "/results/5",
+      title: "Do Not Contact",
+    },
+    {
       icon: "Bell",
       pathname: "/notifications",
       title: "Notifications",
@@ -294,6 +304,11 @@ let empObj = {
       icon: "User",
       pathname: "/clients",
       title: "Clients",
+    },
+    {
+      icon: "User",
+      pathname: "/results/5",
+      title: "Do Not Contact",
     },
     {
       icon: "Calendar",

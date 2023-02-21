@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useRecoilStateLoadable,useSetRecoilState , useRecoilValue } from "recoil";
 import { clientListState,resultState } from "../../state/admin-atom";
+
+
 import { useParams, Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { settingState } from "../../state/setting-atom";
@@ -35,7 +37,8 @@ const headers = {
   ContentType: "application/json",
 };
 
-const CancelMain = (props) => {
+const ResultsMain = (props) => {
+  let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(clientListState);
@@ -50,7 +53,7 @@ const CancelMain = (props) => {
 
 
   const setResultID = useSetRecoilState(resultState);
-  setResultID(2);
+  setResultID(id);
   console.log("userdata", usersData);
 
   const handelPageCount = (e) => {
@@ -115,7 +118,7 @@ const CancelMain = (props) => {
 
   return (
     <>
-      <h2 className="intro-y text-lg font-medium mt-10 ">Clients List</h2>
+      <h2 className="intro-y text-lg font-medium mt-10 ">Do Not Contact</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
         {/* <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
           <div className="hidden md:block mx-auto text-slate-500">
@@ -297,4 +300,4 @@ const CancelMain = (props) => {
   );
 };
 
-export default CancelMain;
+export default ResultsMain;

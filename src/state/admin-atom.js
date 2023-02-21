@@ -70,6 +70,11 @@ export const cancelSelect = selector({
   },
 });
 
+export const resultState = atom({
+  key: "resultState",
+  default: 1,
+});
+
 
 
 
@@ -77,7 +82,7 @@ export const clientSelect = selector({
   key: "clientSelect",
   get: async ({ get }) => {
     try {
-      const response = await getCallsFilter(2);
+      const response = await getCallsFilter(get(resultState));
       return response.data || [];
     } catch (error) {
       console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
