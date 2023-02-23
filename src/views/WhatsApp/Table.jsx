@@ -56,20 +56,19 @@ const UsersTable = (props) => {
 
     phone_number = parseInt(phone_number.replace(/[^A-Z0-9]/gi, ""));
 
-   // console.log("phone_number", phone_number);
+    // console.log("phone_number", phone_number);
     var myWindow = window.open(
       "https://wa.me/" + "+" + phone_number,
       "",
       "toolbar=no,status=no,menubar=no,location=center,scrollbars=no,resizable=no,height=100,width=100"
     );
 
-    setTimeout(function(){
+    setTimeout(function () {
       myWindow.close();
+    }, 1000);
+    // myWindow.close();
 
-    },1000);
-   // myWindow.close();
-
-  // myWindow.document.write('<script>window.location.href="https://wa.me/'+phone_number+'";  setTimeout(function(){  window.close(); },1000) ;  </script>');
+    // myWindow.document.write('<script>window.location.href="https://wa.me/'+phone_number+'";  setTimeout(function(){  window.close(); },1000) ;  </script>');
 
     recorder.start(user_id, id);
   };
@@ -158,23 +157,21 @@ const UsersTable = (props) => {
                 </td>
                 <td className="w-40">{count}</td>
                 <td>
-                  <Link
-                    to="#"
-                    draggable={false}
-                    className="font-medium whitespace-nowrap"
-                  >
-                    {user.first_name} {user.last_name}
-                  </Link>
+                  {user.first_name} {user.last_name}
                   <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                     {user.email}
                   </div>
                 </td>
 
-                <td>{user?.phone_number}</td>
+                <td>{user.whatsapp ? user?.whatsapp : user?.phone_number}</td>
                 <td>
                   <button
                     onClick={(e) =>
-                      handelCall(user?.phone_number, user?.user_id, user?.id)
+                      handelCall(
+                        user.whatsapp ? user?.whatsapp : user?.phone_number,
+                        user?.user_id,
+                        user?.id
+                      )
                     }
                     className="btn btn-success mr-1 mb-2"
                   >

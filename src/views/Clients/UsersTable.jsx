@@ -10,12 +10,8 @@ import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
-const formatDate = (dat) => {
 
-  return dat;
-  //const date = dat.split(" ");
-//  return dat.split("T")[0];
-};
+import { helper } from "@/utils/helper";
 
 const UsersTable = (props) => {
   const { users, rowCount, allCheck, setAllCheck } = props;
@@ -42,9 +38,12 @@ const UsersTable = (props) => {
       // setAcheck(false);
     }
   };
+  const fText = (text) => {
+    return text ? text.substr(0, 10) + "..." : "";
+  };
   return (
     <>
-      <table className="table table-report -mt-2">
+        <table className="table table-report -mt-2">
         <thead>
           <tr>
             <th className="whitespace-nowrap">
@@ -62,12 +61,14 @@ const UsersTable = (props) => {
             </th>
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
+            <th className="text-center whitespace-nowrap">Phone</th>
+            <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Priority</th>
 
             <th className="text-center whitespace-nowrap">
               First Contact Date
             </th>
-            <th className="text-center whitespace-nowrap">Note</th>
+          
             <th className="text-center whitespace-nowrap">
               Follow up date set
             </th>
@@ -120,17 +121,15 @@ const UsersTable = (props) => {
                     {user.email}
                   </div>
                 </td>
+                <td className="text-center">{user?.phone_number}</td>
+                <td className="text-center">{user?.whatsapp}</td>
                 <td className="text-center">{user?.priority?.title}</td>
 
-                <td className="text-center">{formatDate(user.created_at)}</td>
+                <td className="text-center">  {helper.formatDate(user?.created_at, "MMM D, YYYY")}</td>
+              
                 <td className="text-center">
-                  <div className="text-center">
-                    <Tippy tag="a" href="#" className="tooltip" content="">
-                      11.23 Mojarrad,..
-                    </Tippy>
-                  </div>
+                  {helper.formatDate(user?.created_at, "MMM D, YYYY")}
                 </td>
-                <td className="text-center">{formatDate(user.created_at)}</td>
                 <td>{user?.status?.title}</td>
                 <td>
                   <div className="form-check mt-2">
@@ -145,39 +144,43 @@ const UsersTable = (props) => {
                   </div>
                 </td>
                 <td>{user?.package?.title}</td>
-                <td className="text-center">{formatDate(user.created_at)}</td>
-                <td className="text-center">37-S</td>
-                <td className="text-center">k-18</td>
-                <td className="text-center">{formatDate(user.created_at)}</td>
+                <td className="text-center">
+                  {helper.formatDate(user?.created_at, "MMM D, YYYY")}
+                </td>
+                <td className="text-center">{user?.age}</td>
+                <td className="text-center">{user?.gpa}</td>
+                <td className="text-center">
+                  {" "}
+                  {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
+                </td>
 
                 <td className="text-center">
                   <div className="text-center">
-                    <Tippy tag="a" href="#" className="tooltip" content="">
-                      11.23 Mojarrad,..
+                    <Tippy
+                      tag="a"
+                      href="#"
+                      className="tooltip"
+                      content={user?.last_status_notes}
+                    >
+                      {fText(user?.last_status_notes)}
                     </Tippy>
                   </div>
                 </td>
+
+
                 <td>{user?.results?.title}</td>
 
-                {/* <td>
-                  <select
-                    onChange={(e) => handelChange(e, user.id)}
-                    name="results"
-                    className="form-select form-select-sm mt-2 w-20"
-                    defaultValue={user.results.id}
-                  >
-                    <option value="0">Select..</option>
-                    <option value="1">Cancel</option>
-                    <option value="2">Client</option>
-                    <option value="3">Open</option>
-                  </select>
-                </td> */}
 
                 <td>{user?.cancel_reason?.title}</td>
                 <td className="text-center">
                   <div className="text-center">
-                    <Tippy tag="a" href="#" className="tooltip" content="">
-                      11.23 Mojarrad,..
+                    <Tippy
+                      tag="a"
+                      href="#"
+                      className="tooltip"
+                      content={user?.feedbacks}
+                    >
+                      {fText(user?.feedbacks)}
                     </Tippy>
                   </div>
                 </td>

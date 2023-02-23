@@ -96,6 +96,7 @@ const UsersTable = (props) => {
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
             <th className="text-center whitespace-nowrap">Phone</th>
+            <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">GPA</th>
             <th className="text-center whitespace-nowrap">Priority</th>
@@ -183,6 +184,7 @@ const UsersTable = (props) => {
                 </td>
 
                 <td>{user?.phone_number}</td>
+                <td>{user?.whatsapp}</td>
 
                 <td className="text-center">{user?.age}</td>
                 <td className="text-center">{user?.gpa}</td>
