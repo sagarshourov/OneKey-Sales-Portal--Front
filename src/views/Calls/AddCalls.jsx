@@ -324,6 +324,7 @@ const AddCalls = (props) => {
           </div>
 
           <div className="intro-y box p-5">
+            <h3 className="text-xl font-medium">Form Information</h3>
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
               <div className="intro-x ">
                 <label className="form-label">First Name</label>
@@ -385,7 +386,7 @@ const AddCalls = (props) => {
                   placeholder=""
                 />
               </div>
-            
+
               <div className="intro-x ">
                 <label className="form-label">Age</label>
                 <input
@@ -482,6 +483,7 @@ const AddCalls = (props) => {
           {/*Section 1*/}
 
           <div className="intro-y box p-5 mt-5">
+            <h3 className="text-xl font-medium">First Call</h3>
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-5 gap-4 mt-5">
               <div className="intro-x ">
                 <label className="form-label">First Contact Date</label>
@@ -676,6 +678,7 @@ const AddCalls = (props) => {
             </div>
 
             <div className="border mt-5 px-5 pb-5 border-dashed border-2">
+              <h3 className="text-xl font-medium mt-5">Follow Up and Next Steps</h3>
               {followUpState.length > 0 &&
                 followUpState.map((val, index) => (
                   <FollowUpSection
