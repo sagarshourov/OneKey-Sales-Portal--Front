@@ -2,9 +2,9 @@ import { Lucide, Litepicker, Input } from "@/base-components";
 
 import { useState } from "react";
 
-
 const Confirmed = (props) => {
-  const { index, data, setting, deleteConGpa, handelSelect, onChange } = props;
+  const { index, data, setting, deleteConGpa, handelSelect, team, onChange } =
+    props;
 
   //console.log("followup", data);
 
@@ -39,6 +39,22 @@ const Confirmed = (props) => {
           value={data.values && data.values[1] ? data.values[1].value : ""}
         />
       </div>
+      {parseInt(team) === 1 &&
+        data.values &&
+        parseInt(data.values[1].value) < 13.5 && (
+          <div className="intro-x">
+            <label className="form-label">Offered</label>
+
+            <select
+              className="form-control"
+              name={"con_gpa[" + index + "][offered]"}
+            >
+              <option value="1">Certificate</option>
+              <option value="2">English Courses</option>
+            </select>
+          </div>
+        )}
+
       <button
         type="button"
         className="btn-close absolute right-5 top-2"

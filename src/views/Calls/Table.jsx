@@ -1,8 +1,9 @@
-import { Tippy, Checkbox } from "@/base-components";
+import { Tippy, Checkbox, Lucide } from "@/base-components";
 
 import { Link } from "react-router-dom";
 import { helper } from "@/utils/helper";
 import { useState } from "react";
+import CopyEle from "./CopyEle";
 const formatDate = (dat) => {
   //const date = dat.split(" ");
   return dat.split("T")[0];
@@ -76,6 +77,7 @@ const UsersTable = (props) => {
 
   return (
     <div className="overflow-auto relative">
+       <p className="text-orange-500 text-stone-600"></p>
       <table className="table  mt-2">
         <thead className={theme}>
           <tr>
@@ -109,7 +111,7 @@ const UsersTable = (props) => {
             <th className="text-center whitespace-nowrap">Package</th>
             <th className="text-center whitespace-nowrap">Status</th>
 
-            <th className="text-center whitespace-nowrap">Last Status Notes</th>
+            <th className="text-center whitespace-nowrap">First Call Notes</th>
             <th className="text-center whitespace-nowrap">
               Follow up date set
             </th>
@@ -179,7 +181,8 @@ const UsersTable = (props) => {
                     {user.first_name} {user.last_name}
                   </Link>
                   <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
-                    {user.email}
+                  
+                    <CopyEle email={user.email} />
                   </div>
                 </td>
 

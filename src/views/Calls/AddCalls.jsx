@@ -24,7 +24,12 @@ import { helper } from "@/utils/helper";
 import { loginState } from "../../state/login-atom";
 import { settingState } from "../../state/setting-atom";
 import FollowUpSection from "./FollowUpSection";
+
+import MySection from "./MySection";
+
 import ConfirmedGpa from "./ConfirmedGpa";
+
+import SupposeSection from "./SupposeSection";
 
 function employeeFilters(array) {
   return filter(array, (_items) => {
@@ -61,6 +66,9 @@ const AddCalls = (props) => {
   const [show, setShow] = useState(false);
   const setting = useRecoilValue(settingState);
 
+  const [suppose, setSuppose] = useState(false);
+  const [score, setScore] = useState(false);
+
   const [followUpState, sectFollowUpSec] = useState([
     {
       id: 0,
@@ -84,10 +92,43 @@ const AddCalls = (props) => {
     },
   ]);
 
+  const [myNextStepState, setMyNextStep] = useState([
+    {
+      id: 0,
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    },
+  ]);
+  const addMyStep = () => {
+    let newObj = {
+      id: myNextStepState[myNextStepState.length - 1].id + 1,
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    };
+    let myStep = myNextStepState;
+
+    setMyNextStep([...myStep, newObj]);
+  };
+
   const [confirmGpaState, setConfirmGpaState] = useState([
     {
       id: 0,
       values: [
+        {
+          value: "",
+        },
         {
           value: "",
         },
@@ -237,13 +278,49 @@ const AddCalls = (props) => {
   };
 
   const onChangeGpa = (val, index, sec) => {
+   // console.log("login data", logindata);
+
+    // if (parseInt(logindata.team) === 1 && parseInt(val) < 13.5) {
+
+    // }
+
     let newAte = JSON.stringify(confirmGpaState);
     let newState = JSON.parse(newAte);
     newState[index].values[sec].value = val;
     setConfirmGpaState(newState);
   };
 
+  const addFollow = () => {
+    let newObj = {
+      id: followUpState[followUpState.length - 1].id + 1,
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    };
+    let followUp = followUpState;
+
+    sectFollowUpSec([...followUp, newObj]);
+  };
+
   const handelFollow = (e, index) => {
+    onChange(e.target.value, index, 1);
+
+    return;
+
     //let name = e.target.name;
     let value = parseInt(e.target.value);
     //onChange(e.target.value, index, 1);
@@ -283,6 +360,19 @@ const AddCalls = (props) => {
     }
   };
 
+  const deleteMyStep = (e) => {
+    if (myNextStepState.length > 1) {
+      let newArr = removeArr(myNextStepState, e);
+      setMyNextStep(newArr);
+    }
+  };
+  const onChangeMyStep = (val, index, sec) => {
+    let newAte = JSON.stringify(myNextStepState);
+    let newState = JSON.parse(newAte);
+    newState[index].values[sec].value = val;
+    setMyNextStep(newState);
+  };
+
   const deleteConGpa = (e) => {
     if (confirmGpaState.length > 1) {
       let newArr = removeArr(confirmGpaState, e);
@@ -304,6 +394,26 @@ const AddCalls = (props) => {
     };
 
     setConfirmGpaState([...confirmGpaState, newObj]);
+  };
+
+  const handelMargie = (e) => {
+    console.log("married", e.target.value);
+
+    if (e.target.value == 2) {
+      setSuppose(true);
+    } else {
+      setSuppose(false);
+    }
+  };
+
+  const handelEngTest = (e) => {
+    console.log("handelEngTest", e.target.value);
+
+    if (parseInt(e.target.value) !== 0) {
+      setScore(true);
+    } else {
+      setScore(false);
+    }
   };
 
   return (
@@ -425,19 +535,15 @@ const AddCalls = (props) => {
 
                   <option value="2">Bachelor</option>
 
-
                   <option value="3">Master</option>
                   <option value="4">Ph.D</option>
-                  
                 </select>
               </div>
 
               <div className="intro-x ">
                 <label className="form-label">Field of Study </label>
-                <input   className="form-control" type="text" />
+                <input className="form-control" type="text" />
               </div>
-
-
 
               <div className="intro-x ">
                 <label className="form-label">Referred by</label>
@@ -453,7 +559,11 @@ const AddCalls = (props) => {
               <div className="intro-x ">
                 <label className="form-label">Marital Status</label>
 
-                <select name="marital_status" className="form-control">
+                <select
+                  name="marital_status"
+                  onChange={handelMargie}
+                  className="form-control"
+                >
                   <option value="0">Select...</option>
                   {setting.marital_status &&
                     setting.marital_status.map((val, indx) => (
@@ -487,6 +597,9 @@ const AddCalls = (props) => {
                 </select>
               </div>
             </div>
+
+            {suppose && <SupposeSection />}
+
             <div className="border border-dashed border-2 p-5 md:mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
@@ -494,6 +607,26 @@ const AddCalls = (props) => {
                   <input
                     type="text"
                     name="memo"
+                    className=" form-control"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 mt-5  gap-4">
+                <div className="intro-y">
+                  <label className="form-label">Call Schedule Date</label>
+                  <input
+                    type="date"
+                    name="call_schedule_date"
+                    className=" form-control"
+                    placeholder=""
+                  />
+                </div>
+                <div className="intro-y">
+                  <label className="form-label">Call Schedule time</label>
+                  <input
+                    type="time"
+                    name="call_schedule_time"
                     className=" form-control"
                     placeholder=""
                   />
@@ -542,6 +675,7 @@ const AddCalls = (props) => {
                     deleteConGpa={deleteConGpa}
                     onChange={onChangeGpa}
                     key={indx}
+                    team={logindata.team}
                   />
                 ))}
 
@@ -602,6 +736,29 @@ const AddCalls = (props) => {
               </div>
             </div>
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+              <div className="intro-y">
+                <label className="form-label"> English Test</label>
+                <select
+                  name="english_test"
+                  onChange={handelEngTest}
+                  className="form-control"
+                >
+                  <option value="0">None...</option>
+                  <option value="1">TOEFL</option>
+                  <option value="2">IELTS</option>
+                  <option value="3">Duolingo</option>
+                </select>
+              </div>
+              {score && (
+                <div className="intro-y">
+                  <label className="form-label">English Test Score</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    name="english_test_score"
+                  />
+                </div>
+              )}
               <div className="intro-y">
                 <label className="form-label">Nationality</label>
                 <input
@@ -670,7 +827,7 @@ const AddCalls = (props) => {
             <div className="border border-dashed border-2 p-5 md:mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
-                  <label className="form-label">Last Status Notes</label>
+                  <label className="form-label">First Call Notes</label>
                   <input
                     type="text"
                     name="last_status_notes"
@@ -696,23 +853,121 @@ const AddCalls = (props) => {
                     className="form-control"
                   />
                 </div>
+
+                <div className="intro-y">
+                  <label className="form-label">Follow Up Date</label>
+                  <input
+                    type="date"
+                    name="agree_date_sent"
+                    className="form-control"
+                  />
+                </div>
+
+                <div className="intro-y">
+                  <label className="form-label"> Next Steps</label>
+                  <input
+                    type="text"
+                    name="next_steps"
+                    className="form-control"
+                  />
+                </div>
               </div>
             </div>
 
             <div className="border mt-5 px-5 pb-5 border-dashed border-2">
-              <h3 className="text-xl font-medium mt-5">Follow Up and Next Steps</h3>
-              {followUpState.length > 0 &&
-                followUpState.map((val, index) => (
-                  <FollowUpSection
-                    index={index}
-                    key={index}
-                    handelSelect={handelFollow}
-                    setting={setting}
-                    data={val}
-                    deleteFollowUp={deleteFollowUp}
-                    onChange={onChange}
+              <h3 className="text-xl font-medium mt-5">
+                Follow Up and Next Steps
+              </h3>
+              <div className="bg-slate-100 mt-5 pb-5">
+                {followUpState.length > 0 &&
+                  followUpState.map((val, index) => (
+                    <FollowUpSection
+                      index={index}
+                      key={index}
+                      handelSelect={handelFollow}
+                      setting={setting}
+                      data={val}
+                      deleteFollowUp={deleteFollowUp}
+                      onChange={onChange}
+                    />
+                  ))}
+
+                <div className="col-span-2 mt-5 flex  border-t pt-5 justify-center">
+                  <a onClick={addFollow} className=" btn btn-elevated-primary">
+                    <Lucide icon="Plus" className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-4 p-5  gap-4">
+                <div className="intro-y">
+                  <label className="form-label"> Agreed to Pay</label>
+                  <select
+                    name={"follow_up[0][agreed_to_pay]"}
+                    className="form-control"
+                  >
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                  </select>
+                </div>
+                <div className="intro-y">
+                  <label className="form-label"> Payment Method</label>
+                  <select
+                    className="form-control"
+                    name={"follow_up[0][payment_method]"}
+                  >
+                    <option value="0">Select ... </option>
+
+                    {setting.payment_method &&
+                      setting.payment_method.map((val, indx) => (
+                        <option key={indx} value={val.id}>
+                          {val?.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div className="intro-y">
+                  <label className="form-label"> Agreement Signed</label>
+                  <select
+                    name={"follow_up[0][agreed_to_signed]"}
+                    className="form-control"
+                  >
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                  </select>
+                </div>
+                <div className="intro-y">
+                  <label className="form-label"> Agreement Signed Date</label>
+                  <input
+                    type="date"
+                    name={"follow_up[0][agreement_signed_date]"}
+                    className="form-control"
                   />
-                ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="border mt-5 px-5 pb-5 border-dashed border-2">
+              <h3 className="text-xl font-medium mt-5">My Next Steps</h3>
+              <div className="bg-slate-100 mt-5 pb-5">
+                {myNextStepState.length > 0 &&
+                  myNextStepState.map((val, index) => (
+                    <MySection
+                      index={index}
+                      key={index}
+                      setting={setting}
+                      data={val}
+                      deleteFollowUp={deleteMyStep}
+                      onChange={onChangeMyStep}
+                    />
+                  ))}
+
+                <div className="col-span-2 mt-5 flex  border-t pt-5 justify-center">
+                  <a onClick={addMyStep} className=" btn btn-elevated-primary">
+                    <Lucide icon="Plus" className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className="border border-dashed border-2 p-5 md:mt-5">

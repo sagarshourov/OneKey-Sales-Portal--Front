@@ -318,7 +318,7 @@ const AdminUsers = (props) => {
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Call List</h2>
       <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-        <div className="bg-info bg-danger bg-success bg-warning bg-secondary"></div>
+        <div className="bg-info bg-danger bg-success bg-warning bg-yellow-400 bg-secondary bg-purple-600"></div>
         <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
           <Link
             className="btn btn-elevated-primary shadow-md mr-2 py-2"

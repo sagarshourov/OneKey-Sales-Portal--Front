@@ -75,6 +75,7 @@ const Login = (props) => {
         }
         if (response?.data?.data.user) {
           localStorage.setItem("userId", response?.data?.data?.user?.id);
+          localStorage.setItem("team", response?.data?.data?.user?.team);
         }
 
         localStorage.setItem("role", roles);
@@ -88,6 +89,7 @@ const Login = (props) => {
           role: roles,
           token: accessToken,
           userId: response?.data?.data?.user?.id,
+          team : response?.data?.data?.user?.team
         });
 
         navigate("../", { replace: true });

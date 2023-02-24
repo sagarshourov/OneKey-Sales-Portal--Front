@@ -84,7 +84,7 @@ const UsersTable = (props) => {
             </th>
             <th className="text-center whitespace-nowrap">
               {" "}
-              Last Status Notes
+              First Call Notes
             </th>
             <th className="text-center whitespace-nowrap"> Results</th>
             <th className="text-center whitespace-nowrap">

@@ -16,5 +16,6 @@ export const loginState = atom({
     role: localStorage.isAdmin ? localStorage.getItem("role") : 0,
     userId: localStorage.userId ? localStorage.getItem("userId") : 0,
     view: localStorage.view ? localStorage.getItem("view") : false,
+    team: localStorage.team ? localStorage.getItem("team") : 0,
   },
 });

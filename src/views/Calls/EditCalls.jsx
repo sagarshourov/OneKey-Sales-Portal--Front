@@ -116,6 +116,8 @@ const EditCalls = (props) => {
               },
               {
                 value: "",
+              },{
+                value: "",
               },
             ],
           },
@@ -591,6 +593,7 @@ const EditCalls = (props) => {
                           deleteConGpa={deleteConGpa}
                           onChange={onChangeGpa}
                           key={indx}
+                          team={logindata.team}
                         />
                       )
                   )}
@@ -746,7 +749,7 @@ const EditCalls = (props) => {
               <div className="border border-dashed border-2 p-5 md:mt-5">
                 <div className="grid grid-cols-1  gap-4">
                   <div className="intro-y">
-                    <label className="form-label">Last Status Notes</label>
+                    <label className="form-label">First Call Notes</label>
                     <input
                       type="text"
                       name="last_status_notes"
