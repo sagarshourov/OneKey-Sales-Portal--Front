@@ -418,6 +418,28 @@ const AddCalls = (props) => {
                 </select>
               </div>
               <div className="intro-x ">
+                <label className="form-label">Education level </label>
+                <select className="form-control">
+                  <option>Select..</option>
+                  <option value="1">H.S. Diploma</option>
+
+                  <option value="2">Bachelor</option>
+
+
+                  <option value="3">Master</option>
+                  <option value="4">Ph.D</option>
+                  
+                </select>
+              </div>
+
+              <div className="intro-x ">
+                <label className="form-label">Field of Study </label>
+                <input   className="form-control" type="text" />
+              </div>
+
+
+
+              <div className="intro-x ">
                 <label className="form-label">Referred by</label>
                 <input
                   type="text"
