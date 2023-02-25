@@ -138,11 +138,10 @@ const AdminUsers = (props) => {
 
   const setting = useRecoilValue(settingState);
 
-
- // console.log('callData',callData);
+ // console.log("logindata", logindata);
 
   const exportExcel = () => {
-    console.log("Export Excel");
+   // console.log("Export Excel");
 
     window.open(getBaseApi() + "call/export", "_blank");
   };
@@ -343,26 +342,29 @@ const AdminUsers = (props) => {
               >
                 Delete
               </button>
-              <select
-                name="results"
-                onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
-                className="form-select"
-              >
-                <option value="0">Results..</option>
 
-                {setting.results &&
-                  setting.results.map((val, indx) => (
-                    <option key={indx} value={val?.id}>
-                      {val?.title}
-                    </option>
-                  ))}
+              {parseInt(logindata.role) !== 3 && (
+                <select
+                  name="results"
+                  onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
+                  className="form-select"
+                >
+                  <option value="0">Results..</option>
 
-                {/* 
+                  {setting.results &&
+                    setting.results.map((val, indx) => (
+                      <option key={indx} value={val?.id}>
+                        {val?.title}
+                      </option>
+                    ))}
+
+                  {/* 
                     <option value="3">Open</option>
                     <option value="4">No Answer</option>
                     <option value="1">Cancel </option>
                     <option value="2">Client</option> */}
-              </select>
+                </select>
+              )}
               <select
                 name="sections"
                 onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
@@ -379,23 +381,23 @@ const AdminUsers = (props) => {
               </select>
             </>
           ) : (
-           parseInt(logindata.role) !== 3 &&
-            <>
-            
-              <Link
-                className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
-                to="/calls/import"
-              >
-                Import Excel
-              </Link>
+            parseInt(logindata.role) !== 3 && (
+              <>
+                <Link
+                  className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                  to="/calls/import"
+                >
+                  Import Excel
+                </Link>
 
-              <button
-                onClick={exportExcel}
-                className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
-              >
-                Export Excel
-              </button>
-            </>
+                <button
+                  onClick={exportExcel}
+                  className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
+                >
+                  Export Excel
+                </button>
+              </>
+            )
           )}
         </div>
         {/* <div className="hidden md:block mx-auto text-slate-500">
@@ -494,7 +496,7 @@ const AdminUsers = (props) => {
                       search,
                       val?.id
                     );
-                   // if (calls.length == 0) return;
+                    // if (calls.length == 0) return;
 
                     return (
                       <div

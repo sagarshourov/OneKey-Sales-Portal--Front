@@ -28,7 +28,7 @@ const headers = {
   ContentType: "application/json",
 };
 
-const CancelMain = (props) => {
+const NotificationMain = (props) => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [callViewModal, setCallViewModal] = useState(false);
   const [notiData, setNotiState] = useRecoilStateLoadable(notiState);
@@ -41,6 +41,12 @@ const CancelMain = (props) => {
   const [loading, setLoading] = useState(false);
 
   const [call, setCall] = useState([]);
+
+
+  console.log('call',call);
+
+
+
   const [noti_id, setNotiId] = useState([]);
 
   const handelPageCount = (e) => {
@@ -270,9 +276,9 @@ const CancelMain = (props) => {
                 </span>
               </div>
               <div className="flex  items-center">
-                Follow Up Date :
+                Assigned To :
                 <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
-                  {call?.follow_up_date}
+                  {call?.user?.first_name}  {call?.user?.last_name}
                 </span>
               </div>
             </div>
@@ -309,4 +315,4 @@ const CancelMain = (props) => {
   );
 };
 
-export default CancelMain;
+export default NotificationMain;

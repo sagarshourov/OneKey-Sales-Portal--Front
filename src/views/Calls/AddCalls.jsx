@@ -68,6 +68,9 @@ const AddCalls = (props) => {
 
   const [suppose, setSuppose] = useState(false);
   const [score, setScore] = useState(false);
+  const [cancelReason, setCancelReason] = useState(false);
+
+  const [fCallResult, setfCallResult] = useState(false);
 
   const [followUpState, sectFollowUpSec] = useState([
     {
@@ -278,7 +281,7 @@ const AddCalls = (props) => {
   };
 
   const onChangeGpa = (val, index, sec) => {
-   // console.log("login data", logindata);
+    // console.log("login data", logindata);
 
     // if (parseInt(logindata.team) === 1 && parseInt(val) < 13.5) {
 
@@ -414,6 +417,10 @@ const AddCalls = (props) => {
     } else {
       setScore(false);
     }
+  };
+
+  const handelCancelReason = (e) => {
+    setCancelReason(true);
   };
 
   return (
@@ -812,7 +819,11 @@ const AddCalls = (props) => {
               <div>
                 <label className="form-label">First Call Result</label>
 
-                <select name="results" className="form-control">
+                <select
+                  name="results"
+                  onChange={() => setfCallResult(true)}
+                  className="form-control"
+                >
                   <option value="3">Select...</option>
 
                   {setting.results &&
@@ -823,6 +834,17 @@ const AddCalls = (props) => {
                     ))}
                 </select>
               </div>
+              {fCallResult && (
+                <div className="intro-x col-span-3">
+                  <label className="form-label"> Notes</label>
+                  <input
+                    type="text"
+                    name={"first_call[0][notes]"}
+                    className="form-control"
+                    placeholder=""
+                  />
+                </div>
+              )}
             </div>
             <div className="border border-dashed border-2 p-5 md:mt-5">
               <div className="grid grid-cols-1  gap-4">
@@ -987,7 +1009,12 @@ const AddCalls = (props) => {
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
               <div className="intro-x ">
                 <label className="form-label">Cancellation reason </label>
-                <select name="cancel_reason" className="form-control">
+                <select
+                  required
+                  name="cancel_reason"
+                  onChange={handelCancelReason}
+                  className="form-control"
+                >
                   <option value="0">Select...</option>
                   {setting.cancel_reason &&
                     setting.cancel_reason.map((val, indx) => (
@@ -997,6 +1024,18 @@ const AddCalls = (props) => {
                     ))}
                 </select>
               </div>
+
+              {cancelReason && (
+                <div className="intro-y col-span-3">
+                  <label className="form-label">Notes</label>
+                  <input
+                    type="text"
+                    name="cancel_note"
+                    className=" form-control"
+                    placeholder=""
+                  />
+                </div>
+              )}
             </div>
           </div>
 

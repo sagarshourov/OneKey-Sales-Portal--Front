@@ -11,7 +11,7 @@ const Confirmed = (props) => {
   return (
     <div className="grid grid-cols-2 bg-slate-100 mt-5 gap-4 px-5 py-4 relative">
       <div className="intro-x">
-        <label className="form-label">Education Level</label>
+        <label className="form-label">Confirmed education Level</label>
         <select
           name={"con_gpa[" + index + "][applying_for]"}
           className="form-control"

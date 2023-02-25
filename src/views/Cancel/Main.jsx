@@ -48,7 +48,7 @@ const CancelMain = (props) => {
 
   const setting = useRecoilValue(settingState);
 
-  console.log("userdata", usersData);
+
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));

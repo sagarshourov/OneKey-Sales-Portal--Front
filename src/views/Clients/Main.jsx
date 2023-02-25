@@ -1,9 +1,14 @@
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { useRecoilStateLoadable,useSetRecoilState , useRecoilValue } from "recoil";
-import { clientListState,resultState } from "../../state/admin-atom";
+import {
+  useRecoilStateLoadable,
+  useSetRecoilState,
+  useRecoilValue,
+} from "recoil";
+import { clientListState, resultState } from "../../state/admin-atom";
+
 import { useParams, Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { settingState } from "../../state/setting-atom";
@@ -16,15 +21,13 @@ function applySortFilters(array, searchValue) {
   return filter(array, (_items) => {
     return (
       (_items.email &&
-        _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-          -1) ||
+        _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) ||
       (_items.first_name &&
         _items.first_name.toLowerCase().indexOf(searchValue.toLowerCase()) !==
           -1) ||
       (_items.phone_number &&
-        _items.phone_number
-          .toLowerCase()
-          .indexOf(searchValue.toLowerCase()) !== -1)
+        _items.phone_number.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+          -1)
     );
   });
 }
@@ -35,10 +38,10 @@ const headers = {
   ContentType: "application/json",
 };
 
-const CancelMain = (props) => {
+const ClientsMain = (props) => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);
-  const [usersData, setUserState] = useRecoilStateLoadable(clientListState);
+  const [callData, setUserState] = useRecoilStateLoadable(clientListState);
   const [rowCount, setRowCount] = useState(10);
   const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");
@@ -48,10 +51,23 @@ const CancelMain = (props) => {
 
   const setting = useRecoilValue(settingState);
 
-
   const setResultID = useSetRecoilState(resultState);
-  setResultID(2);
-  console.log("userdata", usersData);
+  // setResultID(2);
+  // console.log("userdata", usersData);
+
+  // useEffect(() => {
+  //   setResultID(2);
+  //   console.log("set state");
+  // }, []);
+
+
+  useEffect(() => {
+    console.log("set state");
+    setResultID(2);
+    return () => {
+      console.log("cleaned up");
+    };
+  }, []);
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
@@ -67,7 +83,7 @@ const CancelMain = (props) => {
     setSearch(e.target.value);
   };
 
-  let filterData = applySortFilters(usersData.contents, search);
+  let filterData = applySortFilters(callData.contents, search);
 
   const deleteAdmin = async () => {
     setLoading(true);
@@ -157,7 +173,6 @@ const CancelMain = (props) => {
               Add New Call
             </Link>
 
-           
             {allCheck.length > 0 && (
               <>
                 <button
@@ -226,7 +241,7 @@ const CancelMain = (props) => {
         {/* BEGIN: Data List */}
 
         <div className="intro-y col-span-12  overflow-auto ">
-          {usersData.state === "hasValue" && (
+          {callData.state === "hasValue" && (
             <UsersTable
               rowCount={rowCount}
               setDeleteConfirmationModal={setDeleteConfirmationModal}
@@ -297,4 +312,4 @@ const CancelMain = (props) => {
   );
 };
 
-export default CancelMain;
+export default ClientsMain;

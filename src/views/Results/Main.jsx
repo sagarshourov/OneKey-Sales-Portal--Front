@@ -1,6 +1,6 @@
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
-import { useState } from "react";
+import { useState , useEffect} from "react";
 
 import { useRecoilStateLoadable,useSetRecoilState , useRecoilValue } from "recoil";
 import { clientListState,resultState } from "../../state/admin-atom";
@@ -53,8 +53,15 @@ const ResultsMain = (props) => {
 
 
   const setResultID = useSetRecoilState(resultState);
-  setResultID(id);
-  console.log("userdata", usersData);
+
+
+  useEffect(() => {
+    console.log("set state");
+    setResultID(id);
+    return () => {
+      console.log("cleaned up");
+    };
+  }, [id]);
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
