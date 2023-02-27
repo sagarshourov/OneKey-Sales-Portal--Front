@@ -536,8 +536,8 @@ const AddCalls = (props) => {
               </div>
               <div className="intro-x ">
                 <label className="form-label">Education level </label>
-                <select className="form-control">
-                  <option>Select..</option>
+                <select name="degree" className="form-control">
+                  <option value="0">Select..</option>
                   <option value="1">H.S. Diploma</option>
 
                   <option value="2">Bachelor</option>
@@ -549,7 +549,7 @@ const AddCalls = (props) => {
 
               <div className="intro-x ">
                 <label className="form-label">Field of Study </label>
-                <input className="form-control" type="text" />
+                <input  name="field_study" className="form-control" type="text" />
               </div>
 
               <div className="intro-x ">
@@ -746,7 +746,7 @@ const AddCalls = (props) => {
               <div className="intro-y">
                 <label className="form-label"> English Test</label>
                 <select
-                  name="english_test"
+                  name="eng_test"
                   onChange={handelEngTest}
                   className="form-control"
                 >
@@ -762,7 +762,7 @@ const AddCalls = (props) => {
                   <input
                     className="form-control"
                     type="text"
-                    name="english_test_score"
+                    name="eng_test_score"
                   />
                 </div>
               )}
@@ -839,7 +839,7 @@ const AddCalls = (props) => {
                   <label className="form-label"> Notes</label>
                   <input
                     type="text"
-                    name={"first_call[0][notes]"}
+                    name="first_call_notes"
                     className="form-control"
                     placeholder=""
                   />
@@ -849,7 +849,7 @@ const AddCalls = (props) => {
             <div className="border border-dashed border-2 p-5 md:mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
-                  <label className="form-label">First Call Notes</label>
+                  <label className="form-label">Last Call Notes</label>
                   <input
                     type="text"
                     name="last_status_notes"
@@ -880,7 +880,7 @@ const AddCalls = (props) => {
                   <label className="form-label">Follow Up Date</label>
                   <input
                     type="date"
-                    name="agree_date_sent"
+                    name="follow_up_date"
                     className="form-control"
                   />
                 </div>
@@ -889,7 +889,7 @@ const AddCalls = (props) => {
                   <label className="form-label"> Next Steps</label>
                   <input
                     type="text"
-                    name="next_steps"
+                    name="next_step"
                     className="form-control"
                   />
                 </div>
@@ -925,7 +925,7 @@ const AddCalls = (props) => {
                 <div className="intro-y">
                   <label className="form-label"> Agreed to Pay</label>
                   <select
-                    name={"follow_up[0][agreed_to_pay]"}
+                    name="agreed_to_pay"
                     className="form-control"
                   >
                     <option value="0">No</option>
@@ -936,7 +936,7 @@ const AddCalls = (props) => {
                   <label className="form-label"> Payment Method</label>
                   <select
                     className="form-control"
-                    name={"follow_up[0][payment_method]"}
+                    name="payment_method"
                   >
                     <option value="0">Select ... </option>
 
@@ -951,7 +951,7 @@ const AddCalls = (props) => {
                 <div className="intro-y">
                   <label className="form-label"> Agreement Signed</label>
                   <select
-                    name={"follow_up[0][agreed_to_signed]"}
+                    name="agreed_to_signed"
                     className="form-control"
                   >
                     <option value="0">No</option>
@@ -962,7 +962,7 @@ const AddCalls = (props) => {
                   <label className="form-label"> Agreement Signed Date</label>
                   <input
                     type="date"
-                    name={"follow_up[0][agreement_signed_date]"}
+                    name="agreement_signed_date"
                     className="form-control"
                   />
                 </div>

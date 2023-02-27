@@ -11,7 +11,7 @@ const FollowUp = (props) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((val, index) => (
+          {data && data.map((val, index) => (
             <tr
               key={index}
               onClick={() => handelGo(val.sections)}

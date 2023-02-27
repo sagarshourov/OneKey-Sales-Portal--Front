@@ -58,6 +58,21 @@ export async function getAllNoti() {
   }
 }
 
+export async function getSingleCall(id) {
+  const userApiUrl = adminApi() + "calls/"+id;
+
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    handelError(error)
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
+
+
+
+
 
 
 

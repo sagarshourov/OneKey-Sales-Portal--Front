@@ -3,6 +3,7 @@ import {
   getAllUsers,
   getAllCalls,
   getCallsFilter,
+  getSingleCall,
   getAllNoti
 } from "../service/admin";
 
@@ -91,6 +92,27 @@ export const clientSelect = selector({
   },
 });
 
+export const callIdState = atom({
+  key: "callIdState",
+  default: 1,
+});
+
+
+export const singleCallselect = selector({
+  key: "singleCallselect",
+  get: async ({ get }) => {
+    try {
+      const response = await getSingleCall(get(callIdState));
+      return response.data || [];
+    } catch (error) {
+      console.error(`getSingleCall -> getSingleCall() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
+
+
+
 
 
 
@@ -124,3 +146,7 @@ export const clientListState = atom({
   default: clientSelect,
 });
 
+export const singleCallState = atom({
+  key: "singleCallState",
+  default: singleCallselect,
+});

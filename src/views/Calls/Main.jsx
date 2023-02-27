@@ -29,7 +29,7 @@ import { settingState } from "../../state/setting-atom";
 
 function todayFilters(array) {
   // var today = "";
-
+  if (array.length == 0) return;
   var today = new Date();
 
   var today = helper.formatDate(today, "YYYY-MM-DD");
@@ -57,7 +57,9 @@ function towFilters(array) {
 }
 
 function applySortFilters(array, searchValue, sec) {
-  // console.log(sec);
+
+
+  if (array.length == 0) return;
   if (sec == "no") {
     return filter(array, (_items) => {
       return (
@@ -68,10 +70,10 @@ function applySortFilters(array, searchValue, sec) {
     return filter(array, (_items) => {
       return (
         _items.sections == null &&
-        _items.results.id == 3 &&
+        _items.results && _items.results.id == 3 &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-            -1) ||
+          -1) ||
           (_items.first_name &&
             _items.first_name
               .toLowerCase()
@@ -90,7 +92,7 @@ function applySortFilters(array, searchValue, sec) {
         _items.results.id == 3 &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-            -1) ||
+          -1) ||
           (_items.first_name &&
             _items.first_name
               .toLowerCase()
@@ -138,10 +140,10 @@ const AdminUsers = (props) => {
 
   const setting = useRecoilValue(settingState);
 
- // console.log("logindata", logindata);
+  // console.log("logindata", logindata);
 
   const exportExcel = () => {
-   // console.log("Export Excel");
+    // console.log("Export Excel");
 
     window.open(getBaseApi() + "call/export", "_blank");
   };
@@ -489,7 +491,7 @@ const AdminUsers = (props) => {
                   </AccordionGroup>
                 </div>
 
-                {setting.sections &&
+                {callData.state === 'hasValue' && setting.sections &&
                   setting.sections.map((val, indx) => {
                     let calls = applySortFilters(
                       callData.contents,

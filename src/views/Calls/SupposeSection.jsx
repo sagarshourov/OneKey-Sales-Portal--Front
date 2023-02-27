@@ -2,10 +2,12 @@ import { Lucide, Litepicker, Input } from "@/base-components";
 
 import { useState } from "react";
 const SupposeSection = (props) => {
-  // const { index, data, setting, deleteFollowUp, handelSelect, onChange } =
-  //   props;
+  const { data } =
+    props;
 
-  //console.log("followup", data);
+
+
+  //console.log("followup", props.data);
 
   return (
     <div className=" p-5 md:mt-5   bg-slate-100 dark:bg-gray-900 relative">
@@ -19,19 +21,20 @@ const SupposeSection = (props) => {
             type="text"
             className="form-control"
             name={"suppose[0][first_name]"}
+            defaultValue={data[0].values[0]?.value}
           />
         </div>
         <div className="intro-x ">
           <label className="form-label">Last Name </label>
-          <input type="text" className="form-control"  name={"suppose[0][last_name]"} />
+          <input type="text" className="form-control" name={"suppose[0][last_name]"}  defaultValue={data[0].values[1]?.value}/>
         </div>
         <div className="intro-x ">
           <label className="form-label"> Last level of education </label>
-          <input type="text" className="form-control"  name={"suppose[0][degree]"} />
+          <input type="text" className="form-control" name={"suppose[0][degree]"}  defaultValue={data[0].values[2]?.value} />
         </div>
         <div className="intro-x ">
           <label className="form-label">GPA </label>
-          <input type="text" className="form-control" name={"suppose[0][gpa]"} />
+          <input type="text" className="form-control" name={"suppose[0][gpa]"}  defaultValue={data[0].values[3]?.value} />
         </div>
       </div>
     </div>

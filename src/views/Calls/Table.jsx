@@ -127,7 +127,7 @@ const UsersTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {users.slice(0, rowCount).map((user, key) => {
+          {users && users.slice(0, rowCount).map((user, key) => {
             let count = key + 1;
             var team_id = user?.user?.team;
             let dark = "";
@@ -324,7 +324,7 @@ const UsersTable = (props) => {
           })}
         </tbody>
       </table>
-      {rowCount < users.length && (
+      {users && rowCount < users.length && (
         <button className="btn btn-default m-5" onClick={loadMore}>
           Load more ...
         </button>

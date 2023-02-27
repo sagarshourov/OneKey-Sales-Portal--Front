@@ -183,6 +183,12 @@ const CancelMain = (props) => {
                     <option value="1">Cancel </option>
                     <option value="2">Client</option> */}
                 </select>
+                <Link
+              className="btn btn-elevated-primary shadow-md mr-2 py-2"
+              to={"/calls/edit/" + allCheck[0]}
+            >
+              Edit Call
+            </Link>
               </>
             )}
           </div>
