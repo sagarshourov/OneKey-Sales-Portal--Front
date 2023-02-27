@@ -280,14 +280,15 @@ const AdminUsers = (props) => {
 
   const setHistory = async (field, data, id) => {
     setCallId(id);
-    var data = findByValue(data, field);
+    var dataz = findByValue(data, field);
     setHistoryTitle(field);
     setHistoryData(data);
-    console.log(data);
+    console.log('his',data);
     setHistoryModal(true);
   };
 
   const saveHistory = async () => {
+    console.log('fd',historyData);
     if (histoyText == "") {
       alert("Text Required!");
     }
@@ -296,7 +297,7 @@ const AdminUsers = (props) => {
     try {
       const response = await axios.put(
         URL,
-        { name: historyTitle, value: histoyText, type: 2 },
+        { name: historyTitle, value: histoyText, type: 2 , user_id : 3 },
         {
           headers,
         }
