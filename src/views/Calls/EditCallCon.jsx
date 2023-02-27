@@ -36,7 +36,13 @@ import SupposeSection from "./SupposeSection";
 
 // calls.extra
 
-function filterExtra(array,group) {
+function filterById(array, id) {
+    return filter(array, (_items) => {
+        return _items.id == id;
+    });
+}
+
+function filterExtra(array, group) {
     return filter(array, (_items) => {
         return _items.groups == group;
     });
@@ -56,7 +62,7 @@ function removeArr(array, index) {
 
 const EditCallCon = (props) => {
 
-    const calls = props.data;
+    const { calls, setSingleCallState } = props;
     const [err, setErr] = useState([]);
     const [emailErr, setEmailErr] = useState([]);
 
@@ -217,6 +223,8 @@ const EditCallCon = (props) => {
             if (response?.data?.success) {
                 setLoading(false);
                 setCallState(response?.data?.data);
+
+                setSingleCallState(filterById(response?.data?.data,calls.id)[0]);
                 navigate("../calls/all", { replace: true });
             }
         } catch (err) {
@@ -441,7 +449,7 @@ const EditCallCon = (props) => {
 
 
 
-    console.log('calls', calls);
+   // console.log('calls', calls);
 
     return <> <form onSubmit={(e) => handleSubmit(e)}>
         <input type="hidden" name="id" defaultValue={calls?.id} />
@@ -630,7 +638,7 @@ const EditCallCon = (props) => {
                     </div>
                 </div>
 
-                {suppose && <SupposeSection data={filterExtra(calls.extra,'suppose')} />}
+                {suppose && <SupposeSection data={filterExtra(calls.extra, 'suppose')} />}
 
                 <div className="border border-dashed border-2 p-5 md:mt-5">
                     <div className="grid grid-cols-1  gap-4">
@@ -852,7 +860,7 @@ const EditCallCon = (props) => {
                             name="results"
                             onChange={() => setfCallResult(true)}
                             className="form-control"
-                            defaultValue={calls?.results}
+                            defaultValue={calls?.results ?calls?.results.id : 3}
                         >
                             <option value="3">Select...</option>
 

@@ -605,7 +605,7 @@ const AddCalls = (props) => {
               </div>
             </div>
 
-            {suppose && <SupposeSection />}
+            {suppose && <SupposeSection  data={[]} />}
 
             <div className="border border-dashed border-2 p-5 md:mt-5">
               <div className="grid grid-cols-1  gap-4">

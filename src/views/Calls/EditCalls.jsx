@@ -25,20 +25,12 @@ import EditCallCon from "./EditCallCon";
 
 
 
-const AddCalls = (props) => {
+const EditCalls = (props) => {
   let { id } = useParams();
 
   const [loading, setLoading] = useState(false);
-
-
   const [singleCall, setSingleCallState] = useRecoilStateLoadable(singleCallState);
-
-
-
-
   const setCallId = useSetRecoilState(callIdState);
-
-
   useEffect(() => {
     console.log("set state");
     setCallId(id);
@@ -57,7 +49,7 @@ const AddCalls = (props) => {
       <h2 className="intro-y text-lg font-medium mt-10 ">Edit Calls</h2>
 
       {singleCall.state == "hasValue" ?
-        <EditCallCon data={singleCall.contents} setSingleCallState={setSingleCallState}/> //need to set up single call state
+        <EditCallCon calls={singleCall.contents} setSingleCallState={setSingleCallState}/> //need to set up single call state
         : <p>Loading ...</p>}
 
 
@@ -65,4 +57,4 @@ const AddCalls = (props) => {
   );
 };
 
-export default AddCalls;
+export default EditCalls;
