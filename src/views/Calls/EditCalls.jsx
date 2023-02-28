@@ -49,7 +49,7 @@ const EditCalls = (props) => {
       <h2 className="intro-y text-lg font-medium mt-10 ">Edit Calls</h2>
 
       {singleCall.state == "hasValue" ?
-        <EditCallCon calls={singleCall.contents} setSingleCallState={setSingleCallState}/> //need to set up single call state
+        <EditCallCon calls={singleCall.contents} setCallId={setCallId} setSingleCallState={setSingleCallState}/> //need to set up single call state
         : <p>Loading ...</p>}
 
 

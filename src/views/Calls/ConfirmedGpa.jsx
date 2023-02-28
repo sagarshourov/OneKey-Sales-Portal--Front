@@ -16,7 +16,7 @@ const Confirmed = (props) => {
           name={"con_gpa[" + index + "][applying_for]"}
           className="form-control"
           onChange={(e) => onChange(e.target.value, index, 0)}
-          value={data.values && data.values[0] ? data.values[0].value : ""}
+          defaultValue={data.values && data.values[0] ? data.values[0].value : ""}
         >
           <option value="0">Select...</option>
           {setting.applying_for &&
@@ -36,7 +36,7 @@ const Confirmed = (props) => {
           placeholder=""
           name={"con_gpa[" + index + "][confirmed_gpa]"}
           onChange={(e) => onChange(e.target.value, index, 1)}
-          value={data.values && data.values[1] ? data.values[1].value : ""}
+          defaultValue={data.values && data.values[1] ? data.values[1].value : ""}
         />
       </div>
       {parseInt(team) === 1 &&
@@ -48,6 +48,9 @@ const Confirmed = (props) => {
             <select
               className="form-control"
               name={"con_gpa[" + index + "][offered]"}
+
+              defaultValue={data.values && data.values[2] ? data.values[2].value : ""}  
+
             >
               <option value="1">Certificate</option>
               <option value="2">English Courses</option>

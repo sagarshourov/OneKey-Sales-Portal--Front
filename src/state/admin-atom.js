@@ -59,7 +59,7 @@ export const cancelSelect = selector({
     try {
       const response = await getCallsFilter(1);
 
-      console.log('canN_res',response);
+      //console.log('canN_res',response);
 
 
 

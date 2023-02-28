@@ -595,11 +595,11 @@ const AddCalls = (props) => {
               <div className="intro-x ">
                 <label className="form-label">Assigned to</label>
                 <select name="assigned_to" className="form-control">
-                  <option value="0">Select...</option>
+                  <option value="3">Select...</option>
 
                   {userData.state == "hasValue" &&
                     users.map((val, index) => (
-                      <option key={index}>{val.first_name}</option>
+                      <option value={val.id} key={index}>{val.first_name}</option>
                     ))}
                 </select>
               </div>

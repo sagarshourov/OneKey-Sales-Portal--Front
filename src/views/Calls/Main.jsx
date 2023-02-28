@@ -159,7 +159,7 @@ const AdminUsers = (props) => {
     setRowID(id);
   };
   const dragover = (e) => {
-    console.log("over");
+  
     e.preventDefault();
     let children = Array.from(e.target.parentNode.parentNode.children);
     // console.log("children", children);
@@ -283,12 +283,14 @@ const AdminUsers = (props) => {
     var dataz = findByValue(data, field);
     setHistoryTitle(field);
     setHistoryData(dataz);
-    console.log('his',data);
+    //console.log('his',data);
     setHistoryModal(true);
   };
 
   const saveHistory = async () => {
-    console.log('fd',historyData);
+
+    //console.log('historyData',historyData);
+
     if (histoyText == "") {
       alert("Text Required!");
     }
@@ -682,6 +684,16 @@ const AdminUsers = (props) => {
 
             <AccordionGroup className="accordion-boxed ">
               {historyData.map((value, index) => {
+
+
+
+
+
+
+
+                if(value?.value == null) return;
+
+
                 return (
                   <AccordionItem key={index}>
                     <Accordion>

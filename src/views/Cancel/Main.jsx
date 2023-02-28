@@ -16,15 +16,13 @@ function applySortFilters(array, searchValue) {
   return filter(array, (_items) => {
     return (
       (_items.email &&
-        _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-          -1) ||
+        _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) ||
       (_items.first_name &&
         _items.first_name.toLowerCase().indexOf(searchValue.toLowerCase()) !==
           -1) ||
       (_items.phone_number &&
-        _items.phone_number
-          .toLowerCase()
-          .indexOf(searchValue.toLowerCase()) !== -1)
+        _items.phone_number.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+          -1)
     );
   });
 }
@@ -47,8 +45,6 @@ const CancelMain = (props) => {
   const [allCheck, setAllCheck] = useState([]);
 
   const setting = useRecoilValue(settingState);
-
-
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
@@ -154,7 +150,6 @@ const CancelMain = (props) => {
               Add New Call
             </Link>
 
-            
             {allCheck.length > 0 && (
               <>
                 <button
@@ -184,11 +179,11 @@ const CancelMain = (props) => {
                     <option value="2">Client</option> */}
                 </select>
                 <Link
-              className="btn btn-elevated-primary shadow-md mr-2 py-2"
-              to={"/calls/edit/" + allCheck[0]}
-            >
-              Edit Call
-            </Link>
+                  className="btn btn-elevated-primary shadow-md mr-2 py-2"
+                  to={"/calls/edit/" + allCheck[0]}
+                >
+                  Edit Call
+                </Link>
               </>
             )}
           </div>

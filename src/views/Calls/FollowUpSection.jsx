@@ -21,7 +21,7 @@ const FollowUpSection = (props) => {
               name={"follow_up[" + index + "][follow_up_date]"}
               className=" pl-12 form-control"
               onChange={(e) => onChange(e.target.value, index, 0)}
-              value={data.values && data.values[0] ? data.values[0].value : ""}
+              defaultValue={data.values && data.values[0] ? data.values[0].value : ""}
             />
           </div>
         </div>
@@ -33,7 +33,7 @@ const FollowUpSection = (props) => {
             onChange={(e) => handelSelect(e, index)}
             name={"follow_up[" + index + "][f_results]"}
             className="form-control"
-            value={data.values && data.values[1] ? data.values[1].value : ""}
+            defaultValue={data.values && data.values[1] ? data.values[1].value : ""}
           >
             <option value="0">Select...</option>
 
@@ -54,7 +54,7 @@ const FollowUpSection = (props) => {
             className="form-control"
             placeholder=""
             onChange={(e) => onChange(e.target.value, index, 2)}
-            value={data.values && data.values[2] ? data.values[2].value : ""}
+            defaultValue={data.values && data.values[2] ? data.values[2].value : ""}
           />
         </div>
         {/* <div className="intro-y">
