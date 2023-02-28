@@ -282,7 +282,7 @@ const AdminUsers = (props) => {
     setCallId(id);
     var dataz = findByValue(data, field);
     setHistoryTitle(field);
-    setHistoryData(data);
+    setHistoryData(dataz);
     console.log('his',data);
     setHistoryModal(true);
   };

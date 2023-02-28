@@ -212,7 +212,7 @@ const UsersTable = (props) => {
 
                 <td
                   className="text-center"
-                  onClick={() => setHistory("memo", user.extra, user.id)}
+                  onClick={() => setHistory("memo", user.history, user.id)}
                 >
                   <div className="text-center">
                     <Tippy
@@ -265,7 +265,7 @@ const UsersTable = (props) => {
                 </td>
                 <td
                   onClick={() =>
-                    setHistory("last_status_notes", user.extra, user.id)
+                    setHistory("last_status_notes", user.history, user.id)
                   }
                   className="text-center"
                 >
@@ -306,7 +306,7 @@ const UsersTable = (props) => {
                 </td>
                 <td
                   className="text-center"
-                  onClick={() => setHistory("feedbacks", user.extra, user.id)}
+                  onClick={() => setHistory("feedbacks", user.history, user.id)}
                 >
                   <div className="text-center">
                     <Tippy

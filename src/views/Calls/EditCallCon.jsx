@@ -20,7 +20,7 @@ import {
 
 
 import axios from "axios";
-import { adminApi } from "../../configuration";
+import { adminApi, getBaseApi } from "../../configuration";
 import { helper } from "@/utils/helper";
 import { loginState } from "../../state/login-atom";
 import { settingState } from "../../state/setting-atom";
@@ -224,7 +224,7 @@ const EditCallCon = (props) => {
                 setLoading(false);
                 setCallState(response?.data?.data);
 
-                setSingleCallState(filterById(response?.data?.data,calls.id)[0]);
+                setSingleCallState(filterById(response?.data?.data, calls.id)[0]);
                 navigate("../calls/all", { replace: true });
             }
         } catch (err) {
@@ -449,7 +449,7 @@ const EditCallCon = (props) => {
 
 
 
-   // console.log('calls', calls);
+    // console.log('calls', calls);
 
     return <> <form onSubmit={(e) => handleSubmit(e)}>
         <input type="hidden" name="id" defaultValue={calls?.id} />
@@ -860,7 +860,7 @@ const EditCallCon = (props) => {
                             name="results"
                             onChange={() => setfCallResult(true)}
                             className="form-control"
-                            defaultValue={calls?.results ?calls?.results.id : 3}
+                            defaultValue={calls?.results ? calls?.results.id : 3}
                         >
                             <option value="3">Select...</option>
 
@@ -1053,8 +1053,42 @@ const EditCallCon = (props) => {
                                 defaultValue={calls?.feedbacks}
                             />
                         </div>
+
+                        {calls.history &&
+                            calls.history.map((data, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
+                                >
+                                    <div className="mr-3">
+                                        <div className="image-fit w-12 h-12">
+                                            <img
+                                                className="rounded-full"
+                                                src={
+                                                    getBaseApi() +
+                                                    "file/" +
+                                                    data?.user?.profile?.file_path
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <a href="" className="text-primary font-medium mr-3">
+                                            {data?.user?.first_name} {data?.user?.last_name}
+                                        </a>
+                                        {data?.value}
+                                        <div className="text-slate-500 text-xs mt-1.5">
+                                            {helper.formatDate(
+                                                data?.created_at,
+                                                "ddd, MMMM D, YYYY h:mm A"
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                     </div>
                 </div>
+
 
                 <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
                     <div className="intro-x ">
