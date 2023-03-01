@@ -41,11 +41,8 @@ const NotificationMain = (props) => {
   const [loading, setLoading] = useState(false);
 
   const [call, setCall] = useState([]);
-
-
-  console.log('call',call);
-
-
+  const [notiFrom, setNotiFrom] = useState("");
+  //console.log("call", call);
 
   const [noti_id, setNotiId] = useState([]);
 
@@ -63,13 +60,13 @@ const NotificationMain = (props) => {
     setSearch(e.target.value);
   };
 
-  const updateRead = async (id, type, call_id) => {
+  const updateRead = async (id, type, call_id, user_id) => {
     const LOGIN_URL = adminApi() + "notifications/" + id;
 
     try {
       const response = await axios.put(
         LOGIN_URL,
-        { is_read: 1, call_id: call_id, type: type },
+        { is_read: 1, call_id: call_id, type: type, user_id: user_id },
         {
           headers,
         }
@@ -88,8 +85,12 @@ const NotificationMain = (props) => {
   };
 
   const handelView = (e) => {
+    console.log("sagar", e);
+
+    setNotiFrom(e.user.first_name + " " + e.user.last_name);
+
     if (e.type === 1) {
-      updateRead(e.id, e.type, e.call_id);
+      updateRead(e.id, e.type, e.call_id, e.user_id);
       setCallViewModal(true);
     }
   };
@@ -258,9 +259,9 @@ const NotificationMain = (props) => {
           <div className="my-5 ">
             <div className="intro-y p-5 box grid grid-cols-2 gap-2">
               <div className="flex items-center">
-                Name:
+                Requested From:
                 <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
-                  {call?.first_name} {call?.last_name}
+                  {notiFrom}
                 </span>
               </div>
               <div className="flex items-center">
@@ -278,7 +279,7 @@ const NotificationMain = (props) => {
               <div className="flex  items-center">
                 Assigned To :
                 <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
-                  {call?.user?.first_name}  {call?.user?.last_name}
+                  {call?.user?.first_name} {call?.user?.last_name}
                 </span>
               </div>
             </div>

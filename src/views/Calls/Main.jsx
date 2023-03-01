@@ -299,7 +299,7 @@ const AdminUsers = (props) => {
     try {
       const response = await axios.put(
         URL,
-        { name: historyTitle, value: histoyText, type: 2 , user_id : 3 },
+        { name: historyTitle, value: histoyText, type: 2 , user_id : logindata.userId },
         {
           headers,
         }

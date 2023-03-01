@@ -48,8 +48,7 @@ const FollowUpSection = (props) => {
 
         <div className="intro-y col-span-4">
           <label className="form-label">Follow up Notes</label>
-          <input
-            type="text"
+          <textarea
             name={"follow_up[" + index + "][follow_up_notes]"}
             className="form-control"
             placeholder=""

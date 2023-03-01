@@ -256,7 +256,12 @@ const EditCallCon = (props) => {
     try {
       const response = await axios.post(
         URL,
-        { type: 1, content: "Client Recovering Request", call_id: call?.id },
+        {
+          type: 1,
+          content: "Client Recovering Request",
+          call_id: call?.id,
+          user_id: logindata.userId,
+        },
         {
           //user id is creator of notifications
           headers,
@@ -475,7 +480,7 @@ const EditCallCon = (props) => {
                 <h3 className="text-xl font-medium">Form Information</h3>
               </div>
               <div className="lg:basis-5/12">
-                {calls.assigned_to && (
+                {calls.assigned_to && calls.assigned_date && (
                   <div className="relative before:hidden before:lg:block before:absolute before:w-[69%] before:h-[3px] before:top-0 before:bottom-0 before:mt-4 before:bg-slate-100 before:dark:bg-darkmode-400 flex flex-col lg:flex-row justify-center px-5 sm:px-20">
                     <div className="intro-x lg:text-center flex items-center lg:block flex-1 z-10">
                       <button
@@ -484,9 +489,20 @@ const EditCallCon = (props) => {
                       >
                         Assigned
                       </button>
-                      <div className="lg:w-32 font-medium text-base lg:mt-3 ml-3 lg:mx-auto">
+                      <div className="lg:w-32 font-medium text-base lg:mt-1 ml-3 lg:mx-auto">
                         {calls.assigned_to.first_name}{" "}
                         {calls.assigned_to.last_name}
+                      </div>
+
+                      <div className="lg:w-32  ml-3 lg:mx-auto">
+                        <small className="w-100 mb-5">
+                          (
+                          {helper.formatDate(
+                            calls?.assigned_date,
+                            "ddd, MMMM D, YYYY"
+                          )}
+                          )
+                        </small>
                       </div>
                     </div>
                     <div className="intro-x lg:text-center flex items-center mt-5 lg:mt-0 lg:block flex-1 z-10">
@@ -496,8 +512,19 @@ const EditCallCon = (props) => {
                       >
                         Creator
                       </button>
-                      <div className="lg:w-32 text-base lg:mt-3 ml-3 lg:mx-auto text-slate-600 dark:text-slate-400">
+                      <div className="lg:w-32 text-base lg:mt-1 ml-3 lg:mx-auto text-slate-600 dark:text-slate-400">
                         {calls.user.first_name} {calls.user.last_name}
+                      </div>
+
+                      <div className="lg:w-32  ml-3 lg:mx-auto">
+                        <small className="w-100 mb-5">
+                          (
+                          {helper.formatDate(
+                            calls?.created_at,
+                            "ddd, MMMM D, YYYY"
+                          )}
+                          )
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -708,8 +735,7 @@ const EditCallCon = (props) => {
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Memo</label>
-                  <input
-                    type="text"
+                  <textarea
                     name="memo"
                     className=" form-control"
                     placeholder=""
@@ -958,7 +984,7 @@ const EditCallCon = (props) => {
               {fCallResult && (
                 <div className="intro-x col-span-3">
                   <label className="form-label"> Notes</label>
-                  <input
+                  <textarea
                     type="text"
                     name="first_call_notes"
                     className="form-control"
@@ -974,8 +1000,7 @@ const EditCallCon = (props) => {
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Last Call Notes</label>
-                  <input
-                    type="text"
+                  <textarea
                     name="last_status_notes"
                     defaultValue={
                       calls?.last_status_notes && calls?.last_status_notes
@@ -1153,8 +1178,8 @@ const EditCallCon = (props) => {
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Feedback</label>
-                  <input
-                    type="text"
+                  <textarea
+                  
                     name="feedbacks"
                     className=" form-control"
                     placeholder=""
@@ -1220,8 +1245,7 @@ const EditCallCon = (props) => {
               {cancelReason && (
                 <div className="intro-y col-span-3">
                   <label className="form-label">Notes</label>
-                  <input
-                    type="text"
+                  <textarea
                     name="cancel_note"
                     className=" form-control"
                     placeholder=""

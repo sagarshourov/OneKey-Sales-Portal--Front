@@ -27,8 +27,8 @@ const MySection = (props) => {
 
         <div className="intro-y col-span-5">
           <label className="form-label">Next Step Notes</label>
-          <input
-            type="text"
+          <textarea
+         
             name={"my_step[" + index + "][next_step_notes]"}
             className="form-control"
             placeholder=""

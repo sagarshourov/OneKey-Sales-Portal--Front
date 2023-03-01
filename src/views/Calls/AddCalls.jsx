@@ -201,7 +201,12 @@ const AddCalls = (props) => {
     try {
       const response = await axios.post(
         URL,
-        { type: 1, content: "Client Recovering Request", call_id: call?.id },
+        {
+          type: 1,
+          content: "Client Recovering Request",
+          call_id: call?.id,
+          user_id: logindata.userId,
+        },
         {
           //user id is creator of notifications
           headers,
@@ -549,7 +554,11 @@ const AddCalls = (props) => {
 
               <div className="intro-x ">
                 <label className="form-label">Field of Study </label>
-                <input  name="field_study" className="form-control" type="text" />
+                <input
+                  name="field_study"
+                  className="form-control"
+                  type="text"
+                />
               </div>
 
               <div className="intro-x ">
@@ -599,19 +608,21 @@ const AddCalls = (props) => {
 
                   {userData.state == "hasValue" &&
                     users.map((val, index) => (
-                      <option value={val.id} key={index}>{val.first_name}</option>
+                      <option value={val.id} key={index}>
+                        {val.first_name}
+                      </option>
                     ))}
                 </select>
               </div>
             </div>
 
-            {suppose && <SupposeSection  data={[]} />}
+            {suppose && <SupposeSection data={[]} />}
 
             <div className="border border-dashed border-2 p-5 md:mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Memo</label>
-                  <input
+                  <textarea
                     type="text"
                     name="memo"
                     className=" form-control"
@@ -837,8 +848,7 @@ const AddCalls = (props) => {
               {fCallResult && (
                 <div className="intro-x col-span-3">
                   <label className="form-label"> Notes</label>
-                  <input
-                    type="text"
+                  <textarea
                     name="first_call_notes"
                     className="form-control"
                     placeholder=""
@@ -850,8 +860,7 @@ const AddCalls = (props) => {
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Last Call Notes</label>
-                  <input
-                    type="text"
+                  <textarea
                     name="last_status_notes"
                     className=" form-control"
                     placeholder=""
@@ -924,20 +933,14 @@ const AddCalls = (props) => {
               <div className="grid grid-cols-4 p-5  gap-4">
                 <div className="intro-y">
                   <label className="form-label"> Agreed to Pay</label>
-                  <select
-                    name="agreed_to_pay"
-                    className="form-control"
-                  >
+                  <select name="agreed_to_pay" className="form-control">
                     <option value="0">No</option>
                     <option value="1">Yes</option>
                   </select>
                 </div>
                 <div className="intro-y">
                   <label className="form-label"> Payment Method</label>
-                  <select
-                    className="form-control"
-                    name="payment_method"
-                  >
+                  <select className="form-control" name="payment_method">
                     <option value="0">Select ... </option>
 
                     {setting.payment_method &&
@@ -950,10 +953,7 @@ const AddCalls = (props) => {
                 </div>
                 <div className="intro-y">
                   <label className="form-label"> Agreement Signed</label>
-                  <select
-                    name="agreed_to_signed"
-                    className="form-control"
-                  >
+                  <select name="agreed_to_signed" className="form-control">
                     <option value="0">No</option>
                     <option value="1">Yes</option>
                   </select>
@@ -996,8 +996,8 @@ const AddCalls = (props) => {
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Feedback</label>
-                  <input
-                    type="text"
+                  <textarea
+              
                     name="feedbacks"
                     className=" form-control"
                     placeholder=""
@@ -1028,8 +1028,7 @@ const AddCalls = (props) => {
               {cancelReason && (
                 <div className="intro-y col-span-3">
                   <label className="form-label">Notes</label>
-                  <input
-                    type="text"
+                  <textarea
                     name="cancel_note"
                     className=" form-control"
                     placeholder=""
