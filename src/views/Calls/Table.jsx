@@ -101,27 +101,27 @@ const UsersTable = (props) => {
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">GPA</th>
-            {/* <th className="text-center whitespace-nowrap">Priority</th> */}
-            {/* <th className="text-center whitespace-nowrap">Referred by</th>
-            <th className="text-center whitespace-nowrap">Memo</th> */}
+            <th className="text-center whitespace-nowrap">Priority</th>
+            <th className="text-center whitespace-nowrap">Referred by</th>
+            <th className="text-center whitespace-nowrap">Memo</th>
             <th className="text-center whitespace-nowrap">
               First Contact Date
             </th>
-            {/* <th className="text-center whitespace-nowrap">First Call Result</th> */}
+            <th className="text-center whitespace-nowrap">First Call Result</th>
             <th className="text-center whitespace-nowrap">Package</th>
             <th className="text-center whitespace-nowrap">Status</th>
 
-            {/* <th className="text-center whitespace-nowrap">First Call Notes</th> */}
+            <th className="text-center whitespace-nowrap">First Call Notes</th>
             <th className="text-center whitespace-nowrap">
               Follow up date set
             </th>
             <th className="text-center whitespace-nowrap">
               Follow Up Call Results
             </th>
-            {/* <th className="text-center whitespace-nowrap">
+            <th className="text-center whitespace-nowrap">
               {" "}
               Cancellation reason
-            </th> */}
+            </th>
 
             <th className="text-center whitespace-nowrap"> Feedback</th>
           </tr>
@@ -191,7 +191,7 @@ const UsersTable = (props) => {
 
                 <td className="text-center">{user?.age}</td>
                 <td className="text-center">{user?.gpa}</td>
-                {/* <td className="text-center">
+                <td className="text-center">
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
                     name="priority"
@@ -224,11 +224,11 @@ const UsersTable = (props) => {
                       {fText(user?.memo)}
                     </Tippy>
                   </div>
-                </td> */}
+                </td>
                 <td className="text-center">
                   {helper.formatDate(user?.first_contact, "MMM D, YYYY")}{" "}
                 </td>
-                {/* <td className="text-center">{user?.results?.title}</td> */}
+                <td className="text-center">{user?.results?.title}</td>
                 <td>
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
@@ -263,7 +263,7 @@ const UsersTable = (props) => {
                       ))}
                   </select>
                 </td>
-                {/* <td
+                <td
                   onClick={() =>
                     setHistory("last_status_notes", user.history, user.id)
                   }
@@ -279,15 +279,15 @@ const UsersTable = (props) => {
                       {fText(user?.last_status_notes)}
                     </Tippy>
                   </div>
-                </td> */}
+                </td>
                 <td className="text-center">
                   {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
                 </td>
                 <td className="text-center">
-                  {user?.results?.title}
+                  {user?.follow_up_call_results?.title}
                 </td>
 
-                {/* <td>
+                <td>
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
                     name="cancel_reason"
@@ -303,7 +303,7 @@ const UsersTable = (props) => {
                         </option>
                       ))}
                   </select>
-                </td> */}
+                </td>
                 <td
                   className="text-center"
                   onClick={() => setHistory("feedbacks", user.history, user.id)}
