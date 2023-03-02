@@ -97,17 +97,17 @@ const UsersTable = (props) => {
 
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
-            <th className="text-center whitespace-nowrap">Phone</th>
+            {/* <th className="text-center whitespace-nowrap">Phone</th> */}
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">GPA</th>
-            <th className="text-center whitespace-nowrap">Priority</th>
-            <th className="text-center whitespace-nowrap">Referred by</th>
-            <th className="text-center whitespace-nowrap">Memo</th>
+            {/* <th className="text-center whitespace-nowrap">Priority</th> */}
+            {/* <th className="text-center whitespace-nowrap">Referred by</th>
+            <th className="text-center whitespace-nowrap">Memo</th> */}
             <th className="text-center whitespace-nowrap">
-              First Contact Date
+            Call Schedule Date
             </th>
-            <th className="text-center whitespace-nowrap">First Call Result</th>
+            <th className="text-center whitespace-nowrap">Next steps</th>
             <th className="text-center whitespace-nowrap">Package</th>
             <th className="text-center whitespace-nowrap">Status</th>
 
@@ -116,12 +116,12 @@ const UsersTable = (props) => {
               Follow up date set
             </th>
             <th className="text-center whitespace-nowrap">
-              Follow Up Call Results
+              Follow up call notes
             </th>
-            <th className="text-center whitespace-nowrap">
+            {/* <th className="text-center whitespace-nowrap">
               {" "}
               Cancellation reason
-            </th>
+            </th> */}
 
             <th className="text-center whitespace-nowrap"> Feedback</th>
           </tr>
@@ -186,12 +186,12 @@ const UsersTable = (props) => {
                   </div>
                 </td>
 
-                <td>{user?.phone_number}</td>
+                {/* <td>{user?.phone_number}</td> */}
                 <td>{user?.whatsapp}</td>
 
                 <td className="text-center">{user?.age}</td>
                 <td className="text-center">{user?.gpa}</td>
-                <td className="text-center">
+                {/* <td className="text-center">
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
                     name="priority"
@@ -207,10 +207,10 @@ const UsersTable = (props) => {
                         </option>
                       ))}
                   </select>
-                </td>
-                <td className="text-center">{user?.referred_by}</td>
+                </td> */}
+                {/* <td className="text-center">{user?.referred_by}</td> */}
 
-                <td
+                {/* <td
                   className="text-center"
                   onClick={() => setHistory("memo", user.history, user.id)}
                 >
@@ -224,11 +224,11 @@ const UsersTable = (props) => {
                       {fText(user?.memo)}
                     </Tippy>
                   </div>
-                </td>
+                </td> */}
                 <td className="text-center">
-                  {helper.formatDate(user?.first_contact, "MMM D, YYYY")}{" "}
+                  {helper.formatDate(user?.call_schedule_date, "MMM D, YYYY")}{" "}
                 </td>
-                <td className="text-center">{user?.results?.title}</td>
+                <td className="text-center">{user?.next_step}</td>
                 <td>
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
@@ -283,11 +283,25 @@ const UsersTable = (props) => {
                 <td className="text-center">
                   {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
                 </td>
-                <td className="text-center">
-                  {user?.follow_up_call_results?.title}
+             
+
+                <td
+                  className="text-center"
+                  onClick={() => setHistory("follow_up_notes", user.history, user.id)}
+                >
+                  <div className="text-center">
+                    <Tippy
+                      tag="a"
+                      href="#"
+                      className="tooltip"
+                      content={user?.follow_up_notes}
+                    >
+                      {fText(user?.follow_up_notes)}
+                    </Tippy>
+                  </div>
                 </td>
 
-                <td>
+                {/* <td>
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
                     name="cancel_reason"
@@ -303,7 +317,7 @@ const UsersTable = (props) => {
                         </option>
                       ))}
                   </select>
-                </td>
+                </td> */}
                 <td
                   className="text-center"
                   onClick={() => setHistory("feedbacks", user.history, user.id)}
