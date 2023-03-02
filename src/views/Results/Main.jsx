@@ -158,7 +158,7 @@ const ResultsMain = (props) => {
         </div> */}
 
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
+          <div className="lg:basis-9/12 grid grid-cols-1 lg:grid-cols-6 gap-2">
             <Link
               className="btn btn-elevated-primary shadow-md mr-2 py-2"
               to="/calls/add"

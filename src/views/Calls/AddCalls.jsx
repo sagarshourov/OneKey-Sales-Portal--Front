@@ -151,14 +151,13 @@ const AddCalls = (props) => {
     var data = new FormData(e.target);
 
     // data.append("follow_up_date", helper.formatDate(followdate, "YYYY-MM-DD"));
-    data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
+    //data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
 
     //data.append("last_status_date", lastStatus);
 
     data.append("user_id", logindata?.userId);
 
     data.append("assigned_to", logindata?.userId);
-    
 
     // data.append("results", 3);
     data.append("f_results", 3);
@@ -629,7 +628,7 @@ const AddCalls = (props) => {
 
             {suppose && <SupposeSection data={[]} />}
 
-            <div className="border border-dashed border-2 p-5 md:mt-5">
+            <div className="border border-dashed border-2 p-2 lg:p-5 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Memo</label>
@@ -641,7 +640,7 @@ const AddCalls = (props) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 mt-5  gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mt-5  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Call Schedule Date</label>
                   <input
@@ -674,28 +673,16 @@ const AddCalls = (props) => {
 
                 <div className="relative w-full">
                   <div className="absolute rounded-l w-10 h-full flex items-center justify-center bg-slate-100 border text-slate-500 dark:bg-darkmode-700 dark:border-darkmode-800 dark:text-slate-400">
-                    <Lucide icon="Calendar" className="w-4 h-4" />
+                    <Lucide icon="Calendar" className="w-full lg:w-4 h-4" />
                   </div>
-                  <Litepicker
-                    value={firstContact == "" ? undefined : firstContact}
-                    onChange={setFirstContact}
-                    options={{
-                      format: "MM/DD/YYYY",
-                      autoApply: false,
-                      showWeekNumbers: true,
-
-                      dropdowns: {
-                        minYear: 1990,
-                        maxYear: 2030,
-                        months: true,
-                        years: true,
-                      },
-                    }}
+                  <input
+                    type="date"
+                    name="first_contact"
                     className="form-control pl-12"
                   />
                 </div>
               </div>
-              <div className="intro-y  col-span-2">
+              <div className="intro-y  lg:col-span-2">
                 {confirmGpaState.map((val, indx) => (
                   <ConfirmedGpa
                     index={indx}
@@ -867,7 +854,7 @@ const AddCalls = (props) => {
                 </div>
               )}
             </div>
-            <div className="border border-dashed border-2 p-5 md:mt-5">
+            <div className="border border-dashed border-2 lg:p-5 p-2 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Last Call Notes</label>
@@ -879,7 +866,7 @@ const AddCalls = (props) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 mt-5 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-4">
                 <div className="intro-y">
                   <label className="form-label"> Agreement Sent</label>
                   <select name="agreement_sent" className="form-control">
@@ -916,7 +903,7 @@ const AddCalls = (props) => {
               </div>
             </div>
 
-            <div className="border mt-5 px-5 pb-5 border-dashed border-2">
+            <div className="border p-2 mt-5 lg:p-5 border-dashed border-2">
               <h3 className="text-xl font-medium mt-5">
                 Follow Up and Next Steps
               </h3>
@@ -941,7 +928,7 @@ const AddCalls = (props) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 p-5  gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-4 p-2 lg:p-5  gap-4">
                 <div className="intro-y">
                   <label className="form-label"> Agreed to Pay</label>
                   <select name="agreed_to_pay" className="form-control">
@@ -980,7 +967,7 @@ const AddCalls = (props) => {
               </div>
             </div>
 
-            <div className="border mt-5 px-5 pb-5 border-dashed border-2">
+            <div className="border p-2 mt-5 lg:p-5 border-dashed border-2">
               <h3 className="text-xl font-medium mt-5">My Next Steps</h3>
               <div className="bg-slate-100 mt-5 pb-5">
                 {myNextStepState.length > 0 &&
@@ -1003,7 +990,7 @@ const AddCalls = (props) => {
               </div>
             </div>
 
-            <div className="border border-dashed border-2 p-5 md:mt-5">
+            <div className="border border-dashed border-2 p-2 lg:p-5 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Feedback</label>

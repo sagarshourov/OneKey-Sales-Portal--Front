@@ -8,8 +8,8 @@ const FollowUpSection = (props) => {
   //console.log("followup", data);
 
   return (
-    <div className=" p-5 md:mt-5  border-t relative">
-      <div className="grid grid-cols-6  gap-4 ">
+    <div className="p-2 lg:p-5 md:mt-5  border-t relative">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-4 ">
         <div className="intro-x ">
           <label className="form-label"> Follow Up Call Date</label>
           <div className="relative w-full">
@@ -46,7 +46,7 @@ const FollowUpSection = (props) => {
           </select>
         </div>
 
-        <div className="intro-y col-span-4">
+        <div className="intro-y lg:col-span-4">
           <label className="form-label">Follow up Notes</label>
           <textarea
             name={"follow_up[" + index + "][follow_up_notes]"}

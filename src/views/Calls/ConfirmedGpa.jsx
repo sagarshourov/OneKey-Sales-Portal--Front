@@ -9,7 +9,7 @@ const Confirmed = (props) => {
   //console.log("followup", data);
 
   return (
-    <div className="grid grid-cols-2 bg-slate-100 mt-5 gap-4 px-5 py-4 relative">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 bg-slate-100 mt-5 gap-4 px-5 py-4 relative">
       <div className="intro-x">
         <label className="form-label">Confirmed education Level</label>
         <select

@@ -10,11 +10,11 @@ const SupposeSection = (props) => {
   //console.log("followup", props.data);
 
   return (
-    <div className=" p-5 md:mt-5   bg-slate-100 dark:bg-gray-900 relative">
+    <div className=" p-5 mt-5   bg-slate-100 dark:bg-gray-900 relative">
       <h3 className="text-xl pb-5 text-center font-bold dark:text-white">
         Suppose Information
       </h3>
-      <div className="grid grid-cols-4  gap-4 ">
+      <div className="grid grid-cols-1 lg:grid-cols-4  gap-4 ">
         <div className="intro-x ">
           <label className="form-label">First Name </label>
           <input

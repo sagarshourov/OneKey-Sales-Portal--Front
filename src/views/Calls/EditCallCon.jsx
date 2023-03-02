@@ -202,7 +202,7 @@ const EditCallCon = (props) => {
     //// console.log('form_data',data);
 
     // data.append("follow_up_date", helper.formatDate(followdate, "YYYY-MM-DD"));
-    data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
+   // data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
 
     //data.append("last_status_date", lastStatus);
 
@@ -745,7 +745,7 @@ const EditCallCon = (props) => {
               <SupposeSection data={filterExtra(calls.extra, "suppose")} />
             )}
 
-            <div className="border border-dashed border-2 p-5 md:mt-5">
+            <div className="border border-dashed border-2 p-5 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Memo</label>
@@ -757,7 +757,7 @@ const EditCallCon = (props) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-2 mt-5  gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 mt-5  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Call Schedule Date</label>
                   <input
@@ -806,7 +806,7 @@ const EditCallCon = (props) => {
                   />
                 </div>
               </div>
-              <div className="intro-y  col-span-2">
+              <div className="intro-y  lg:col-span-2">
                 {confirmGpaState &&
                   confirmGpaState.map((val, indx) => {
                     return (
@@ -996,7 +996,7 @@ const EditCallCon = (props) => {
                 </select>
               </div>
               {fCallResult && (
-                <div className="intro-x col-span-3">
+                <div className="intro-x lg:col-span-3">
                   <label className="form-label"> Notes</label>
                   <textarea
                     type="text"
@@ -1010,7 +1010,7 @@ const EditCallCon = (props) => {
                 </div>
               )}
             </div>
-            <div className="border border-dashed border-2 p-5 md:mt-5">
+            <div className="border border-dashed border-2 p-2 lg:p-5 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Last Call Notes</label>
@@ -1025,7 +1025,7 @@ const EditCallCon = (props) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 mt-5 gap-4">
+              <div className="grid  grid-cols-1 lg:grid-cols-4 mt-5 gap-4">
                 <div className="intro-y">
                   <label className="form-label"> Agreement Sent</label>
                   <select
@@ -1073,7 +1073,7 @@ const EditCallCon = (props) => {
               </div>
             </div>
 
-            <div className="border mt-5 px-5 pb-5 border-dashed border-2">
+            <div className="border mt-5 p-2 lg:p-5  border-dashed border-2">
               <h3 className="text-xl font-medium mt-5">
                 Follow Up and Next Steps
               </h3>
@@ -1102,7 +1102,7 @@ const EditCallCon = (props) => {
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 p-5  gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-4 p-2 lg:p-5  gap-4">
                 <div className="intro-y">
                   <label className="form-label"> Agreed to Pay</label>
                   <select
@@ -1161,7 +1161,7 @@ const EditCallCon = (props) => {
               </div>
             </div>
 
-            <div className="border mt-5 px-5 pb-5 border-dashed border-2">
+            <div className="border mt-5 p-2 lg:p-5 border-dashed border-2">
               <h3 className="text-xl font-medium mt-5">My Next Steps</h3>
               <div className="bg-slate-100 mt-5 pb-5">
                 {myNextStepState &&
@@ -1188,7 +1188,7 @@ const EditCallCon = (props) => {
               </div>
             </div>
 
-            <div className="border border-dashed border-2 p-5 md:mt-5">
+            <div className="border border-dashed border-2  p-2 lg:p-5 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Feedback</label>
@@ -1270,7 +1270,7 @@ const EditCallCon = (props) => {
               </div>
 
               {cancelReason && (
-                <div className="intro-y col-span-3">
+                <div className="intro-y lg:col-span-3">
                   <label className="form-label">Notes</label>
                   <textarea
                     name="cancel_note"

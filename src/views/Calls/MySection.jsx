@@ -7,8 +7,8 @@ const MySection = (props) => {
   //console.log("followup", data);
 
   return (
-    <div className=" p-5 md:mt-5  border-t relative">
-      <div className="grid grid-cols-6  gap-4 ">
+    <div className="p-2 lg:p-5 md:mt-5  border-t relative">
+      <div className="grid grid-cols-1 lg:grid-cols-6  gap-4 ">
         <div className="intro-x ">
           <label className="form-label"> Next Step Date</label>
           <div className="relative w-full">
@@ -25,7 +25,7 @@ const MySection = (props) => {
           </div>
         </div>
 
-        <div className="intro-y col-span-5">
+        <div className="intro-y lg:col-span-5">
           <label className="form-label">Next Step Notes</label>
           <textarea
          
