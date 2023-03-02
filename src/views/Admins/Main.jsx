@@ -26,6 +26,9 @@ import { authHeader } from "../../service/auth-header";
 
 const AdminUsers = (props) => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
+  const [employeeConfirmationModal, setEmployeeConfirmationModal] =
+    useState(false);
+
   const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(allUserListState);
   const [rowCount, setRowCount] = useState(10);
@@ -131,6 +134,44 @@ const AdminUsers = (props) => {
       setLoading(false);
     }
   };
+
+  const confirmEmployee = async (e) => {
+    e.preventDefault();
+    const URL = adminApi() + "users/" + user_id;
+
+    console.log("confirm admin");
+
+    setLoading(true);
+
+    try {
+      const response = await axios.put(
+        URL,
+        { id: user_id, is_admin: 3 },
+        {
+          headers,
+        }
+      );
+
+      if (response?.data?.success) {
+        setUserState(response?.data?.data);
+
+        setLoading(false);
+
+        setEmployeeConfirmationModal(false);
+
+        e.target.reset();
+      } else {
+        // alert("Something is wrong please try again later!");
+        setErr(Object.values(response.data.data));
+      }
+    } catch (err) {
+      setLoading(false);
+
+      err?.response?.data?.data &&
+        setErr(Object.values(err.response.data.data));
+    }
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">List Of Admins</h2>
@@ -179,6 +220,7 @@ const AdminUsers = (props) => {
             <UsersTable
               rowCount={rowCount}
               setDeleteConfirmationModal={setDeleteConfirmationModal}
+              setEmployeeConfirmationModal={setEmployeeConfirmationModal}
               users={filterData}
               setUserId={setUserId}
             />
@@ -193,6 +235,54 @@ const AdminUsers = (props) => {
         </div>
         {/* END: Pagination */}
       </div>
+
+      {/* BEGIN: Admin Confirmation Modal */}
+      <Modal
+        show={employeeConfirmationModal}
+        onHidden={() => {
+          setEmployeeConfirmationModal(false);
+        }}
+      >
+        <ModalBody className="p-0">
+          <div className="p-5 text-center">
+            <Lucide
+              icon="UserMinus"
+              className="w-16 h-16 text-warning mx-auto mt-3"
+            />
+            <div className="text-3xl mt-5">Are you sure?</div>
+            <div className="text-slate-500 mt-2">
+              Do you really want to downgrade as Employee ?
+            </div>
+          </div>
+          <div className="px-5 pb-8 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setEmployeeConfirmationModal(false);
+              }}
+              className="btn btn-outline-secondary w-24 mr-1"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmEmployee}
+              type="button"
+              className="btn btn-warning text-white w-24"
+            >
+              Confirm
+              {loading && (
+                <LoadingIcon
+                  icon="three-dots"
+                  color="white"
+                  className="w-4 h-4 ml-2"
+                />
+              )}
+            </button>
+          </div>
+        </ModalBody>
+      </Modal>
+      {/* END: Admin Confirmation Modal */}
+
       {/* BEGIN: Delete Confirmation Modal */}
       <Modal
         show={deleteConfirmationModal}

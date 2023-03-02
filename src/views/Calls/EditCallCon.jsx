@@ -224,7 +224,7 @@ const EditCallCon = (props) => {
       const response = await axios.post(URL, data, {
         headers,
       });
-      //console.log(response);
+      console.log(response);
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
@@ -669,6 +669,20 @@ const EditCallCon = (props) => {
                   className="form-control"
                   defaultValue={calls?.referred_by && calls?.referred_by}
                 />
+              </div>
+
+              <div className="intro-x ">
+                <label className="form-label"> Case Type</label>
+                <select
+                  className="form-control"
+                  name="case_type"
+                  defaultValue={calls?.case_type}
+                >
+                  <option value="0">Select..</option>
+
+                  <option value="1">F-1</option>
+                  <option value="2">F-1/F2</option>
+                </select>
               </div>
             </div>
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
@@ -1179,7 +1193,6 @@ const EditCallCon = (props) => {
                 <div className="intro-y">
                   <label className="form-label">Feedback</label>
                   <textarea
-                  
                     name="feedbacks"
                     className=" form-control"
                     placeholder=""
@@ -1188,37 +1201,51 @@ const EditCallCon = (props) => {
                 </div>
 
                 {calls.history &&
-                  calls.history.map((data, index) => (
-                    <div
-                      key={index}
-                      className="bg-white dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
-                    >
-                      <div className="mr-3">
-                        <div className="image-fit w-12 h-12">
-                          <img
-                            className="rounded-full"
-                            src={
-                              getBaseApi() +
-                              "file/" +
-                              data?.user?.profile?.file_path
-                            }
-                          />
+                  calls.history.map((data, index) => {
+                    var color = "bg-white";
+
+                    if (data?.user?.is_admin == 1) {
+                      color = "bg-warning text-white";
+                    }
+                    if (data?.user?.is_admin == 2) {
+                      color = "bg-info text-white";
+                    }
+
+                    return (
+                      <div
+                        key={index}
+                        className={
+                          color +
+                          "  dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
+                        }
+                      >
+                        <div className="mr-3">
+                          <div className="image-fit w-12 h-12">
+                            <img
+                              className="rounded-full"
+                              src={
+                                getBaseApi() +
+                                "file/" +
+                                data?.user?.profile?.file_path
+                              }
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <a href="" className="text-primary font-medium mr-3">
+                            {data?.user?.first_name} {data?.user?.last_name}
+                          </a>
+                          {data?.value}
+                          <div className="text-slate-500 text-xs mt-1.5">
+                            {helper.formatDate(
+                              data?.created_at,
+                              "ddd, MMMM D, YYYY h:mm A"
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <div>
-                        <a href="" className="text-primary font-medium mr-3">
-                          {data?.user?.first_name} {data?.user?.last_name}
-                        </a>
-                        {data?.value}
-                        <div className="text-slate-500 text-xs mt-1.5">
-                          {helper.formatDate(
-                            data?.created_at,
-                            "ddd, MMMM D, YYYY h:mm A"
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
               </div>
             </div>
 

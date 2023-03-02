@@ -11,6 +11,7 @@ const UsersTable = (props) => {
     rowCount,
     setUserId,
     setDeleteConfirmationModal,
+    setAdminConfirmationModal,
     viewAsEmployee,
   } = props;
 
@@ -77,6 +78,18 @@ const UsersTable = (props) => {
                   >
                     <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Delete
                   </a>
+
+                  <a
+                    className="flex items-center text-purple"
+                    href="#"
+                    onClick={() => {
+                      setAdminConfirmationModal(true);
+                      setUserId(user.id);
+                    }}
+                  >
+                    <Lucide icon="UserPlus" className="w-4 h-4 mr-1 ml-1" /> Make Admin
+                  </a>
+
                 </div>
               </td>
             </tr>

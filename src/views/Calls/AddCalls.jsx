@@ -157,6 +157,9 @@ const AddCalls = (props) => {
 
     data.append("user_id", logindata?.userId);
 
+    data.append("assigned_to", logindata?.userId);
+    
+
     // data.append("results", 3);
     data.append("f_results", 3);
     data.append("results", 3);
@@ -569,6 +572,14 @@ const AddCalls = (props) => {
                   className="form-control"
                   placeholder=""
                 />
+              </div>
+              <div className="intro-x ">
+                <label className="form-label"> Case Type</label>
+                <select className="form-control" name="case_type">
+                  <option value="0">Select..</option>
+                  <option value="1">F-1</option>
+                  <option value="2">F-1/F2</option>
+                </select>
               </div>
             </div>
             <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
@@ -997,7 +1008,6 @@ const AddCalls = (props) => {
                 <div className="intro-y">
                   <label className="form-label">Feedback</label>
                   <textarea
-              
                     name="feedbacks"
                     className=" form-control"
                     placeholder=""

@@ -6,7 +6,7 @@ const formatDate = (dat) => {
   return dat.split("T")[0];
 };
 const UsersTable = (props) => {
-  const { users, rowCount, setUserId, setDeleteConfirmationModal } = props;
+  const { users, rowCount, setUserId, setDeleteConfirmationModal , setEmployeeConfirmationModal} = props;
 
   return (
     <table className="table table-report -mt-2">
@@ -36,7 +36,7 @@ const UsersTable = (props) => {
               <td className="text-center">{user.email}</td>
 
               <td className="text-center">{formatDate(user.created_at)}</td>
-              <td className="table-report__action w-56">
+              <td className="table-report__action ">
                 <div className="flex justify-center items-center">
                   <Link
                     className="flex items-center text-info mr-3"
@@ -47,7 +47,7 @@ const UsersTable = (props) => {
                   </Link>
 
                   <a
-                    className="flex items-center text-danger"
+                    className="flex items-center text-danger  mr-3"
                     href="#"
                     onClick={() => {
                       setDeleteConfirmationModal(true);
@@ -55,6 +55,17 @@ const UsersTable = (props) => {
                     }}
                   >
                     <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Delete
+                  </a>
+
+                  <a
+                    className="flex items-center text-warning  mr-3"
+                    href="#"
+                    onClick={() => {
+                      setEmployeeConfirmationModal(true);
+                      setUserId(user.id);
+                    }}
+                  >
+                    <Lucide icon="UserMinus" className="w-4 h-4 mr-1" /> Make Employee
                   </a>
                 </div>
               </td>

@@ -20,7 +20,7 @@ const MySection = (props) => {
               name={"my_step[" + index + "][next_step_date]"}
               className=" pl-12 form-control"
               onChange={(e) => onChange(e.target.value, index, 0)}
-              value={data.values && data.values[0] ? data.values[0].value : ""}
+              defaultValue={data.values && data.values[0] ? data.values[0].value : ""}
             />
           </div>
         </div>
@@ -33,7 +33,7 @@ const MySection = (props) => {
             className="form-control"
             placeholder=""
             onChange={(e) => onChange(e.target.value, index, 1)}
-            value={data.values && data.values[1] ? data.values[1].value : ""}
+            defaultValue={data.values && data.values[1] ? data.values[1].value : ""}
           />
         </div>
         {/* <div className="intro-y">

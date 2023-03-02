@@ -30,6 +30,8 @@ const AdminUsers = (props) => {
   let navigate = useNavigate();
   const [loginstaste, setLoginState] = useRecoilState(loginState);
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
+  const [adminConfirmationModal, setAdminConfirmationModal] = useState(false);
+
   const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(allUserListState);
   const [rowCount, setRowCount] = useState(10);
@@ -54,6 +56,43 @@ const AdminUsers = (props) => {
   };
 
   let filterData = applySortFilters(usersData.contents, search);
+
+  const confirmAdmin = async (e) => {
+    e.preventDefault();
+    const URL = adminApi() + "users/" + user_id;
+
+    console.log("confirm admin");
+
+    setLoading(true);
+
+    try {
+      const response = await axios.put(
+        URL,
+        { id: user_id, is_admin: 2 },
+        {
+          headers,
+        }
+      );
+
+      if (response?.data?.success) {
+        setUserState(response?.data?.data);
+
+        setLoading(false);
+
+        setAdminConfirmationModal(false);
+
+        e.target.reset();
+      } else {
+        // alert("Something is wrong please try again later!");
+        setErr(Object.values(response.data.data));
+      }
+    } catch (err) {
+      setLoading(false);
+
+      err?.response?.data?.data &&
+        setErr(Object.values(err.response.data.data));
+    }
+  };
 
   const createAdmin = async (e) => {
     e.preventDefault();
@@ -161,7 +200,7 @@ const AdminUsers = (props) => {
         // console.log("vewing 1", response);
         const accessToken = response.data.data.token;
         const roles = response.data.data.user.is_admin;
-    
+
         if (roles == 1) {
           localStorage.setItem("isAdmin", true);
         }
@@ -203,10 +242,9 @@ const AdminUsers = (props) => {
         });
 
         navigate("../", { replace: true });
-        setTimeout(function(){
-            window.location.reload();
-
-        },500);
+        setTimeout(function () {
+          window.location.reload();
+        }, 500);
       } else {
         alert("Something is wrong please try again later!");
       }
@@ -266,6 +304,7 @@ const AdminUsers = (props) => {
               users={filterData}
               setUserId={setUserId}
               viewAsEmployee={viewAsEmployee}
+              setAdminConfirmationModal={setAdminConfirmationModal}
             />
           )}
         </div>
@@ -278,15 +317,61 @@ const AdminUsers = (props) => {
         </div> */}
 
         {rowCount < filterData.length && (
-        <button className="btn btn-default m-5" onClick={handelLoad}>
-          Load more ...
-        </button>
-      )}
-
-
+          <button className="btn btn-default m-5" onClick={handelLoad}>
+            Load more ...
+          </button>
+        )}
 
         {/* END: Pagination */}
       </div>
+
+      {/* BEGIN: Admin Confirmation Modal */}
+      <Modal
+        show={adminConfirmationModal}
+        onHidden={() => {
+          setAdminConfirmationModal(false);
+        }}
+      >
+        <ModalBody className="p-0">
+          <div className="p-5 text-center">
+            <Lucide
+              icon="UserPlus"
+              className="w-16 h-16 text-info mx-auto mt-3"
+            />
+            <div className="text-3xl mt-5">Are you sure?</div>
+            <div className="text-slate-500 mt-2">
+              Do you really want to upgrade as admin ?
+            </div>
+          </div>
+          <div className="px-5 pb-8 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setAdminConfirmationModal(false);
+              }}
+              className="btn btn-outline-secondary w-24 mr-1"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={confirmAdmin}
+              type="button"
+              className="btn btn-success text-white w-24"
+            >
+              Confirm
+              {loading && (
+                <LoadingIcon
+                  icon="three-dots"
+                  color="white"
+                  className="w-4 h-4 ml-2"
+                />
+              )}
+            </button>
+          </div>
+        </ModalBody>
+      </Modal>
+      {/* END: Admin Confirmation Modal */}
+
       {/* BEGIN: Delete Confirmation Modal */}
       <Modal
         show={deleteConfirmationModal}
