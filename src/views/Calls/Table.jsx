@@ -77,7 +77,7 @@ const UsersTable = (props) => {
 
   return (
     <div className="overflow-auto relative">
-       <p className="text-orange-500 text-stone-600"></p>
+      <p className="text-orange-500 text-stone-600"></p>
       <table className="table  mt-2">
         <thead className={theme}>
           <tr>
@@ -100,12 +100,13 @@ const UsersTable = (props) => {
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
+            <th className="text-center whitespace-nowrap">Case Type</th>
             <th className="text-center whitespace-nowrap">GPA</th>
             {/* <th className="text-center whitespace-nowrap">Priority</th> */}
             {/* <th className="text-center whitespace-nowrap">Referred by</th>
             <th className="text-center whitespace-nowrap">Memo</th> */}
             <th className="text-center whitespace-nowrap">
-            Call Schedule Date
+              Call Schedule Date
             </th>
             <th className="text-center whitespace-nowrap">Next steps</th>
             <th className="text-center whitespace-nowrap">Package</th>
@@ -127,71 +128,94 @@ const UsersTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {users && users.slice(0, rowCount).map((user, key) => {
-            let count = key + 1;
-            var team_id = user?.user?.team;
-            let dark = "";
-            if (
-              // IR
-              user?.gpa &&
-              team_id &&
-              parseFloat(user.gpa) < 2.5 &&
-              team_id == 1
-            ) {
-              dark = " alert-danger-soft ";
-            } else if (
-              // TR
-              user?.gpa &&
-              team_id &&
-              parseFloat(user.gpa) < 13 &&
-              team_id == 2
-            ) {
-              dark = " alert-danger-soft ";
-            } else {
-              dark = " bg-white";
-            }
-            return (
-              <tr
-                key={key}
-                className={"border-t pt-2" + dark}
-                draggable={true}
-                onDragStart={(e) => dragStart(e, user.id)}
-                // onDragOver={(e) => dragover(e)}
-              >
-                <td>
-                  <div className="form-check mt-2">
-                    <Checkbox
-                      className="form-check-input "
-                      key={key}
-                      type="checkbox"
-                      name="select"
-                      id={user.id}
-                      handleClick={handelSingleCheck}
-                      isChecked={allCheck.includes(user.id)}
-                    />
-                  </div>
-                </td>
-                <td className="w-40">{count}</td>
-                <td>
-                  <Link
-                    to="#"
-                    draggable={false}
-                    className="font-medium whitespace-nowrap"
-                  >
-                    {user.first_name} {user.last_name}
-                  </Link>
-                  <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
-                  
-                    <CopyEle email={user.email} />
-                  </div>
-                </td>
+          {users &&
+            users.slice(0, rowCount).map((user, key) => {
+              let count = key + 1;
+              let dark = " bg-white ";
 
-                {/* <td>{user?.phone_number}</td> */}
-                <td>{user?.whatsapp}</td>
+              var is_admin = 0;
 
-                <td className="text-center">{user?.age}</td>
-                <td className="text-center">{user?.gpa}</td>
-                {/* <td className="text-center">
+              user.history &&
+                user.history.map((data, index) => {
+                  if (data.field == "feedbacks") {
+                    is_admin = data.user.is_admin;
+
+                    //console.log(user.id + "=is_admin", is_admin);
+                  }
+                });
+
+              if (is_admin === 1) {
+                dark = " alert-warning-soft ";
+              } else if (is_admin == 2) {
+                dark = " alert-success-soft ";
+              }
+
+              // var team_id = user?.user?.team;
+              // if (
+              //   // IR
+              //   user?.gpa &&
+              //   team_id &&
+              //   parseFloat(user.gpa) < 2.5 &&
+              //   team_id == 1
+              // ) {
+              //   dark = " alert-danger-soft ";
+              // } else if (
+              //   // TR
+              //   user?.gpa &&
+              //   team_id &&
+              //   parseFloat(user.gpa) < 13 &&
+              //   team_id == 2
+              // ) {
+              //   dark = " alert-danger-soft ";
+              // } else {
+              //   dark = " bg-white";
+              // }
+
+              return (
+                <tr
+                  key={key}
+                  className={"border-t pt-2" + dark}
+                  draggable={true}
+                  onDragStart={(e) => dragStart(e, user.id)}
+                  // onDragOver={(e) => dragover(e)}
+                >
+                  <td>
+                    <div className="form-check mt-2">
+                      <Checkbox
+                        className="form-check-input "
+                        key={key}
+                        type="checkbox"
+                        name="select"
+                        id={user.id}
+                        handleClick={handelSingleCheck}
+                        isChecked={allCheck.includes(user.id)}
+                      />
+                    </div>
+                  </td>
+                  <td className="w-40">{count}</td>
+                  <td>
+                    <Link
+                      to="#"
+                      draggable={false}
+                      className="font-medium whitespace-nowrap"
+                    >
+                      {user.first_name} {user.last_name}
+                    </Link>
+                    <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
+                      <CopyEle email={user.email} />
+                    </div>
+                  </td>
+
+                  {/* <td>{user?.phone_number}</td> */}
+                  <td>{user?.whatsapp}</td>
+
+                  <td className="text-center">{user?.age}</td>
+
+                  <td className="text-center">
+                    {user?.case_type == 1 && "F-1"}{" "}
+                    {user?.case_type == 2 && "F-1/F2"}
+                  </td>
+                  {/* <td className="text-center">
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
                     name="priority"
@@ -208,9 +232,9 @@ const UsersTable = (props) => {
                       ))}
                   </select>
                 </td> */}
-                {/* <td className="text-center">{user?.referred_by}</td> */}
+                  {/* <td className="text-center">{user?.referred_by}</td> */}
 
-                {/* <td
+                  {/* <td
                   className="text-center"
                   onClick={() => setHistory("memo", user.history, user.id)}
                 >
@@ -225,83 +249,84 @@ const UsersTable = (props) => {
                     </Tippy>
                   </div>
                 </td> */}
-                <td className="text-center">
-                  {helper.formatDate(user?.call_schedule_date, "MMM D, YYYY")}{" "}
-                </td>
-                <td className="text-center">{user?.next_step}</td>
-                <td>
-                  <select
-                    onChange={(e) => handelChange(e, user.id, "n")}
-                    name="package"
-                    className="form-select form-select-sm mt-2 w-20"
-                    defaultValue={user?.package?.id}
-                  >
-                    <option value="0">Select..</option>
-
-                    {setting.packages &&
-                      setting.packages.map((val, indx) => (
-                        <option key={indx} value={val?.id}>
-                          {val?.title}
-                        </option>
-                      ))}
-                  </select>
-                </td>
-                <td>
-                  <select
-                    onChange={(e) => handelChange(e, user.id, "n")}
-                    name="status"
-                    className="form-select form-select-sm mt-2 w-20"
-                    defaultValue={user?.status?.id}
-                  >
-                    <option value="0">Select..</option>
-
-                    {setting.status &&
-                      setting.status.map((val, indx) => (
-                        <option key={indx} value={val?.id}>
-                          {val?.title}
-                        </option>
-                      ))}
-                  </select>
-                </td>
-                <td
-                  onClick={() =>
-                    setHistory("last_status_notes", user.history, user.id)
-                  }
-                  className="text-center"
-                >
-                  <div className="text-center">
-                    <Tippy
-                      tag="a"
-                      href="#"
-                      className="tooltip"
-                      content={user?.last_status_notes}
+                  <td className="text-center">
+                    {helper.formatDate(user?.call_schedule_date, "MMM D, YYYY")}{" "}
+                  </td>
+                  <td className="text-center">{user?.next_step}</td>
+                  <td>
+                    <select
+                      onChange={(e) => handelChange(e, user.id, "n")}
+                      name="package"
+                      className="form-select form-select-sm mt-2 w-20"
+                      defaultValue={user?.package?.id}
                     >
-                      {fText(user?.last_status_notes)}
-                    </Tippy>
-                  </div>
-                </td>
-                <td className="text-center">
-                  {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
-                </td>
-             
+                      <option value="0">Select..</option>
 
-                <td
-                  className="text-center"
-                  onClick={() => setHistory("follow_up_notes", user.history, user.id)}
-                >
-                  <div className="text-center">
-                    <Tippy
-                      tag="a"
-                      href="#"
-                      className="tooltip"
-                      content={user?.follow_up_notes}
+                      {setting.packages &&
+                        setting.packages.map((val, indx) => (
+                          <option key={indx} value={val?.id}>
+                            {val?.title}
+                          </option>
+                        ))}
+                    </select>
+                  </td>
+                  <td>
+                    <select
+                      onChange={(e) => handelChange(e, user.id, "n")}
+                      name="status"
+                      className="form-select form-select-sm mt-2 w-20"
+                      defaultValue={user?.status?.id}
                     >
-                      {fText(user?.follow_up_notes)}
-                    </Tippy>
-                  </div>
-                </td>
+                      <option value="0">Select..</option>
 
-                {/* <td>
+                      {setting.status &&
+                        setting.status.map((val, indx) => (
+                          <option key={indx} value={val?.id}>
+                            {val?.title}
+                          </option>
+                        ))}
+                    </select>
+                  </td>
+                  <td
+                    onClick={() =>
+                      setHistory("last_status_notes", user.history, user.id)
+                    }
+                    className="text-center"
+                  >
+                    <div className="text-center">
+                      <Tippy
+                        tag="a"
+                        href="#"
+                        className="tooltip"
+                        content={user?.last_status_notes}
+                      >
+                        {fText(user?.last_status_notes)}
+                      </Tippy>
+                    </div>
+                  </td>
+                  <td className="text-center">
+                    {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
+                  </td>
+
+                  <td
+                    className="text-center"
+                    onClick={() =>
+                      setHistory("follow_up_notes", user.history, user.id)
+                    }
+                  >
+                    <div className="text-center">
+                      <Tippy
+                        tag="a"
+                        href="#"
+                        className="tooltip"
+                        content={user?.follow_up_notes}
+                      >
+                        {fText(user?.follow_up_notes)}
+                      </Tippy>
+                    </div>
+                  </td>
+
+                  {/* <td>
                   <select
                     onChange={(e) => handelChange(e, user.id, "n")}
                     name="cancel_reason"
@@ -318,24 +343,26 @@ const UsersTable = (props) => {
                       ))}
                   </select>
                 </td> */}
-                <td
-                  className="text-center"
-                  onClick={() => setHistory("feedbacks", user.history, user.id)}
-                >
-                  <div className="text-center">
-                    <Tippy
-                      tag="a"
-                      href="#"
-                      className="tooltip"
-                      content={user?.feedbacks}
-                    >
-                      {fText(user?.feedbacks)}
-                    </Tippy>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
+                  <td
+                    className="text-center"
+                    onClick={() =>
+                      setHistory("feedbacks", user.history, user.id)
+                    }
+                  >
+                    <div className="text-center">
+                      <Tippy
+                        tag="a"
+                        href="#"
+                        className="tooltip"
+                        content={user?.feedbacks}
+                      >
+                        {fText(user?.feedbacks)}
+                      </Tippy>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
       {users && rowCount < users.length && (
