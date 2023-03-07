@@ -101,7 +101,7 @@ const UsersTable = (props) => {
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">Case Type</th>
-            <th className="text-center whitespace-nowrap">GPA</th>
+            {/* <th className="text-center whitespace-nowrap">GPA</th> */}
             {/* <th className="text-center whitespace-nowrap">Priority</th> */}
             {/* <th className="text-center whitespace-nowrap">Referred by</th>
             <th className="text-center whitespace-nowrap">Memo</th> */}

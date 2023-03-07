@@ -31,7 +31,6 @@ const Logout = (props) => {
   const [headers, setToken] = useState(authHeader());
   let navigate = useNavigate();
   const handelLogout = () => {
-    ("logged out");
     //useResetRecoilState(loginState);
     localStorage.clear();
 
@@ -137,7 +136,6 @@ const Logout = (props) => {
             </li>
           </ol>
         </nav>
-        
 
         {/* END: Breadcrumb */}
         {/* BEGIN: Mobile Menu */}
