@@ -43,7 +43,7 @@ const ImportCalls = (props) => {
 
     // parseInt(logindata.role) !== 3 && (
 
-    let userId = 0;
+    let userId = user_id;
 
     if (user_id == 0 && parseInt(logindata.role) !== 3) {
       alert("User required !");
@@ -115,7 +115,7 @@ const ImportCalls = (props) => {
               onClick={importFile}
               className="btn btn-primary shadow-md mr-2"
             >
-              <Lucide icon="UserPlus" className="w-4 h-4 mr-2" /> Import{" "}
+              <Lucide icon="UserPlus" className="w-4 h-4 mr-2" />Run Import{" "}
               {loading && (
                 <LoadingIcon
                   icon="three-dots"

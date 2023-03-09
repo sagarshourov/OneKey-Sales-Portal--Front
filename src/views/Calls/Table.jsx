@@ -99,7 +99,6 @@ const UsersTable = (props) => {
             <th className="whitespace-nowrap">Client</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
             <th className="text-center whitespace-nowrap">WhatsApp</th>
-            <th className="text-center whitespace-nowrap">AG</th>
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">Case Type</th>
             {/* <th className="text-center whitespace-nowrap">GPA</th> */}
@@ -210,13 +209,7 @@ const UsersTable = (props) => {
 
                   {/* <td>{user?.phone_number}</td> */}
                   <td>{user?.whatsapp}</td>
-                  <td>
-                  {/* {user?.ag} */}
-                    <input
-                      type="checkbox"
-                      defaultChecked={user?.ag}
-                    />
-                  </td>
+                 
 
                   <td className="text-center">{user?.age}</td>
 
