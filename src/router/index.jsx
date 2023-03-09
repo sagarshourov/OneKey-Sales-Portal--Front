@@ -30,7 +30,6 @@ const AddCalls = Loadable(lazy(() => import("../views/Calls/AddCalls")));
 
 const ImportCalls = Loadable(lazy(() => import("../views/Calls/ImportCalls")));
 
-
 const SearchCalls = Loadable(lazy(() => import("../views/Calls/SearchCalls")));
 
 const Profile = Loadable(lazy(() => import("../views/dashboard/Profile")));
@@ -64,7 +63,9 @@ import { loginState } from "../state/login-atom";
 import { useRecoilValue } from "recoil";
 //import HistoryView from "../views/WhatsApp/HistoryView";
 
-const HistoryView = Loadable(lazy(() => import("../views/WhatsApp/HistoryView")));
+const HistoryView = Loadable(
+  lazy(() => import("../views/WhatsApp/HistoryView"))
+);
 
 //import Calendar from "../views/calendar/Main";
 
@@ -122,12 +123,11 @@ function Router() {
           path: "/whatsapp/message",
           element: <WaConversion />,
         },
-          {
+        {
           path: "/whatsapp/message/history/:id",
           element: <HistoryView />,
         },
 
-        
         {
           path: "/calendar",
           element: <Calendars />,
@@ -149,8 +149,6 @@ function Router() {
           element: <ImportCalls />,
         },
 
-
-        
         {
           path: "/calls/search",
           element: <SearchCalls />,
@@ -246,6 +244,10 @@ function Router() {
           path: "/calls/edit/:id",
           element: <EditCalls />,
         },
+        {
+          path: "/calls/import",
+          element: <ImportCalls />,
+        },
 
         {
           path: "/reports/",
@@ -311,6 +313,11 @@ function Router() {
           element: <AddCalls />,
         },
         {
+          path: "/calls/import",
+          element: <ImportCalls />,
+        },
+
+        {
           path: "/calls/edit/:id",
           element: <EditCalls />,
         },
@@ -340,7 +347,6 @@ function Router() {
           path: "/calendar",
           element: <Calendars />,
         },
-    
       ],
     },
 

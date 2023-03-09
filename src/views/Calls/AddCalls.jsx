@@ -869,7 +869,7 @@ const AddCalls = (props) => {
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 mt-5 gap-4">
                 <div className="intro-y">
                   <label className="form-label"> Agreement Sent</label>
-                  <select name="agreement_sent" className="form-control">
+                  <select name="ag" className="form-control">
                     <option value="0">No</option>
                     <option value="1">Yes</option>
                   </select>

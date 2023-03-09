@@ -57,8 +57,6 @@ function towFilters(array) {
 }
 
 function applySortFilters(array, searchValue, sec) {
-
-
   if (array.length == 0) return;
   if (sec == "no") {
     return filter(array, (_items) => {
@@ -70,10 +68,11 @@ function applySortFilters(array, searchValue, sec) {
     return filter(array, (_items) => {
       return (
         _items.sections == null &&
-        _items.results && _items.results.id == 3 &&
+        _items.results &&
+        _items.results.id == 3 &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-          -1) ||
+            -1) ||
           (_items.first_name &&
             _items.first_name
               .toLowerCase()
@@ -92,7 +91,7 @@ function applySortFilters(array, searchValue, sec) {
         _items.results.id == 3 &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-          -1) ||
+            -1) ||
           (_items.first_name &&
             _items.first_name
               .toLowerCase()
@@ -159,7 +158,6 @@ const AdminUsers = (props) => {
     setRowID(id);
   };
   const dragover = (e) => {
-  
     e.preventDefault();
     let children = Array.from(e.target.parentNode.parentNode.children);
     // console.log("children", children);
@@ -288,7 +286,6 @@ const AdminUsers = (props) => {
   };
 
   const saveHistory = async () => {
-
     //console.log('historyData',historyData);
 
     if (histoyText == "") {
@@ -299,7 +296,12 @@ const AdminUsers = (props) => {
     try {
       const response = await axios.put(
         URL,
-        { name: historyTitle, value: histoyText, type: 2 , user_id : logindata.userId },
+        {
+          name: historyTitle,
+          value: histoyText,
+          type: 2,
+          user_id: logindata.userId,
+        },
         {
           headers,
         }
@@ -386,23 +388,23 @@ const AdminUsers = (props) => {
               </select>
             </>
           ) : (
-            parseInt(logindata.role) !== 3 && (
-              <>
-                <Link
-                  className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
-                  to="/calls/import"
-                >
-                  Import Excel
-                </Link>
+            //parseInt(logindata.role) !== 3 && (
+            <>
+              <Link
+                className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                to="/calls/import"
+              >
+                Import Excel
+              </Link>
 
-                <button
-                  onClick={exportExcel}
-                  className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
-                >
-                  Export Excel
-                </button>
-              </>
-            )
+              <button
+                onClick={exportExcel}
+                className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
+              >
+                Export Excel
+              </button>
+            </>
+            //)
           )}
         </div>
         {/* <div className="hidden md:block mx-auto text-slate-500">
@@ -494,7 +496,8 @@ const AdminUsers = (props) => {
                   </AccordionGroup>
                 </div>
 
-                {callData.state === 'hasValue' && setting.sections &&
+                {callData.state === "hasValue" &&
+                  setting.sections &&
                   setting.sections.map((val, indx) => {
                     let calls = applySortFilters(
                       callData.contents,
@@ -684,15 +687,7 @@ const AdminUsers = (props) => {
 
             <AccordionGroup className="accordion-boxed ">
               {historyData.map((value, index) => {
-
-
-
-
-
-
-
-                if(value?.value == null) return;
-
+                if (value?.value == null) return;
 
                 return (
                   <AccordionItem key={index}>

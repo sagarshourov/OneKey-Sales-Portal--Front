@@ -202,7 +202,7 @@ const EditCallCon = (props) => {
     //// console.log('form_data',data);
 
     // data.append("follow_up_date", helper.formatDate(followdate, "YYYY-MM-DD"));
-   // data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
+    // data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
 
     //data.append("last_status_date", lastStatus);
 
@@ -622,7 +622,7 @@ const EditCallCon = (props) => {
                 <label className="form-label">Priority</label>
                 <select
                   name="priority"
-                  defaultValue={calls?.priority && calls?.priority}
+                  defaultValue={calls?.priority && calls?.priority.id}
                   className="form-control"
                 >
                   <option value="0">Select..</option>
@@ -723,21 +723,24 @@ const EditCallCon = (props) => {
                 </select>
               </div>
               <div className="intro-x ">
-                <label className="form-label">Assigned to</label>
-                <select
-                  name="assigned_to"
-                  defaultValue={calls?.assigned_to && calls?.assigned_to}
-                  className="form-control"
-                >
-                  <option value="3">Select...</option>
+                <label className="form-label">
+                  Assigned to  
+                </label>
+                {userData.state == "hasValue" && (
+                  <select
+                    name="assigned_to"
+                    defaultValue={calls?.assigned_to && calls?.assigned_to.id}
+                    className="form-control"
+                  >
+                    <option value="3">Select...</option>
 
-                  {userData.state == "hasValue" &&
-                    users.map((val, index) => (
+                    {users.map((val, index) => (
                       <option value={val.id} key={index}>
                         {val.first_name}
                       </option>
                     ))}
-                </select>
+                  </select>
+                )}
               </div>
             </div>
 
@@ -1029,8 +1032,8 @@ const EditCallCon = (props) => {
                 <div className="intro-y">
                   <label className="form-label"> Agreement Sent</label>
                   <select
-                    name="agreement_sent"
-                    defaultValue={calls?.agreement_sent}
+                    name="ag"
+                    defaultValue={calls?.ag}
                     className="form-control"
                   >
                     <option value="0">No</option>

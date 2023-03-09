@@ -40,19 +40,28 @@ const ImportCalls = (props) => {
     // if (file.length > 0) {
     //   alert('File required !');
     // }
-    if (user_id == 0) {
+
+    // parseInt(logindata.role) !== 3 && (
+
+    let userId = 0;
+
+    if (user_id == 0 && parseInt(logindata.role) !== 3) {
       alert("User required !");
+    }
+
+    if (parseInt(logindata.role) === 3) {
+      userId = parseInt(logindata.userId);
     }
 
     const userApiUrl = adminApi() + "call/import";
 
     try {
       //const response = await axios.get(userApiUrl, { headers });
-      var data = { user_id: user_id, file_name: file[1], file_path: file[0] };
+      var data = { user_id: userId, file_name: file[1], file_path: file[0] };
       const response = await axios.post(userApiUrl, data, {
         headers,
       });
-      
+
       // console.log('res',response);
       if (response.data.success) {
         setSuccess(true);
@@ -85,7 +94,7 @@ const ImportCalls = (props) => {
             </div>
           </Alert>
         )}
-        {parseInt(logindata.role) !== 3 && (
+        {parseInt(logindata.role) !== 3 ? (
           <div className="w-full sm:w-auto flex mt-4 sm:mt-0">
             <select
               id="user"
@@ -102,6 +111,22 @@ const ImportCalls = (props) => {
                   );
                 })}
             </select>
+            <button
+              onClick={importFile}
+              className="btn btn-primary shadow-md mr-2"
+            >
+              <Lucide icon="UserPlus" className="w-4 h-4 mr-2" /> Import{" "}
+              {loading && (
+                <LoadingIcon
+                  icon="three-dots"
+                  color="white"
+                  className="w-4 h-4 ml-2"
+                />
+              )}
+            </button>
+          </div>
+        ) : (
+          <div className="w-full sm:w-auto flex mt-4 sm:mt-0">
             <button
               onClick={importFile}
               className="btn btn-primary shadow-md mr-2"

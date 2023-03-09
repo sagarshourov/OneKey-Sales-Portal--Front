@@ -99,6 +99,7 @@ const UsersTable = (props) => {
             <th className="whitespace-nowrap">Client</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
             <th className="text-center whitespace-nowrap">WhatsApp</th>
+            <th className="text-center whitespace-nowrap">AG</th>
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">Case Type</th>
             {/* <th className="text-center whitespace-nowrap">GPA</th> */}
@@ -119,6 +120,7 @@ const UsersTable = (props) => {
             <th className="text-center whitespace-nowrap">
               Follow up call notes
             </th>
+
             {/* <th className="text-center whitespace-nowrap">
               {" "}
               Cancellation reason
@@ -208,6 +210,13 @@ const UsersTable = (props) => {
 
                   {/* <td>{user?.phone_number}</td> */}
                   <td>{user?.whatsapp}</td>
+                  <td>
+                  {/* {user?.ag} */}
+                    <input
+                      type="checkbox"
+                      defaultChecked={user?.ag}
+                    />
+                  </td>
 
                   <td className="text-center">{user?.age}</td>
 
@@ -250,7 +259,11 @@ const UsersTable = (props) => {
                   </div>
                 </td> */}
                   <td className="text-center">
-                    {helper.formatDate(user?.call_schedule_date, "MMM D, YYYY")}{" "}
+                    {user?.call_schedule_date &&
+                      helper.formatDate(
+                        user?.call_schedule_date,
+                        "MMM D, YYYY"
+                      )}{" "}
                   </td>
                   <td className="text-center">{user?.next_step}</td>
                   <td>
@@ -305,7 +318,8 @@ const UsersTable = (props) => {
                     </div>
                   </td>
                   <td className="text-center">
-                    {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
+                    {user?.follow_up_date &&
+                      helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
                   </td>
 
                   <td
