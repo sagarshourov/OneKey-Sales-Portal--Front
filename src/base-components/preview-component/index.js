@@ -14,7 +14,7 @@ import _ from "lodash";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 
-// Preview coomponent wrapper
+// Preview component wrapper
 const previewCodeContext = createContext();
 function PreviewComponent(props) {
   const [previewCode, setPreviewCode] = useState(true);

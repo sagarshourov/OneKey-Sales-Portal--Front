@@ -9,7 +9,7 @@ import {
   AccordionItem,
 } from "@/base-components";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
@@ -55,6 +55,59 @@ function towFilters(array) {
     return Date.parse(_items.follow_up_date) === Date.parse(tomorrow);
   });
 }
+
+function get_single(arr) {
+  var date = "";
+  if (arr.extra.length > 0) {
+    arr.extra.map((dat, index) => {
+      if (dat.groups == "my_step" && dat.values[0].value) {
+        date = dat.values[0].value;
+      }
+    });
+  }
+
+  //console.log(date);
+
+  return Date.parse(date);
+}
+
+function nextFilters(array) {
+  var tomorrow = new Date();
+
+  tomorrow =
+    tomorrow.getFullYear() +
+    "-" +
+    (tomorrow.getMonth() + 1) +
+    "-" +
+    (tomorrow.getDate() + 1);
+
+  tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
+
+  return filter(array, (_items) => {
+    return get_single(_items) === Date.parse(tomorrow);
+  });
+}
+
+function scheduleFilters(array) {
+ 
+
+
+
+  if (array.length == 0) return;
+  var today = new Date();
+
+  var today = helper.formatDate(today, "YYYY-MM-DD");
+
+  return filter(array, (_items) => {
+    return Date.parse(_items.call_schedule_date) === Date.parse(today);
+  });
+
+
+
+}
+
+
+
 
 function applySortFilters(array, searchValue, sec) {
   if (array.length == 0) return;
@@ -140,6 +193,11 @@ const AdminUsers = (props) => {
   const setting = useRecoilValue(settingState);
 
   // console.log("logindata", logindata);
+
+  const backToTop = () => {
+    console.log("loginData");
+    window.scroll({ top: 0, behavior: "smooth" });
+  };
 
   const exportExcel = () => {
     // console.log("Export Excel");
@@ -320,128 +378,156 @@ const AdminUsers = (props) => {
     }
   };
 
+  const [offset, setOffset] = useState(false);
+
+  useEffect(() => {
+    //const chatMessages = document.getElementById("whatsAppChat");
+
+    var warper = dom(".wrapper")[0];
+
+    const onScroll = () => setOffset(window.pageYOffset);
+    // // clean up code
+    // window.removeEventListener("scroll", onScroll);
+    warper.addEventListener(
+      "scroll",
+      function () {
+        if (warper.scrollTop > 150) {
+          setOffset(true);
+        } else {
+          setOffset(false);
+        }
+      },
+      { passive: true }
+    );
+    return () => warper.removeEventListener("scroll", onScroll);
+  }, []);
+
+  console.log("offset", offset);
+
   return (
-    <>
+    <div className="">
       <h2 className="intro-y text-lg font-medium mt-10 ">Call List</h2>
-      <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-        <div className="bg-info bg-danger bg-success bg-warning bg-yellow-400 bg-secondary bg-purple-600"></div>
-        <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
-          <Link
-            className="btn btn-elevated-primary shadow-md mr-2 py-2"
-            to="/calls/add"
-          >
-            Add New Call
-          </Link>
-
-          {allCheck.length == 1 && (
+      <div className={offset ? "fixed top-0 bg-white p-5 z-50 box " : ""}>
+        <div className="intro-y   col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+          <div className="bg-info bg-danger bg-success bg-warning bg-yellow-400 bg-secondary bg-purple-600 z-10 z-50"></div>
+          <div className="  lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2 ">
             <Link
-              className="btn btn-elevated-pending shadow-md mr-2 py-2"
-              to={"/calls/edit/" + allCheck[0]}
+              className="btn btn-elevated-primary shadow-md mr-2 py-2"
+              to="/calls/add"
             >
-              Edit
+              Add New Call
             </Link>
-          )}
-          {allCheck.length > 0 ? (
-            <>
-              <button
-                onClick={() => setDeleteConfirmationModal(true)}
-                className="btn btn-elevated-danger"
+
+            {allCheck.length == 1 && (
+              <Link
+                className="btn btn-elevated-pending shadow-md mr-2 py-2"
+                to={"/calls/edit/" + allCheck[0]}
               >
-                Delete
-              </button>
-
-              {parseInt(logindata.role) !== 3 && (
-                <select
-                  name="results"
-                  onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
-                  className="form-select"
+                Edit
+              </Link>
+            )}
+            {allCheck.length > 0 ? (
+              <>
+                <button
+                  onClick={() => setDeleteConfirmationModal(true)}
+                  className="btn btn-elevated-danger"
                 >
-                  <option value="0">Results..</option>
+                  Delete
+                </button>
 
-                  {setting.results &&
-                    setting.results.map((val, indx) => (
-                      <option key={indx} value={val?.id}>
-                        {val?.title}
-                      </option>
-                    ))}
+                {parseInt(logindata.role) !== 3 && (
+                  <select
+                    name="results"
+                    onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
+                    className="form-select"
+                  >
+                    <option value="0">Results..</option>
 
-                  {/* 
+                    {setting.results &&
+                      setting.results.map((val, indx) => (
+                        <option key={indx} value={val?.id}>
+                          {val?.title}
+                        </option>
+                      ))}
+
+                    {/* 
                     <option value="3">Open</option>
                     <option value="4">No Answer</option>
                     <option value="1">Cancel </option>
                     <option value="2">Client</option> */}
+                  </select>
+                )}
+                <select
+                  name="sections"
+                  onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
+                  className="form-select"
+                >
+                  <option value="0">Move..</option>
+
+                  {setting.sections &&
+                    setting.sections.map((val, indx) => (
+                      <option key={indx} value={val?.id}>
+                        {val?.title}
+                      </option>
+                    ))}
                 </select>
-              )}
-              <select
-                name="sections"
-                onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
-                className="form-select"
-              >
-                <option value="0">Move..</option>
+              </>
+            ) : (
+              //parseInt(logindata.role) !== 3 && (
+              <>
+                <Link
+                  className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                  to="/calls/import"
+                >
+                  Import Excel
+                </Link>
 
-                {setting.sections &&
-                  setting.sections.map((val, indx) => (
-                    <option key={indx} value={val?.id}>
-                      {val?.title}
-                    </option>
-                  ))}
-              </select>
-            </>
-          ) : (
-            //parseInt(logindata.role) !== 3 && (
-            <>
-              <Link
-                className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
-                to="/calls/import"
-              >
-                Import Excel
-              </Link>
-
-              <button
-                onClick={exportExcel}
-                className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
-              >
-                Export Excel
-              </button>
-            </>
-            //)
-          )}
-        </div>
-        {/* <div className="hidden md:block mx-auto text-slate-500">
+                <button
+                  onClick={exportExcel}
+                  className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
+                >
+                  Export Excel
+                </button>
+              </>
+              //)
+            )}
+          </div>
+          {/* <div className="hidden md:block mx-auto text-slate-500">
                {filterData.length} {" /"}
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
 
-        <div className="lg:basis-2/12   grid  grid-cols-2">
-          <select
-            onChange={handelPageCount.bind(this)}
-            className="w-full lg:w-20 form-select box mt-3 sm:mt-0"
-          >
-            <option value="10">10</option>
-            <option value="25">25</option>
-            <option value="35">35</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
+          <div className="lg:basis-2/12   grid  grid-cols-2">
+            <select
+              onChange={handelPageCount.bind(this)}
+              className="w-full lg:w-20 form-select box mt-3 sm:mt-0"
+            >
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="35">35</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
 
-          <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-            <div className="relative md:w-36 lg:w-52 text-slate-500">
-              <input
-                onChange={handelSearch.bind(this)}
-                type="text"
-                className="form-control md:w-36 lg:w-52 box"
-                placeholder="Search..."
-              />
-              <Lucide
-                icon="Search"
-                className="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0"
-              />
+            <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
+              <div className="relative md:w-36 lg:w-52 text-slate-500">
+                <input
+                  onChange={handelSearch.bind(this)}
+                  type="text"
+                  className="form-control md:w-36 lg:w-52 box"
+                  placeholder="Search..."
+                />
+                <Lucide
+                  icon="Search"
+                  className="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-4  gap-4 mt-5">
-        <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
+        <div className="col-span-1 lg:order-1 order-2 lg:col-span-3 z-10">
           {/* BEGIN: Data List */}
 
           <div className="intro-y mt-5 col-span-12 ">
@@ -575,6 +661,12 @@ const AdminUsers = (props) => {
           {callData.state === "hasValue" && (
             <>
               <FollowUp
+                title="Today's Call Schedule"
+                theme=" bg-warning text-white"
+                handelGo={handelGo}
+                data={scheduleFilters(callData.contents)}
+              />
+              <FollowUp
                 title="Today’s Follow Ups"
                 theme="table-dark"
                 handelGo={handelGo}
@@ -586,6 +678,12 @@ const AdminUsers = (props) => {
                 theme="table-light"
                 handelGo={handelGo}
                 data={towFilters(callData.contents)}
+              />
+              <FollowUp
+                title="Next Step"
+                theme=" bg-success text-white"
+                handelGo={handelGo}
+                data={nextFilters(callData.contents)}
               />
             </>
           )}
@@ -707,7 +805,11 @@ const AdminUsers = (props) => {
           </div>
         </ModalBody>
       </Modal>
-    </>
+
+      {/* <button className="backToTop-btn k-button " onClick={() => backToTop()}>
+        <div className="d-none d-xl-block mr-1">Top</div>
+      </button> */}
+    </div>
   );
 };
 

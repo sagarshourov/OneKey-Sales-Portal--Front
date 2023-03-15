@@ -31,7 +31,7 @@ const UsersTable = (props) => {
     section,
     setting,
   } = props;
-  const [rowCount, setRowCount] = useState(20);
+  const [rowCount, setRowCount] = useState(10);
   const handelChange = (e, id, type) => {
     e.preventDefault();
 

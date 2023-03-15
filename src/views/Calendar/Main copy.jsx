@@ -31,8 +31,6 @@ const headers = {
 import { filter } from "lodash";
 
 function applySortFilters(array, searchValue) {
-  // console.log(array);
-
   return filter(array, (_items) => {
     if (_items !== null) {
       return _items?.title
@@ -44,29 +42,17 @@ function applySortFilters(array, searchValue) {
 
 function event_format(data) {
   let obj = [];
+  data.length > 0 &&
+    data.map((dat, index) => {
+      obj.push({
+        id: dat.id,
+        ev_id: dat.id,
+        start: dat.values[0] && dat.values[0].value,
+        title: dat.calls && dat.calls?.first_name + " " + dat.calls?.last_name,
+        description:dat.values[2] ? dat.values[2].value : " ",
+      });
+    });
 
-  data.csd &&
-    data.csd.map((dat, index) => {
-      //  console.log("csd", dat);
-      obj.push({
-        id: dat.id,
-        ev_id: dat.id,
-        start: dat.call_schedule_date,
-        description: "Call Schedule Date",
-        title: dat?.first_name + " " + dat?.last_name,
-      });
-    });
-  data.fud &&
-    data.fud.map((dat, index) => {
-      //  console.log("csd", dat);
-      obj.push({
-        id: dat.id,
-        ev_id: dat.id,
-        start: dat.follow_up_date,
-        description: "Follow Up Date",
-        title: dat?.first_name + " " + dat?.last_name,
-      });
-    });
   return obj;
 }
 
@@ -157,7 +143,7 @@ const Events = (props) => {
 
   let filterData = applySortFilters(event_format(eventDatas.contents), search);
 
-  // console.log("filter data", eventDatas.contents);
+   console.log("filter data", filterData);
 
   return (
     <>
@@ -182,7 +168,7 @@ const Events = (props) => {
                 className="h-[820px] overflow-y-auto scrollbar-hidden"
               >
                 {eventDatas.state === "hasValue" &&
-                  filterData.map((event, key) => {
+                  eventDatas?.contents.map((event, key) => {
                     return (
                       <div
                         key={key}
@@ -191,7 +177,10 @@ const Events = (props) => {
                         <div className="flex items-center">
                           <div className="w-2 h-2 bg-warning rounded-full mr-3"></div>
                           <div className="event__title font-medium truncate">
-                            {event?.description}
+                            {event.calls &&
+                              event.calls?.first_name +
+                                " " +
+                                event.calls?.last_name}
                           </div>
                           {/* <Lucide
                               icon="Edit"
@@ -206,7 +195,7 @@ const Events = (props) => {
                             />
 
                             {helper.formatDate(
-                              event?.call_schedule_date,
+                              event?.values[0]?.value,
                               "MMM D, YYYY"
                             )}
                           </div>
@@ -216,7 +205,7 @@ const Events = (props) => {
                               icon="Map"
                               className="w-4 h-4 text-slate-500 mr-2"
                             />
-                            {event?.title}
+                            {event?.values[2] && event?.values[2].value}
                           </div>
                         </div>
                       </div>

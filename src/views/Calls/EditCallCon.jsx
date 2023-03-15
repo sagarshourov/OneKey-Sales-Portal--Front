@@ -68,14 +68,14 @@ const EditCallCon = (props) => {
   const [err, setErr] = useState([]);
   const [emailErr, setEmailErr] = useState([]);
 
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const logindata = useRecoilValue(loginState);
 
-  const [firstContact, setFirstContact] = useState("");
+  // const [firstContact, setFirstContact] = useState("");
 
-  const [followdate, setFollowDate] = useState("");
+  // const [followdate, setFollowDate] = useState("");
 
   const [validationModal, setValidationModal] = useState(false);
 
@@ -83,9 +83,9 @@ const EditCallCon = (props) => {
   const [userData, setUserState] = useRecoilStateLoadable(allUserListState);
   const [notiData, setNotiState] = useRecoilState(notiState);
 
-  const restSingleCall = useResetRecoilState(singleCallState);
+  // const restSingleCall = useResetRecoilState(singleCallState);
 
-  const restCallIdState = useResetRecoilState(callIdState);
+  // const restCallIdState = useResetRecoilState(callIdState);
 
   const [radio, setRadio] = useState(calls ? calls.immigration_filling : 0);
 
@@ -110,6 +110,7 @@ const EditCallCon = (props) => {
       : [
           {
             id: 0,
+            groups: "follow_up",
             values: [
               {
                 value: "",
@@ -137,6 +138,7 @@ const EditCallCon = (props) => {
       : [
           {
             id: 0,
+            groups: "my_step",
             values: [
               {
                 value: "",
@@ -173,9 +175,11 @@ const EditCallCon = (props) => {
 
   const addMyStep = () => {
     let newObj = {
-      id: myNextStepState[myNextStepState.length - 1].id + 1,
+      id:
+        myNextStepState.length > 0
+          ? myNextStepState[myNextStepState.length - 1].id + 1
+          : 1,
       groups: "my_step",
-
       values: [
         {
           value: "",
@@ -351,7 +355,11 @@ const EditCallCon = (props) => {
 
   const addFollow = () => {
     let newObj = {
-      id: followUpState[followUpState.length - 1].id + 1,
+      id:
+        followUpState.length > 0
+          ? followUpState[followUpState.length - 1].id + 1
+          : 1,
+
       groups: "follow_up",
       values: [
         {
@@ -462,6 +470,8 @@ const EditCallCon = (props) => {
       {" "}
       <form onSubmit={(e) => handleSubmit(e)}>
         <input type="hidden" name="id" defaultValue={calls?.id} />
+        <input type="hidden" name="sections" defaultValue={calls?.sections} />
+
         <div className="mt-5">
           <div className="px-5">
             {Object.keys(err).length > 0 &&
@@ -723,9 +733,7 @@ const EditCallCon = (props) => {
                 </select>
               </div>
               <div className="intro-x ">
-                <label className="form-label">
-                  Assigned to  
-                </label>
+                <label className="form-label">Assigned to</label>
                 {userData.state == "hasValue" && (
                   <select
                     name="assigned_to"

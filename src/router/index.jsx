@@ -271,6 +271,10 @@ function Router() {
           element: <Clients />,
         },
         {
+          path: "/results/:id",
+          element: <Results />,
+        },
+        {
           path: "/notifications",
           element: <Notification />,
         },
@@ -320,6 +324,10 @@ function Router() {
         {
           path: "/calls/edit/:id",
           element: <EditCalls />,
+        },
+        {
+          path: "/results/:id",
+          element: <Results />,
         },
         // {
         //   path: "/calls/import",
