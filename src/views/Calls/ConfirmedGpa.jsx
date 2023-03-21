@@ -39,7 +39,7 @@ const Confirmed = (props) => {
           defaultValue={data.values && data.values[1] ? data.values[1].value : ""}
         />
       </div>
-      {parseInt(team) === 1 &&
+      {/* {parseInt(team) === 1 &&
         data.values &&
         parseInt(data.values[1].value) < 13.5 && (
           <div className="intro-x">
@@ -56,7 +56,7 @@ const Confirmed = (props) => {
               <option value="2">English Courses</option>
             </select>
           </div>
-        )}
+        )} */}
 
       <button
         type="button"

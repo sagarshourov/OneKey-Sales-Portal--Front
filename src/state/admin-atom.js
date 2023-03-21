@@ -4,6 +4,7 @@ import {
   getAllCalls,
   getCallsFilter,
   getSingleCall,
+  getAllReports,
   getAllNoti
 } from "../service/admin";
 
@@ -111,6 +112,39 @@ export const singleCallselect = selector({
   },
 });
 
+
+export const reportCount = atom({
+  key: "reportCount",
+  default: 0,
+});
+
+
+
+
+export const reportSelect = selector({
+  key: "reportSelect",
+  get: async ({ get }) => {
+    try {
+      const response = await getAllReports(get(reportCount));
+      return response.data || [];
+    } catch (error) {
+      console.error(`reportSelect -> reportSelect() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
+
+
+
+
+
+
+
+
+export const reportListState = atom({
+  key: "reportListState",
+  default: reportSelect,
+});
 
 
 

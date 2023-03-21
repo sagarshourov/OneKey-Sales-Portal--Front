@@ -10,8 +10,16 @@ import Select from "react-tailwindcss-select";
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
-import { useRecoilStateLoadable, useRecoilValue } from "recoil";
-import { callListState, allUserListState } from "../../state/admin-atom";
+import {
+  useRecoilStateLoadable,
+  useSetRecoilState,
+  useRecoilValue,
+} from "recoil";
+import {
+  reportListState,
+  reportCount,
+  allUserListState,
+} from "../../state/admin-atom";
 
 import { loginState } from "../../state/login-atom";
 
@@ -48,14 +56,17 @@ const r_fields = [
   "user_id",
   "last_contact",
   "last_status_date",
-  "note"
+  "note",
+  "history",
 ];
 
 const CustomMain = (props) => {
   // let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
 
-  const [callData, setCallState] = useRecoilStateLoadable(callListState);
+  const [callData, setCallState] = useRecoilStateLoadable(reportListState);
+
+  const setReportCount = useSetRecoilState(reportCount);
 
   const [dateRange, setDateRange] = useState("");
 
@@ -81,7 +92,6 @@ const CustomMain = (props) => {
   const [cols, setCol] = useState(null);
 
   const handleChange = (value) => {
-   
     setCol(value);
   };
 
@@ -112,10 +122,12 @@ const CustomMain = (props) => {
     }
   };
 
-  const handelLoad = () => {
-    let count = rowCount + 20;
+  const handelLoad = (rowCount) => {
+    //let count = rowCount + 20;
 
-    setRowCount(count);
+    setRowCount(rowCount);
+
+    setReportCount(rowCount);
   };
 
   const handelRange = (date) => {
@@ -163,12 +175,15 @@ const CustomMain = (props) => {
   const options = () => {
     let data = [];
 
-    callData.contents[0] && Object.keys(callData.contents[0]).map((val, index) => {
-      if (r_fields.includes(val)) {
-      } else {
-        data.push({ value: val, label: val.replaceAll("_", " ") });
-      }
-    });
+    callData.contents[0] &&
+      Object.keys(callData.contents[0]).map((val, index) => {
+        // console.log('val',val);
+
+        if (r_fields.includes(val)) {
+        } else {
+          data.push({ value: val, label: val.replaceAll("_", " ") });
+        }
+      });
 
     return data;
   };
@@ -230,7 +245,7 @@ const CustomMain = (props) => {
                 options={options()}
                 isMultiple={true}
                 classNames={{
-                  menu: "absolute z-50 w-full bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                  menu: "absolute z-50 w-48 bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
                   tagItem: ({ isDisabled }) =>
                     " bg-gray-200 rounded m-1 p-1 flex  ",
                   menuButton: ({ isDisabled }) =>
@@ -260,7 +275,7 @@ const CustomMain = (props) => {
                 </div>
               )}
               <CustomTable
-                rowCount={rowCount}
+                rowCount={20}
                 setDeleteConfirmationModal={setDeleteConfirmationModal}
                 users={filterData}
                 setUserId={setCallId}
@@ -279,13 +294,23 @@ const CustomMain = (props) => {
         </div>
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
-        {/* {filterData.length > 0 && (
-          <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
-            <button onClick={handelLoad} className="btn">
-              Load more..
+        {filterData.length > 0 && (
+          <div className="intro-y  mt-5 col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+            <button
+              onClick={() => handelLoad(rowCount - 20)}
+              className="btn"
+              disabled={rowCount < 21 ? true : false}
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => handelLoad(rowCount + 20)}
+              className="btn ml-5"
+            >
+              Next
             </button>
           </div>
-        )} */}
+        )}
         {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}

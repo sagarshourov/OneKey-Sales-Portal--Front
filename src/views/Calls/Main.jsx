@@ -25,6 +25,8 @@ import { adminApi, getBaseApi } from "../../configuration";
 import { filter } from "lodash";
 import { helper } from "@/utils/helper";
 import FollowUp from "./FollowUp";
+import CallSchedule from "./CallSchedule";
+
 import { settingState } from "../../state/setting-atom";
 
 function todayFilters(array) {
@@ -402,7 +404,7 @@ const AdminUsers = (props) => {
     return () => warper.removeEventListener("scroll", onScroll);
   }, []);
 
-  console.log("offset", offset);
+  //console.log("offset", offset);
 
   return (
     <div className="">
@@ -660,7 +662,7 @@ const AdminUsers = (props) => {
         <div className="col-span-1 lg:order-2 order-1 pt-12">
           {callData.state === "hasValue" && (
             <>
-              <FollowUp
+              <CallSchedule
                 title="Today's Call Schedule"
                 theme=" bg-warning text-white"
                 handelGo={handelGo}

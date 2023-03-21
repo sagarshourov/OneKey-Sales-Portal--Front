@@ -44,7 +44,7 @@ function removeArr(array, index) {
 }
 
 const AddCalls = (props) => {
-  let { id } = useParams();
+ 
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [callData, setCallState] = useRecoilState(callListState);
@@ -52,9 +52,9 @@ const AddCalls = (props) => {
   const [notiData, setNotiState] = useRecoilState(notiState);
   const logindata = useRecoilValue(loginState);
 
-  const [firstContact, setFirstContact] = useState("");
+  // const [firstContact, setFirstContact] = useState("");
 
-  const [followdate, setFollowDate] = useState("");
+  // const [followdate, setFollowDate] = useState("");
 
   const [validationModal, setValidationModal] = useState(false);
 
@@ -545,12 +545,20 @@ const AddCalls = (props) => {
                 <label className="form-label">Education level </label>
                 <select name="degree" className="form-control">
                   <option value="0">Select..</option>
-                  <option value="1">H.S. Diploma</option>
+
+                  {setting.applying_for &&
+                    setting.applying_for.map((val, indx) => (
+                      <option key={indx} value={val?.id}>
+                        {val?.title}
+                      </option>
+                    ))}
+
+                  {/* <option value="1">H.S. Diploma</option>
 
                   <option value="2">Bachelor</option>
 
                   <option value="3">Master</option>
-                  <option value="4">Ph.D</option>
+                  <option value="4">Ph.D</option> */}
                 </select>
               </div>
 

@@ -78,29 +78,48 @@ const CustomTable = (props) => {
 
             return (
               <tr key={key} className={"border-t pt-2" + dark}>
-                <td className="w-40">{count}</td>
+                <td className="w-40">{user.id}</td>
 
                 {cols !== null &&
                   cols.map((val, index) => {
-                    if (val.value == "assigned_to") {
-                      console.log("assign to");
-                      return (
-                        user[val.value] !== null ? (
-                          <td key={index} className="text-center">
-                            {user[val.value].first_name}{" "}
-                            {user[val.value].last_name}
-                          </td>
-                        ):<td key={index} className="text-center"></td>
+                    // if (val.value == "status") {
+
+                    //   console.log(user[val.value]);
+                    //   return (
+                    //    <td key={index} className="text-center">st</td>
+                    //   );
+                    // }
+
+                    if (val.value == "agreement_sent") {
+                      return user[val.value] !== null ? (
+                        <td key={index} className="text-center">
+                          {user.ag == 1 ? "Yes" : "No"}
+                        </td>
+                      ) : (
+                        <td key={index} className="text-center">
+                          No
+                        </td>
                       );
                     }
 
-                    return user[val.value] !== null && user[val.value].title ? (
+                    if (val.value == "assigned_to") {
+                      return user[val.value] !== null ? (
+                        <td key={index} className="text-center">
+                          {user[val.value].first_name}{" "}
+                          {user[val.value].last_name}
+                        </td>
+                      ) : (
+                        <td key={index} className="text-center"></td>
+                      );
+                    }
+
+                    return user[val.value] !== null && user[val.value].id ? (
                       <td key={index} className="text-center">
-                        {user[val.value].title}
+                        {user[val.value]?.title}
                       </td>
                     ) : (
                       <td key={index} className="text-center">
-                        {user[val.value]}
+                        {user[val.value] && user[val.value]}
                       </td>
                     );
                   })}

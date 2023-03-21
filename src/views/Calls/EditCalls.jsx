@@ -8,7 +8,7 @@ import {
 
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState, useRecoilStateLoadable } from "recoil";
+import { useRecoilState, useRecoilValue,useResetRecoilState, useRecoilRefresher_UNSTABLE, useSetRecoilState, useRecoilStateLoadable } from "recoil";
 import { filter } from "lodash";
 import {
   callListState,
@@ -31,10 +31,16 @@ const EditCalls = (props) => {
   const [loading, setLoading] = useState(false);
   const [singleCall, setSingleCallState] = useRecoilStateLoadable(singleCallState);
   const setCallId = useSetRecoilState(callIdState);
+
+
+    const resetSingleCall = useRecoilRefresher_UNSTABLE(singleCallState);
+    //const resetcallIdState = useResetRecoilState(callIdState);
   useEffect(() => {
     console.log("set state");
     setCallId(id);
     return () => {
+      resetSingleCall();
+      //resetcallIdState();
       console.log("cleaned up");
     };
   }, [id]);

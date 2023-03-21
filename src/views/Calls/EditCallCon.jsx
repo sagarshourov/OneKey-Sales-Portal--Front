@@ -68,7 +68,7 @@ const EditCallCon = (props) => {
   const [err, setErr] = useState([]);
   const [emailErr, setEmailErr] = useState([]);
 
-  // let navigate = useNavigate();
+   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const logindata = useRecoilValue(loginState);
@@ -232,8 +232,8 @@ const EditCallCon = (props) => {
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
-        window.location.reload();
-        //  navigate("../calls/all", { replace: true });
+       // window.location.reload();
+        navigate("../calls/all", { replace: true });
       }
     } catch (err) {
       // console.log("Err", err);
@@ -278,7 +278,10 @@ const EditCallCon = (props) => {
         setNotiState(response?.data?.data);
       }
     } catch (err) {
+
+     // console.log(err);
       if (!err?.response?.data?.success) {
+
       }
 
       setLoading(false);
@@ -440,7 +443,7 @@ const EditCallCon = (props) => {
   };
 
   const handelMargie = (e) => {
-    console.log("married", e.target.value);
+    // console.log("married", e.target.value);
 
     if (e.target.value == 2) {
       setSuppose(true);
@@ -450,7 +453,7 @@ const EditCallCon = (props) => {
   };
 
   const handelEngTest = (e) => {
-    console.log("handelEngTest", e.target.value);
+    //console.log("handelEngTest", e.target.value);
 
     if (parseInt(e.target.value) !== 0) {
       setScore(true);
@@ -474,7 +477,7 @@ const EditCallCon = (props) => {
 
         <div className="mt-5">
           <div className="px-5">
-            {Object.keys(err).length > 0 &&
+            {err && Object.keys(err).length > 0 &&
               Object.values(err).map((text, key) => {
                 return (
                   <h3 className="text-danger py-3 text-center" key={key}>
@@ -652,12 +655,12 @@ const EditCallCon = (props) => {
                   className="form-control"
                 >
                   <option>Select..</option>
-                  <option value="1">H.S. Diploma</option>
-
-                  <option value="2">Bachelor</option>
-
-                  <option value="3">Master</option>
-                  <option value="4">Ph.D</option>
+                  {setting.applying_for &&
+                    setting.applying_for.map((val, indx) => (
+                      <option key={indx} value={val?.id}>
+                        {val?.title}
+                      </option>
+                    ))}
                 </select>
               </div>
 
@@ -991,10 +994,10 @@ const EditCallCon = (props) => {
                 <label className="form-label">First Call Result</label>
 
                 <select
-                  name="results"
+                  name="f_results"
                   onChange={() => setfCallResult(true)}
                   className="form-control"
-                  defaultValue={calls?.results ? calls?.results.id : 3}
+                  defaultValue={calls?.f_results ? calls?.f_results : 3}
                 >
                   <option value="0">Select...</option>
 

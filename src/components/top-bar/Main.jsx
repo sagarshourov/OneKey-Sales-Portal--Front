@@ -63,10 +63,7 @@ const Logout = (props) => {
         // console.log("vewing 1", response);
         const accessToken = response.data.data.token;
         const roles = response.data.data.user.is_admin;
-        console.log(
-          "vewing 1",
-          response.data.data.user.profile_image.file_path
-        );
+       
         if (roles == 1) {
           localStorage.setItem("isAdmin", true);
         }

@@ -135,7 +135,7 @@ function Main() {
           <div className="side-nav__header flex items-center">
             <Link to="/" className="intro-x flex items-center">
               <img
-                alt="Rocketman Tailwind HTML Admin Template"
+                alt=""
                 className="side-nav__header__logo side-nav__header__text text-white pt-0.5 text-lg ml-2.5"
                 src={logoUrl}
               />
