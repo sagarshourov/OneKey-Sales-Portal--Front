@@ -18,6 +18,7 @@ import {
 import {
   reportListState,
   reportCount,
+  reportUser,
   allUserListState,
 } from "../../state/admin-atom";
 
@@ -67,6 +68,8 @@ const CustomMain = (props) => {
   const [callData, setCallState] = useRecoilStateLoadable(reportListState);
 
   const setReportCount = useSetRecoilState(reportCount);
+  const setReportUser = useSetRecoilState(reportUser);
+  
 
   const [dateRange, setDateRange] = useState("");
 
@@ -138,6 +141,8 @@ const CustomMain = (props) => {
   };
   const handelUserSelect = (e) => {
     selectUser(e.target.value);
+
+    setReportUser(e.target.value);
 
     // setEmpName(e.target.selectedOptions[0].text);
   };

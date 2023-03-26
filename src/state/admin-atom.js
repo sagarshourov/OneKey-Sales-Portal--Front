@@ -117,6 +117,11 @@ export const reportCount = atom({
   key: "reportCount",
   default: 0,
 });
+export const reportUser = atom({
+  key: "reportUser",
+  default: 0,
+});
+
 
 
 
@@ -125,7 +130,7 @@ export const reportSelect = selector({
   key: "reportSelect",
   get: async ({ get }) => {
     try {
-      const response = await getAllReports(get(reportCount));
+      const response = await getAllReports(get(reportUser),get(reportCount));
       return response.data || [];
     } catch (error) {
       console.error(`reportSelect -> reportSelect() ERROR: \n${error}`);

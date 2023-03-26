@@ -1,16 +1,12 @@
 import {
   Lucide,
-  Tippy,
   LoadingIcon,
   Modal,
   ModalBody,
-  Checkbox,
 } from "@/base-components";
 
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-import { filter } from "lodash";
-import { any } from "prop-types";
 import { useState } from "react";
 // function findById(array, id) {
 //   return filter(array, (_items) => {
@@ -53,7 +49,7 @@ const Table = (props) => {
 
   const [loading, setLoading] = useState(false);
 
-  //const [items, setItems] = useState(Object.values(value)); //drag and drop
+  const [items, setItems] = useState(Object.values(value)); //drag and drop
 
   const handelEdit = (row) => {
     //  console.log("edit");
@@ -126,7 +122,7 @@ const Table = (props) => {
       result.destination.index
     );
  
-    // setItems(item);
+     setItems(item);
 
     var id = [];
     item.map((val) => id.push(val.id));
@@ -211,7 +207,7 @@ const Table = (props) => {
               </thead>
               <tbody>
                 {value.length > 0 &&
-                  Object.values(value).map((val, ind) => {
+                  items.map((val, ind) => {
                     return (
                       <Draggable
                         key={val.id}

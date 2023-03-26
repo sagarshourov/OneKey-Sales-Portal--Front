@@ -1,19 +1,10 @@
 import {
-  Lucide,
-  FullCalendarDraggable,
   TabGroup,
   TabList,
   Tab,
   TabPanels,
   TabPanel,
-  Litepicker,
-  TomSelect,
-  Alert,
-  Modal,
-  ModalBody,
 } from "@/base-components";
-import Calendar from "@/components/calendar/Main";
-import { LoadingIcon } from "@/base-components";
 
 import Table from "./Table";
 

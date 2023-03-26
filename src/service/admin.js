@@ -1,5 +1,5 @@
 import axios from "axios";
-import { adminApi, getBaseApi ,handelError} from "../configuration";
+import { adminApi, getBaseApi, handelError } from "../configuration";
 
 const token = localStorage.getItem("token");
 
@@ -12,7 +12,7 @@ export async function getAllUsers() {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
-    handelError(error)
+    handelError(error);
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
@@ -24,43 +24,34 @@ export async function getAllCalls() {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
-    handelError(error)
+    handelError(error);
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
 
-export async function getAllReports(count) {
-  const userApiUrl = adminApi() + "reports/"+count;
+export async function getAllReports(user_id, count) {
+  const userApiUrl = adminApi() + "reports/" + user_id + "/" + count;
 
   try {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
-    handelError(error)
+    handelError(error);
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
-
-
-
-
 
 export async function getCallsFilter(results) {
-  const userApiUrl = adminApi() + "call_filter/results/"+results;
+  const userApiUrl = adminApi() + "call_filter/results/" + results;
 
   try {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
-    handelError(error)
+    handelError(error);
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
-
-
-
-
-
 
 export async function getAllNoti() {
   const userApiUrl = adminApi() + "notifications";
@@ -69,29 +60,19 @@ export async function getAllNoti() {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
-    handelError(error)
+    handelError(error);
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
 
 export async function getSingleCall(id) {
-  const userApiUrl = adminApi() + "calls/"+id;
+  const userApiUrl = adminApi() + "calls/" + id;
 
   try {
     const response = await axios.get(userApiUrl, { headers });
     return response.data || [];
   } catch (error) {
-    handelError(error)
+    handelError(error);
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
-
-
-
-
-
-
-
-
-
-

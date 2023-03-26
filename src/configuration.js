@@ -16,3 +16,9 @@ export const handelError = (error) => {
  localStorage.clear();
  window.location.href = "/login";
 };
+
+
+
+// export const handelError = (error) => {
+// console.log(error);
+// };
