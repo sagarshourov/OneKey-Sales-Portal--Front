@@ -31,8 +31,6 @@ const Settings = (props) => {
     ContentType: "application/json",
   };
 
-  
-
   return (
     <>
       <div className="intro-y flex flex-col sm:flex-row items-center mt-8">
@@ -65,6 +63,7 @@ const Settings = (props) => {
                       tbl={key}
                       headers={headers}
                       value={allTable.contents[key]}
+                      data={allTable.contents}
                     />
                   </TabPanel>
                 );

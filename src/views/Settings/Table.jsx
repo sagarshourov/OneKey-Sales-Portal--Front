@@ -7,6 +7,8 @@ import {
   Checkbox,
 } from "@/base-components";
 
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
 import { filter } from "lodash";
 import { any } from "prop-types";
 import { useState } from "react";
@@ -19,10 +21,29 @@ import { useState } from "react";
 import { adminApi } from "../../configuration";
 
 import axios from "axios";
-const Table = (props) => {
-  const { value, headers, setAllTable, tbl } = props;
 
-  const [rowCount, setRowCount] = useState(10);
+const getListStyle = (isDraggingOver) => ({
+  background: isDraggingOver ? "lightblue" : "lightgrey",
+});
+
+const getItemStyle = (isDragging, draggableStyle) => ({
+  // some basic styles to make the items look a bit nicer
+  userSelect: "none",
+  // change background colour if dragging
+  background: isDragging ? "lightgreen" : "white",
+  // styles we need to apply on draggables
+  ...draggableStyle,
+});
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+  return result;
+};
+
+const Table = (props) => {
+  const { value, data, headers, setAllTable, tbl } = props;
+
   const [delModal, setDelModal] = useState(false);
 
   const [cModal, setCModal] = useState(false);
@@ -32,16 +53,10 @@ const Table = (props) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handelSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handelPageCount = (e) => {
-    setRowCount(parseInt(e.target.value));
-  };
+  //const [items, setItems] = useState(Object.values(value)); //drag and drop
 
   const handelEdit = (row) => {
-    console.log("edit");
+    //  console.log("edit");
     setRow(row);
     setUModal(true);
   };
@@ -101,6 +116,36 @@ const Table = (props) => {
     e.target.reset();
   };
 
+  const onDragEnd = async (result) => {
+    if (!result.destination) {
+      return;
+    }
+    const item = reorder(
+      Object.values(value),
+      result.source.index,
+      result.destination.index
+    );
+ 
+    // setItems(item);
+
+    var id = [];
+    item.map((val) => id.push(val.id));
+    const URL = adminApi() + "settings/" + tbl;
+    setLoading(true);
+    try {
+      const response = await axios.put(URL, id, {
+        headers,
+      });
+      if (response?.data?.success) {
+        setLoading(false);
+        setAllTable(response?.data?.data);
+        setRow([]);
+      }
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2 mb-5">
@@ -139,53 +184,92 @@ const Table = (props) => {
           </div>
         </div> */}
       </div>
-      <table className="table table-hover ">
-        <thead className="table-light">
-          <tr>
-            {value.length > 0 &&
-              Object.keys(value[0]).map((val, index) => {
-                return (
-                  <th key={index} className="whitespace-nowrap capitalize">
-                    {val.replace(/_/g, " ")}
-                  </th>
-                );
-              })}
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {value.length > 0 &&
-            Object.values(value).map((val, ind) => {
-              return (
-                <tr key={ind}>
-                  {Object.values(val).map((valu, inde) => (
-                    <td key={inde}>{valu}</td>
-                  ))}
-                  <td className="table-report__action w-56">
-                    <div className="flex justify-center items-center">
-                      <button
-                        className="flex items-center text-info mr-3"
-                        onClick={(e) => handelEdit(val)}
-                      >
-                        <Lucide icon="Info" className="w-4 h-4 mr-1 " /> Edit
-                      </button>
-
-                      <button
-                        onClick={(e) => {
-                          setRow(val);
-                          setDelModal(true);
-                        }}
-                        className="flex items-center text-danger"
-                      >
-                        <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Delete
-                      </button>
-                    </div>
-                  </td>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <table
+              // onDrop={(e) => AllTableDrop(e)}
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+              className="table table-hover "
+            >
+              <thead className="table-light">
+                <tr>
+                  {value.length > 0 &&
+                    Object.keys(value[0]).map((val, index) => {
+                      return (
+                        <th
+                          key={index}
+                          className="whitespace-nowrap capitalize"
+                        >
+                          {val.replace(/_/g, " ")}
+                        </th>
+                      );
+                    })}
+                  <th></th>
                 </tr>
-              );
-            })}
-        </tbody>
-      </table>
+              </thead>
+              <tbody>
+                {value.length > 0 &&
+                  Object.values(value).map((val, ind) => {
+                    return (
+                      <Draggable
+                        key={val.id}
+                        draggableId={"item-" + val.id}
+                        index={ind}
+                      >
+                        {(provided, snapshot) => (
+                          <tr
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
+                            {Object.values(val).map((valu, inde) => (
+                              <td key={inde}>{valu}</td>
+                            ))}
+                            <td className="table-report__action w-56">
+                              <div className="flex justify-center items-center">
+                                <button
+                                  className="flex items-center text-info mr-3"
+                                  onClick={(e) => handelEdit(val)}
+                                >
+                                  <Lucide
+                                    icon="Info"
+                                    className="w-4 h-4 mr-1 "
+                                  />{" "}
+                                  Edit
+                                </button>
+
+                                <button
+                                  onClick={(e) => {
+                                    setRow(val);
+                                    setDelModal(true);
+                                  }}
+                                  className="flex items-center text-danger"
+                                >
+                                  <Lucide
+                                    icon="Trash2"
+                                    className="w-4 h-4 mr-1"
+                                  />{" "}
+                                  Delete
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                {provided.placeholder}
+              </tbody>
+            </table>
+          )}
+        </Droppable>
+      </DragDropContext>
 
       <Modal
         show={uModal}

@@ -13,9 +13,9 @@ export const loginState = atom({
     last_name: localStorage.last_name ? localStorage.getItem("last_name") : "",
     isAdmin: localStorage.isAdmin ? localStorage.getItem("isAdmin") : 0,
     token: localStorage.token ? localStorage.getItem("token") : "",
-    role: localStorage.isAdmin ? localStorage.getItem("role") : 0,
-    userId: localStorage.userId ? localStorage.getItem("userId") : 0,
+    role: localStorage.role ? parseInt(localStorage.getItem("role")) : 0,
+    userId: localStorage.userId ? parseInt(localStorage.getItem("userId")) : 0,
     view: localStorage.view ? localStorage.getItem("view") : false,
-    team: localStorage.team ? localStorage.getItem("team") : 0,
+    team: localStorage.team ? parseInt(localStorage.getItem("team")) : 0,
   },
 });

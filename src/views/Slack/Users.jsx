@@ -37,7 +37,7 @@ function applySortFilters(array, searchValue) {
 
 function empFilters(array) {
   return filter(array, (_items) => {
-    return _items.is_admin == 3;
+    return _items.is_admin !== 1;
   });
 }
 

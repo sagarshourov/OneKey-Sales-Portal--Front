@@ -33,7 +33,7 @@ import SupposeSection from "./SupposeSection";
 
 function employeeFilters(array) {
   return filter(array, (_items) => {
-    return _items.is_admin == 3;
+    return _items.is_admin !== 1;
   });
 }
 

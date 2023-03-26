@@ -15,7 +15,7 @@ const token = localStorage.token && localStorage.getItem("token");
 
 const headers = { Authorization: `Bearer ${token}` };
 function applySortFilters(array) {
-  return filter(array, (_items) => _items.is_admin === 3);
+  return filter(array, (_items) => _items.is_admin !== 1);
 }
 const ImportCalls = (props) => {
   let { id } = useParams();

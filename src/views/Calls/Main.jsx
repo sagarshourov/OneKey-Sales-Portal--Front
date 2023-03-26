@@ -26,7 +26,7 @@ import { filter } from "lodash";
 import { helper } from "@/utils/helper";
 import FollowUp from "./FollowUp";
 import CallSchedule from "./CallSchedule";
-
+import classnames from "classnames";
 import { settingState } from "../../state/setting-atom";
 
 function todayFilters(array) {
@@ -91,10 +91,6 @@ function nextFilters(array) {
 }
 
 function scheduleFilters(array) {
- 
-
-
-
   if (array.length == 0) return;
   var today = new Date();
 
@@ -103,63 +99,107 @@ function scheduleFilters(array) {
   return filter(array, (_items) => {
     return Date.parse(_items.call_schedule_date) === Date.parse(today);
   });
-
-
-
 }
 
-
-
-
-function applySortFilters(array, searchValue, sec) {
+function applySortFilters(array, searchValue, sec, user_id) {
   if (array.length == 0) return;
-  if (sec == "no") {
-    return filter(array, (_items) => {
-      return (
-        _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
-      );
-    });
-  } else if (sec == "all") {
-    return filter(array, (_items) => {
-      return (
-        _items.sections == null &&
-        _items.results &&
-        _items.results.id == 3 &&
-        ((_items.email &&
-          _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-            -1) ||
-          (_items.first_name &&
-            _items.first_name
-              .toLowerCase()
-              .indexOf(searchValue.toLowerCase()) !== -1) ||
-          (_items.phone_number &&
-            _items.phone_number
-              .toLowerCase()
-              .indexOf(searchValue.toLowerCase()) !== -1))
-      );
-    });
+  // if (sec == "no") {
+  //   return filter(array, (_items) => {
+  //     return (
+  //       _items.user_id == user_id || _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
+  //     );
+  //   });
+  // } else
+
+  if (user_id !== 0) {
+    if (sec == "all") {
+      return filter(array, (_items) => {
+        return (
+          _items.sections == null &&
+          _items.user_id === user_id &&
+          _items.results &&
+          _items.results.id == 3 &&
+          ((_items.email &&
+            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+              -1) ||
+            (_items.first_name &&
+              _items.first_name
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1) ||
+            (_items.phone_number &&
+              _items.phone_number
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1))
+        );
+      });
+    } else {
+      return filter(array, (_items) => {
+        // if (_items.email) {
+        return (
+          _items.sections == parseInt(sec) &&
+          _items.user_id === user_id &&
+          _items.results.id == 3 &&
+          ((_items.email &&
+            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+              -1) ||
+            (_items.first_name &&
+              _items.first_name
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1) ||
+            (_items.phone_number &&
+              _items.phone_number
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1))
+        );
+        // } else {
+        //   return true;
+        // }
+      });
+    }
   } else {
-    return filter(array, (_items) => {
-      // if (_items.email) {
-      return (
-        _items.sections == parseInt(sec) &&
-        _items.results.id == 3 &&
-        ((_items.email &&
-          _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-            -1) ||
-          (_items.first_name &&
-            _items.first_name
-              .toLowerCase()
-              .indexOf(searchValue.toLowerCase()) !== -1) ||
-          (_items.phone_number &&
-            _items.phone_number
-              .toLowerCase()
-              .indexOf(searchValue.toLowerCase()) !== -1))
-      );
-      // } else {
-      //   return true;
-      // }
-    });
+    
+    if (sec == "all") {
+      return filter(array, (_items) => {
+        return (
+          _items.sections == null &&
+          _items.results &&
+          _items.results.id == 3 &&
+          ((_items.email &&
+            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+              -1) ||
+            (_items.first_name &&
+              _items.first_name
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1) ||
+            (_items.phone_number &&
+              _items.phone_number
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1))
+        );
+      });
+    } else {
+      return filter(array, (_items) => {
+        // if (_items.email) {
+        return (
+          _items.sections == parseInt(sec) &&
+          _items.results.id == 3 &&
+          ((_items.email &&
+            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+              -1) ||
+            (_items.first_name &&
+              _items.first_name
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1) ||
+            (_items.phone_number &&
+              _items.phone_number
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) !== -1))
+        );
+        // } else {
+        //   return true;
+        // }
+      });
+    }
   }
 }
 
@@ -191,10 +231,11 @@ const AdminUsers = (props) => {
   const [histoyText, setHistoryText] = useState("");
   const [row, setRow] = useState([]);
   const [rowId, setRowID] = useState(0);
+  const [callSwitch, setCallSwitch] = useState(false);
 
   const setting = useRecoilValue(settingState);
 
-  // console.log("logindata", logindata);
+  console.log("logindata", logindata.role);
 
   const backToTop = () => {
     console.log("loginData");
@@ -287,7 +328,7 @@ const AdminUsers = (props) => {
     setSearch(e.target.value);
   };
 
-  let filterData = applySortFilters(callData.contents, search, id);
+  //let filterData = applySortFilters(callData.contents, search, id, 0);
 
   const deleteAdmin = async () => {
     setLoading(true);
@@ -404,6 +445,10 @@ const AdminUsers = (props) => {
     return () => warper.removeEventListener("scroll", onScroll);
   }, []);
 
+  const CallSwitch = () => {
+    setCallSwitch(() => !callSwitch);
+  };
+
   //console.log("offset", offset);
 
   return (
@@ -428,6 +473,7 @@ const AdminUsers = (props) => {
                 Edit
               </Link>
             )}
+
             {allCheck.length > 0 ? (
               <>
                 <button
@@ -437,7 +483,7 @@ const AdminUsers = (props) => {
                   Delete
                 </button>
 
-                {parseInt(logindata.role) !== 3 && (
+                {logindata.role !== 3 && (
                   <select
                     name="results"
                     onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
@@ -492,6 +538,25 @@ const AdminUsers = (props) => {
                 </button>
               </>
               //)
+            )}
+
+            {logindata.role !== 3 && (
+              <div className="relative">
+                <div
+                  onClick={CallSwitch}
+                  className="dark-mode-switcher cursor-pointer shadow-md absolute bottom-0 left-0 box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
+                >
+                  <div className="mr-4 text-slate-600 dark:text-slate-200">
+                    Won Calls
+                  </div>
+                  <div
+                    className={classnames({
+                      "dark-mode-switcher__toggle border": true,
+                      "dark-mode-switcher__toggle--active": callSwitch,
+                    })}
+                  ></div>
+                </div>
+              </div>
             )}
           </div>
           {/* <div className="hidden md:block mx-auto text-slate-500">
@@ -562,7 +627,8 @@ const AdminUsers = (props) => {
                           users={applySortFilters(
                             callData.contents,
                             search,
-                            "all"
+                            "all",
+                            callSwitch ? logindata.userId : 0
                           )}
                           setUserId={setCallId}
                           setCallState={setCallState}
@@ -590,7 +656,8 @@ const AdminUsers = (props) => {
                     let calls = applySortFilters(
                       callData.contents,
                       search,
-                      val?.id
+                      val?.id,
+                      callSwitch ? logindata.userId : 0
                     );
                     // if (calls.length == 0) return;
 
