@@ -46,6 +46,8 @@ const Logout = (props) => {
     navigate("/", { replace: true });
   };
 
+  //console.log('loginsta',loginsta);
+
   const handelSwitch = async () => {
     console.log("handel switch");
 
@@ -63,7 +65,7 @@ const Logout = (props) => {
         // console.log("vewing 1", response);
         const accessToken = response.data.data.token;
         const roles = response.data.data.user.is_admin;
-       
+
         if (roles == 1) {
           localStorage.setItem("isAdmin", true);
         }
@@ -154,7 +156,7 @@ const Logout = (props) => {
             ) : (
               <>
                 <Lucide icon="AlertCircle" className="w-6 h-6 mr-2" /> Logged in
-                as Employee
+                as {loginsta.role === 2 ? "Admin" : "Employee"}
                 <button
                   type="button"
                   className="btn-close text-white"

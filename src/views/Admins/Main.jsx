@@ -2,14 +2,14 @@ import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
 import { useState } from "react";
 
-import { useRecoilStateLoadable } from "recoil";
+import { useRecoilStateLoadable , useRecoilState} from "recoil";
 import { allUserListState } from "../../state/admin-atom";
 
 import UsersTable from "./UsersTable";
-
+import { loginState } from "../../state/login-atom";
 import axios from "axios";
 import { adminApi } from "../../configuration";
-
+import { useNavigate } from "react-router-dom";
 import { filter } from "lodash";
 
 function applySortFilters(array, searchValue) {
@@ -25,9 +25,12 @@ function applySortFilters(array, searchValue) {
 import { authHeader } from "../../service/auth-header";
 
 const AdminUsers = (props) => {
+  let navigate = useNavigate();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [employeeConfirmationModal, setEmployeeConfirmationModal] =
     useState(false);
+
+    const [loginstaste, setLoginState] = useRecoilState(loginState);
 
   const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(allUserListState);
@@ -172,6 +175,81 @@ const AdminUsers = (props) => {
     }
   };
 
+
+  const viewAsAdmin = async (userId) => {
+    console.log("View viewAsAdmin");
+
+    setLoading(true);
+    const URL = adminApi() + "token/" + userId;
+
+    try {
+      const response = await axios.get(URL, {
+        headers,
+      });
+
+      //  console.log("response", response);
+      if (response?.data?.success) {
+        setLoading(false);
+
+        let old_user_id = localStorage.userId;
+        localStorage.setItem("view", old_user_id);
+        // console.log("vewing 1", response);
+        const accessToken = response.data.data.token;
+        const roles = response.data.data.user.is_admin;
+
+        if (roles == 1) {
+          localStorage.setItem("isAdmin", true);
+        }
+
+        localStorage.setItem("loggedIn", true);
+        localStorage.setItem("token", accessToken);
+        localStorage.setItem("user", JSON.stringify(response?.data?.data));
+
+        localStorage.setItem(
+          "first_name",
+          response?.data?.data?.user?.first_name
+        );
+        localStorage.setItem(
+          "last_name",
+          response?.data?.data?.user?.last_name
+        );
+        if (response.data.data.user?.profile_image?.file_path) {
+          localStorage.setItem(
+            "profile_image",
+            response.data.data.user?.profile_image?.file_path
+          );
+        }
+        if (response?.data?.data.user) {
+          localStorage.setItem("userId", response?.data?.data?.user?.id);
+        }
+
+        localStorage.setItem("role", roles);
+
+        setLoginState({
+          profile_image: response.data.data.user?.profile_image?.file_path,
+          email: response.data.data.user.email,
+          first_name: response.data.data.user.first_name,
+          last_name: response.data.data.user.last_name,
+          isAdmin: roles == 1 ? roles : 0,
+          role: roles,
+          token: accessToken,
+          userId: response.data.data.user.id,
+          view: old_user_id,
+        });
+
+        navigate("../", { replace: true });
+        setTimeout(function () {
+          window.location.reload();
+        }, 500);
+      } else {
+        alert("Something is wrong please try again later!");
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">List Of Admins</h2>
@@ -223,6 +301,7 @@ const AdminUsers = (props) => {
               setEmployeeConfirmationModal={setEmployeeConfirmationModal}
               users={filterData}
               setUserId={setUserId}
+              viewAsAdmin={viewAsAdmin}
             />
           )}
         </div>

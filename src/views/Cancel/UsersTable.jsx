@@ -74,17 +74,11 @@ const UsersTable = (props) => {
             <th className="text-center whitespace-nowrap">Status</th>
             <th className="text-center whitespace-nowrap">AG</th>
             <th className="text-center whitespace-nowrap">Package</th>
-            <th className="text-center whitespace-nowrap">Last Contact Date</th>
+
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">GPA</th>
-            <th className="text-center whitespace-nowrap">
-              {" "}
-              Last Status Date{" "}
-            </th>
-            <th className="text-center whitespace-nowrap">
-              {" "}
-              First Call Notes
-            </th>
+          
+           
             <th className="text-center whitespace-nowrap"> Results</th>
             <th className="text-center whitespace-nowrap">
               {" "}
@@ -124,12 +118,12 @@ const UsersTable = (props) => {
                 <td className="text-center">{user?.whatsapp}</td>
                 <td className="text-center">{user?.priority?.title}</td>
 
-                <td className="text-center">  {helper.formatDate(user?.created_at, "MMM D, YYYY")}</td>
+                <td className="text-center">  {helper.formatDate(user?.first_contact, "MMM D, YYYY")}</td>
               
                 <td className="text-center">
-                  {helper.formatDate(user?.created_at, "MMM D, YYYY")}
+                  {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
                 </td>
-                <td>{user?.status?.title}</td>
+                <td>{user?.statu?.title}</td>
                 <td>
                   <div className="form-check mt-2">
                     <input
@@ -143,9 +137,7 @@ const UsersTable = (props) => {
                   </div>
                 </td>
                 <td>{user?.package?.title}</td>
-                <td className="text-center">
-                  {helper.formatDate(user?.created_at, "MMM D, YYYY")}
-                </td>
+             
                 <td className="text-center">{user?.age}</td>
                 <td className="text-center">{user?.gpa}</td>
                 <td className="text-center">

@@ -6,7 +6,14 @@ const formatDate = (dat) => {
   return dat.split("T")[0];
 };
 const UsersTable = (props) => {
-  const { users, rowCount, setUserId, setDeleteConfirmationModal , setEmployeeConfirmationModal} = props;
+  const {
+    users,
+    rowCount,
+    setUserId,
+    setDeleteConfirmationModal,
+    viewAsAdmin,
+    setEmployeeConfirmationModal,
+  } = props;
 
   return (
     <table className="table table-report -mt-2">
@@ -57,6 +64,14 @@ const UsersTable = (props) => {
                     <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Delete
                   </a>
 
+                  <button
+                    className="flex items-center text-success mr-3"
+                    onClick={() => viewAsAdmin(user.id)}
+                  >
+                    <Lucide icon="EyeOff" className="w-4 h-4 mr-1 " />
+                    View as Admin
+                  </button>
+
                   <a
                     className="flex items-center text-warning  mr-3"
                     href="#"
@@ -65,7 +80,8 @@ const UsersTable = (props) => {
                       setUserId(user.id);
                     }}
                   >
-                    <Lucide icon="UserMinus" className="w-4 h-4 mr-1" /> Make Employee
+                    <Lucide icon="UserMinus" className="w-4 h-4 mr-1" /> Make
+                    Employee
                   </a>
                 </div>
               </td>

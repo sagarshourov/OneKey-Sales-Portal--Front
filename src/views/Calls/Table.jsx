@@ -94,6 +94,8 @@ const UsersTable = (props) => {
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
+
+            <th className="text-center whitespace-nowrap">Assigned To</th>
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">Case Type</th>
@@ -204,6 +206,7 @@ const UsersTable = (props) => {
                       <CopyEle email={user.email} />
                     </div>
                   </td>
+                  <td>{user?.assigned_to?.first_name } {user?.assigned_to?.last_name }</td>
 
                   {/* <td>{user?.phone_number}</td> */}
                   <td>{user?.whatsapp}</td>
@@ -245,7 +248,7 @@ const UsersTable = (props) => {
                       onChange={(e) => handelChange(e, user.id, "n")}
                       name="status"
                       className="form-select form-select-sm mt-2 w-20"
-                      defaultValue={user?.status?.id}
+                      defaultValue={user?.status}
                     >
                       <option value="0">Select..</option>
 

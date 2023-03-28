@@ -130,7 +130,7 @@ const UsersTable = (props) => {
                 <td className="text-center">
                   {helper.formatDate(user?.created_at, "MMM D, YYYY")}
                 </td>
-                <td>{user?.status?.title}</td>
+                <td>{user?.statu?.title}</td>
                 <td>
                   <div className="form-check mt-2">
                     <input

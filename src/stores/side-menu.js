@@ -222,6 +222,18 @@ let adminObj = {
       icon: "PhoneCall",
       title: "Reports",
       pathname: "/reports",
+      subMenu: [
+        {
+          icon: "",
+          pathname: "/reports",
+          title: "Pre Made",
+        },
+        {
+          icon: "",
+          pathname: "/creport",
+          title: "Custom",
+        },
+      ],
     },
 
     {

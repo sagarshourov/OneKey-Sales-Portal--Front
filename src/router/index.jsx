@@ -254,6 +254,10 @@ function Router() {
           element: <AllReports />,
         },
         {
+          path: "/creport/",
+          element: <CustomReports />,
+        },
+        {
           path: "/reports/:id",
           element: <Report />,
         },

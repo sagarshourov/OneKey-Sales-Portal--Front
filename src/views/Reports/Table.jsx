@@ -3,6 +3,8 @@ import { Lucide, Tippy, LoadingIcon, Checkbox } from "@/base-components";
 import { Link } from "react-router-dom";
 import CopyEle from "../Calls/CopyEle";
 
+import { helper } from "@/utils/helper";
+
 const fText = (text) => {
   return text ? text.substr(0, 10) + "..." : "";
 };
@@ -41,6 +43,7 @@ const UsersTable = (props) => {
             </th>
 
             <th className="text-center whitespace-nowrap">Agreement Sent</th>
+            <th className="text-center whitespace-nowrap">Agreement Signed</th>
 
             {/* <th className="text-center whitespace-nowrap">
               {" "}
@@ -135,7 +138,7 @@ const UsersTable = (props) => {
                   </td>
                   <td className="text-center">{user?.next_step}</td>
                   <td>{user?.package?.title}</td>
-                  <td>{user?.status?.title}</td>
+                  <td>{user?.statu?.title}</td>
                   <td className="text-center">
                     <div className="text-center">
                       <Tippy
@@ -169,6 +172,13 @@ const UsersTable = (props) => {
                   <td className="text-center">
                     {user.ag === 0 ? "No" : "Yes"}
                   </td>
+
+                  <td className="text-center">
+                    {user.agreed_to_signed === 0 ? "No" : "Yes"}
+                  </td>
+
+
+                  
 
                   <td className="text-center">
                     <div className="text-center">

@@ -977,7 +977,7 @@ const EditCallCon = (props) => {
 
                 <select
                   name="status"
-                  defaultValue={calls?.status && calls?.status.id}
+                  defaultValue={calls?.status && calls?.status}
                   className="form-control"
                 >
                   <option value="0">Select...</option>

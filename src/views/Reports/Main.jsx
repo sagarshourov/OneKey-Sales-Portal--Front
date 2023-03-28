@@ -6,9 +6,9 @@ import {
   Modal,
   ModalBody,
 } from "@/base-components";
+import classnames from "classnames";
 
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
 import Select from "react-tailwindcss-select";
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { allUserListState, callListState } from "../../state/admin-atom";
@@ -32,20 +32,38 @@ function findEmp(array, user_id) {
       if (val.value === user_id) state = true;
     });
 
-
   return state;
 }
 
-function applySortFilters(array, searchValue, status, min, max, emp) {
-  return filter(array, (_items) => {
-    return (
-      _items.status &&
-      _items.status.id === status &&
-      findEmp(emp, _items.user_id) &&
-      Date.parse(_items.created_at) >= min &&
-      Date.parse(_items.created_at) <= max
-    );
-  });
+function applySortFilters(array, status, min, max, emp) {
+  if (status === 10) {
+    return filter(array, (_items) => {
+      return (
+        findEmp(emp, _items.user_id) &&
+        Date.parse(_items.created_at) >= min &&
+        Date.parse(_items.created_at) <= max &&
+        _items?.ag === 1
+      );
+    });
+  } else if (status === 11) {
+    return filter(array, (_items) => {
+      return (
+        findEmp(emp, _items.user_id) &&
+        Date.parse(_items.created_at) >= min &&
+        Date.parse(_items.created_at) <= max &&
+        _items?.agreed_to_signed === 1
+      );
+    });
+  } else {
+    return filter(array, (_items) => {
+      return (
+        findEmp(emp, _items.user_id) &&
+        Date.parse(_items.created_at) >= min &&
+        Date.parse(_items.created_at) <= max &&
+        _items?.status === status
+      );
+    });
+  }
 }
 const options = (datas) => {
   let data = [];
@@ -85,6 +103,8 @@ const AdminUsers = (props) => {
   const [empName, setEmpName] = useState("");
 
   const [emp, setEmp] = useState(null);
+
+  const [cancel, setCancel] = useState(false);
 
   const headers = {
     Authorization: `Bearer ${logindata?.token}`,
@@ -129,7 +149,6 @@ const AdminUsers = (props) => {
 
   let filterData = applySortFilters(
     callData.contents,
-    search,
     parseInt(status),
     startDate,
     endDate,
@@ -211,6 +230,13 @@ const AdminUsers = (props) => {
     //console.log("emp", emp);
   };
 
+  const handelAgreement = () => {
+    setAgreement(() => !agreement);
+  };
+  const handelCancel = () => {
+    setCancel(() => !cancel);
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">
@@ -222,32 +248,37 @@ const AdminUsers = (props) => {
           ? "Warm"
           : status == 3
           ? "Cold"
+          : status == 10
+          ? "Agreement sent"
+          : status == 11
+          ? "Agreement Signed"
           : ""}{" "}
         Report{" "}
       </h2>
       <div className=" mt-5">
         <div className="intro-y flex flex-row mt-2">
-          <div className="basis-2/4 grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <Litepicker
-              value={daterange}
-              onChange={handelRange}
-              options={{
-                // format: "YYYY-MM-DD",
-                autoApply: false,
-                singleMode: false,
-                numberOfColumns: 2,
-                numberOfMonths: 2,
-                showWeekNumbers: true,
-                dropdowns: {
-                  minYear: 1990,
-                  maxYear: 2030,
-                  months: true,
-                  years: true,
-                },
-              }}
-              className="form-control w-56 block mx-auto"
-            />
-
+          <div className="basis-3/4 grid grid-cols-1 lg:grid-cols-5 gap-4">
+            <div>
+              <Litepicker
+                value={daterange}
+                onChange={handelRange}
+                options={{
+                  // format: "YYYY-MM-DD",
+                  autoApply: false,
+                  singleMode: false,
+                  numberOfColumns: 2,
+                  numberOfMonths: 2,
+                  showWeekNumbers: true,
+                  dropdowns: {
+                    minYear: 1990,
+                    maxYear: 2030,
+                    months: true,
+                    years: true,
+                  },
+                }}
+                className="form-control w-56 block mx-auto"
+              />
+            </div>
             {/* <select
               className="form-control"
               onChange={(e) => handelUserSelect(e)}
@@ -263,54 +294,94 @@ const AdminUsers = (props) => {
                   );
                 })}
             </select> */}
+            <div>
+              {usersData.state == "hasValue" && (
+                <Select
+                  primaryColor={"indigo"}
+                  value={emp}
+                  onChange={handleEmp}
+                  options={options(usersData.contents)}
+                  isMultiple={true}
+                  classNames={{
+                    menu: "absolute z-50 w-48 bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                    tagItem: ({ isDisabled }) =>
+                      " bg-gray-200 rounded m-1 p-1 flex  ",
+                    menuButton: ({ isDisabled }) =>
+                      `flex pl-5  text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                        isDisabled
+                          ? "bg-gray-200"
+                          : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                      }`,
+                  }}
+                />
+              )}
+            </div>
 
-            {usersData.state == "hasValue" && (
-              <Select
-                primaryColor={"indigo"}
-                value={emp}
-                onChange={handleEmp}
-                options={options(usersData.contents)}
-                isMultiple={true}
-                classNames={{
-                  menu: "absolute z-50 w-48 bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
-                  tagItem: ({ isDisabled }) =>
-                    " bg-gray-200 rounded m-1 p-1 flex  ",
-                  menuButton: ({ isDisabled }) =>
-                    `flex pl-5  text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
-                      isDisabled
-                        ? "bg-gray-200"
-                        : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
-                    }`,
-                }}
-              />
-            )}
+            <div>
+              <select className="form-control" onClick={(e) => handelStatus(e)}>
+                <option>Select Status..</option>
+                <option value="1">Hot Report</option>
+                <option value="2">Warm Report</option>
+                <option value="3">Cold Report</option>
+                <option value="10">Agreement sent</option> {/*fake value */}
+                <option value="11">Agreement Signed</option> {/*fake value */}
+              </select>
+            </div>
 
-            <select className="form-control" onClick={(e) => handelStatus(e)}>
-              <option>Select Status..</option>
-              <option value="1">Hot Report</option>
-              <option value="2">Warm Report</option>
+            {/* <div className="relative">
+              <div
+                onClick={handelCancel}
+                className="dark-mode-switcher cursor-pointer shadow-md absolute box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
+              >
+                <div className="mr-4 text-slate-600 dark:text-slate-200">
+                  Canceled
+                </div>
+                <div
+                  className={classnames({
+                    "dark-mode-switcher__toggle border": true,
+                    "dark-mode-switcher__toggle--active": cancel,
+                  })}
+                ></div>
+              </div>
+            </div> */}
 
-              <option value="3">Cold Report</option>
-            </select>
+            {/* <div className="relative">
+              <div
+                onClick={handelAgreement}
+                className="dark-mode-switcher cursor-pointer shadow-md absolute bottom-0 left-0 box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
+              >
+                <div className="mr-4 text-slate-600 dark:text-slate-200">
+                  Cancelation
+                </div>
+                <div
+                  className={classnames({
+                    "dark-mode-switcher__toggle border": true,
+                    "dark-mode-switcher__toggle--active": agreement,
+                  })}
+                ></div>
+              </div>
+            </div> */}
           </div>
 
-          <div className=" basis-2/4 flex flex-row-reverse pl-10">
-            <select
-              onChange={handelPageCount.bind(this)}
-              className="w-20 form-select box mt-3 sm:mt-0 mx-5"
-            >
-              <option value="10">10</option>
-              <option value="25">25</option>
-              <option value="35">35</option>
-              <option value="50">50</option>
-            </select>
+          <div className=" basis-1/4 flex flex-row-reverse pl-10">
+            <div>
+              <select
+                onChange={handelPageCount.bind(this)}
+                className="w-20 form-select box mt-3 sm:mt-0 mx-5"
+              >
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="35">35</option>
+                <option value="50">50</option>
+              </select>
+            </div>
           </div>
         </div>
         {/* BEGIN: Data List */}
 
         {filterData.length > 0 && (
           <div className="flex justify-center ">
-            <Alert className="alert-dark mb-2 w-96 my-5">
+            <Alert className="alert-dark mb-2 w-auto my-5">
               <div className="flex items-center">
                 <div className="font-medium text-lg">
                   {status == 1
@@ -319,6 +390,10 @@ const AdminUsers = (props) => {
                     ? "Warm"
                     : status == 3
                     ? "Cold"
+                    : status == 10
+                    ? "Agreement sent"
+                    : status == 11
+                    ? "Agreement Signed"
                     : ""}{" "}
                   Report ({daterange})
                 </div>
