@@ -1,13 +1,9 @@
-import { Tippy, Checkbox, Lucide } from "@/base-components";
+import { Checkbox, Tippy } from "@/base-components";
 
-import { Link } from "react-router-dom";
 import { helper } from "@/utils/helper";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import CopyEle from "./CopyEle";
-const formatDate = (dat) => {
-  //const date = dat.split(" ");
-  return dat.split("T")[0];
-};
 
 const fText = (text) => {
   return text ? text.substr(0, 10) + "..." : "";
@@ -120,6 +116,8 @@ const UsersTable = (props) => {
               Follow up call notes
             </th>
 
+            <th className="text-center whitespace-nowrap">Agreement Sent</th>
+
             {/* <th className="text-center whitespace-nowrap">
               {" "}
               Cancellation reason
@@ -209,7 +207,6 @@ const UsersTable = (props) => {
 
                   {/* <td>{user?.phone_number}</td> */}
                   <td>{user?.whatsapp}</td>
-                 
 
                   <td className="text-center">{user?.age}</td>
 
@@ -217,40 +214,7 @@ const UsersTable = (props) => {
                     {user?.case_type == 1 && "F-1"}{" "}
                     {user?.case_type == 2 && "F-1/F2"}
                   </td>
-                  {/* <td className="text-center">
-                  <select
-                    onChange={(e) => handelChange(e, user.id, "n")}
-                    name="priority"
-                    className="form-select form-select-sm mt-2 w-20"
-                    defaultValue={user?.priority?.id}
-                  >
-                    <option value="0">Select..</option>
 
-                    {setting.priorities &&
-                      setting.priorities.map((val, indx) => (
-                        <option key={indx} value={val?.id}>
-                          {val?.title}
-                        </option>
-                      ))}
-                  </select>
-                </td> */}
-                  {/* <td className="text-center">{user?.referred_by}</td> */}
-
-                  {/* <td
-                  className="text-center"
-                  onClick={() => setHistory("memo", user.history, user.id)}
-                >
-                  <div className="text-center">
-                    <Tippy
-                      tag="a"
-                      href="#"
-                      className="tooltip"
-                      content={user?.memo}
-                    >
-                      {fText(user?.memo)}
-                    </Tippy>
-                  </div>
-                </td> */}
                   <td className="text-center">
                     {user?.call_schedule_date &&
                       helper.formatDate(
@@ -333,23 +297,10 @@ const UsersTable = (props) => {
                     </div>
                   </td>
 
-                  {/* <td>
-                  <select
-                    onChange={(e) => handelChange(e, user.id, "n")}
-                    name="cancel_reason"
-                    className="form-select form-select-sm mt-2 w-full"
-                    defaultValue={user?.cancel_reason?.id}
-                  >
-                    <option value="0">Select.. </option>
+                  <td className="text-center">
+                    {user.ag === 0 ? "No" : "Yes"}
+                  </td>
 
-                    {setting.cancel_reason &&
-                      setting.cancel_reason.map((val, indx) => (
-                        <option key={indx} value={val?.id}>
-                          {val?.title}
-                        </option>
-                      ))}
-                  </select>
-                </td> */}
                   <td
                     className="text-center"
                     onClick={() =>

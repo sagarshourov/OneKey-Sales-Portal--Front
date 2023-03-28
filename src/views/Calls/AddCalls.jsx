@@ -891,23 +891,23 @@ const AddCalls = (props) => {
                   />
                 </div>
 
-                <div className="intro-y">
+                {/* <div className="intro-y">
                   <label className="form-label">Follow Up Date</label>
                   <input
                     type="date"
                     name="follow_up_date"
                     className="form-control"
                   />
-                </div>
+                </div> */}
 
-                <div className="intro-y">
+                {/* <div className="intro-y">
                   <label className="form-label"> Next Steps</label>
                   <input
                     type="text"
                     name="next_step"
                     className="form-control"
                   />
-                </div>
+                </div> */}
               </div>
             </div>
 

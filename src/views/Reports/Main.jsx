@@ -1,17 +1,17 @@
 import {
+  Alert,
+  Litepicker,
+  LoadingIcon,
   Lucide,
   Modal,
-  LoadingIcon,
   ModalBody,
-  Litepicker,
-  Alert,
 } from "@/base-components";
 
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
+import Select from "react-tailwindcss-select";
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
-import { callListState, allUserListState } from "../../state/admin-atom";
+import { allUserListState, callListState } from "../../state/admin-atom";
 
 import { loginState } from "../../state/login-atom";
 
@@ -22,20 +22,42 @@ import { adminApi } from "../../configuration";
 
 import { filter } from "lodash";
 
-
 //console.log("report", Date.parse("2022-12-21 10:31:12"));
 
-function applySortFilters(array, searchValue, status, min, max, user_id) {
+function findEmp(array, user_id) {
+  var state = false;
+
+  array !== null &&
+    array.map((val, key) => {
+      if (val.value === user_id) state = true;
+    });
+
+
+  return state;
+}
+
+function applySortFilters(array, searchValue, status, min, max, emp) {
   return filter(array, (_items) => {
     return (
       _items.status &&
       _items.status.id === status &&
-      _items.user_id === user_id &&
+      findEmp(emp, _items.user_id) &&
       Date.parse(_items.created_at) >= min &&
       Date.parse(_items.created_at) <= max
     );
   });
 }
+const options = (datas) => {
+  let data = [];
+
+  datas.map((val, index) => {
+    // console.log('val',val);
+
+    data.push({ value: val.id, label: val.first_name + " " + val.last_name });
+  });
+
+  return data;
+};
 
 const AdminUsers = (props) => {
   // let { id } = useParams();
@@ -62,6 +84,8 @@ const AdminUsers = (props) => {
 
   const [empName, setEmpName] = useState("");
 
+  const [emp, setEmp] = useState(null);
+
   const headers = {
     Authorization: `Bearer ${logindata?.token}`,
     ContentType: "application/json",
@@ -79,7 +103,7 @@ const AdminUsers = (props) => {
           headers,
         }
       );
-      console.log(response);
+      // console.log(response);
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
@@ -109,7 +133,7 @@ const AdminUsers = (props) => {
     parseInt(status),
     startDate,
     endDate,
-    parseInt(user_id)
+    emp
   );
 
   const handelRange = (date) => {
@@ -121,7 +145,7 @@ const AdminUsers = (props) => {
 
     setEndDate(Date.parse(spilt[1]));
 
-    console.log("change date");
+    //  console.log("change date");
   };
 
   const deleteAdmin = async () => {
@@ -181,6 +205,12 @@ const AdminUsers = (props) => {
     setEmpName(e.target.selectedOptions[0].text);
   };
 
+  const handleEmp = (value) => {
+    setEmp(value);
+
+    //console.log("emp", emp);
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">
@@ -218,7 +248,7 @@ const AdminUsers = (props) => {
               className="form-control w-56 block mx-auto"
             />
 
-            <select
+            {/* <select
               className="form-control"
               onChange={(e) => handelUserSelect(e)}
             >
@@ -232,7 +262,28 @@ const AdminUsers = (props) => {
                     </option>
                   );
                 })}
-            </select>
+            </select> */}
+
+            {usersData.state == "hasValue" && (
+              <Select
+                primaryColor={"indigo"}
+                value={emp}
+                onChange={handleEmp}
+                options={options(usersData.contents)}
+                isMultiple={true}
+                classNames={{
+                  menu: "absolute z-50 w-48 bg-white shadow-lg border rounded py-1 mt-1.5 text-sm text-gray-700",
+                  tagItem: ({ isDisabled }) =>
+                    " bg-gray-200 rounded m-1 p-1 flex  ",
+                  menuButton: ({ isDisabled }) =>
+                    `flex pl-5  text-sm text-gray-500 border border-gray-300 rounded shadow-sm transition-all duration-300 focus:outline-none ${
+                      isDisabled
+                        ? "bg-gray-200"
+                        : "bg-white hover:border-gray-400 focus:border-blue-500 focus:ring focus:ring-blue-500/20"
+                    }`,
+                }}
+              />
+            )}
 
             <select className="form-control" onClick={(e) => handelStatus(e)}>
               <option>Select Status..</option>

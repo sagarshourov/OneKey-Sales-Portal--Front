@@ -1063,7 +1063,7 @@ const EditCallCon = (props) => {
                   />
                 </div>
 
-                <div className="intro-y">
+                {/* <div className="intro-y">
                   <label className="form-label">Follow Up Date</label>
                   <input
                     type="date"
@@ -1073,9 +1073,9 @@ const EditCallCon = (props) => {
                     }
                     className="form-control"
                   />
-                </div>
+                </div> */}
 
-                <div className="intro-y">
+                {/* <div className="intro-y">
                   <label className="form-label"> Next Steps</label>
                   <input
                     type="text"
@@ -1083,7 +1083,7 @@ const EditCallCon = (props) => {
                     className="form-control"
                     defaultValue={calls?.next_step && calls?.next_step}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
 

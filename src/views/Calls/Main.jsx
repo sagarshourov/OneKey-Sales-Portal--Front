@@ -29,7 +29,21 @@ import CallSchedule from "./CallSchedule";
 import classnames from "classnames";
 import { settingState } from "../../state/setting-atom";
 
-function todayFilters(array) {
+function get_single(arr, group) {
+  var date = "";
+  if (arr.extra.length > 0) {
+    arr.extra.map((dat, index) => {
+      if (dat.groups == group && dat.values[0].value) {
+        date = dat.values[0].value;
+      }
+    });
+  }
+  //console.log(date);
+
+  return Date.parse(date);
+}
+
+function todayFollowFilters(array) {
   // var today = "";
   if (array.length == 0) return;
   var today = new Date();
@@ -37,10 +51,13 @@ function todayFilters(array) {
   var today = helper.formatDate(today, "YYYY-MM-DD");
 
   return filter(array, (_items) => {
-    return Date.parse(_items.follow_up_date) === Date.parse(today);
+    //return Date.parse(_items.follow_up_date) === Date.parse(today);
+
+    return get_single(_items, "follow_up") === Date.parse(today);
   });
 }
 
+//todayFollowFilters
 function towFilters(array) {
   var tomorrow = new Date();
 
@@ -54,23 +71,10 @@ function towFilters(array) {
   tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
 
   return filter(array, (_items) => {
-    return Date.parse(_items.follow_up_date) === Date.parse(tomorrow);
+    // return Date.parse(_items.follow_up_date) === Date.parse(tomorrow);
+
+    return get_single(_items, "follow_up") === Date.parse(tomorrow);
   });
-}
-
-function get_single(arr) {
-  var date = "";
-  if (arr.extra.length > 0) {
-    arr.extra.map((dat, index) => {
-      if (dat.groups == "my_step" && dat.values[0].value) {
-        date = dat.values[0].value;
-      }
-    });
-  }
-
-  //console.log(date);
-
-  return Date.parse(date);
 }
 
 function nextFilters(array) {
@@ -86,7 +90,7 @@ function nextFilters(array) {
   tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
 
   return filter(array, (_items) => {
-    return get_single(_items) === Date.parse(tomorrow);
+    return get_single(_items, "my_step") === Date.parse(tomorrow);
   });
 }
 
@@ -157,7 +161,6 @@ function applySortFilters(array, searchValue, sec, user_id) {
       });
     }
   } else {
-    
     if (sec == "all") {
       return filter(array, (_items) => {
         return (
@@ -547,7 +550,7 @@ const AdminUsers = (props) => {
                   className="dark-mode-switcher cursor-pointer shadow-md absolute bottom-0 left-0 box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
                 >
                   <div className="mr-4 text-slate-600 dark:text-slate-200">
-                    Won Calls
+                    Switch Calls
                   </div>
                   <div
                     className={classnames({
@@ -661,6 +664,12 @@ const AdminUsers = (props) => {
                     );
                     // if (calls.length == 0) return;
 
+                    var isOpen = null;
+
+                    if (search !== "" && calls.length > 0) {
+                      isOpen = 0;
+                    }
+
                     return (
                       <div
                         key={indx}
@@ -670,14 +679,14 @@ const AdminUsers = (props) => {
                         <AccordionGroup
                           draggable={true}
                           className="accordion-boxed mt-5"
-                          selectedIndex={null}
+                          selectedIndex={isOpen}
                         >
                           <AccordionItem className={"box "}>
                             <Accordion>{val?.title}</Accordion>
                             <AccordionPanel
                               id={"item" + val?.id}
                               className={
-                                "text-slate-600 dark:text-slate-500 leading-relaxed item" +
+                                "text-slate-600 dark:text-slate-500 leading-relaxed  item" +
                                 val?.id
                               }
                             >
@@ -739,7 +748,7 @@ const AdminUsers = (props) => {
                 title="Today’s Follow Ups"
                 theme="table-dark"
                 handelGo={handelGo}
-                data={todayFilters(callData.contents)}
+                data={todayFollowFilters(callData.contents)}
               />
 
               <FollowUp

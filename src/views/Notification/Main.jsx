@@ -121,7 +121,7 @@ const NotificationMain = (props) => {
     console.log("approve", user_id);
 
     const LOGIN_URL = adminApi() + "calls/" + id;
-
+    setLoading(true);
     try {
       const response = await axios.put(
         LOGIN_URL,
