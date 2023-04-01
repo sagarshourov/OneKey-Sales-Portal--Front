@@ -6,7 +6,7 @@ let supAdminObj = {
     {
       icon: "Home",
       title: "Super Admin Profile",
-      pathname: "/",
+      pathname: "/profile",
     },
 
     {
@@ -68,8 +68,8 @@ let supAdminObj = {
       subMenu: [
         {
           icon: "",
-          pathname: "/calls/all",
-          title: "All",
+          pathname: "/",
+          title: "Open Calls",
         },
         {
           icon: "",
@@ -167,7 +167,7 @@ let adminObj = {
     {
       icon: "Home",
       title: "Admin Profile",
-      pathname: "/",
+      pathname: "/profile",
     },
 
     {
@@ -181,8 +181,8 @@ let adminObj = {
       subMenu: [
         {
           icon: "",
-          pathname: "/calls/all",
-          title: "All",
+          pathname: "/",
+          title: "Open Calls",
         },
         {
           icon: "",
@@ -265,7 +265,7 @@ let empObj = {
     {
       icon: "Home",
       title: "Employee Profile",
-      pathname: "/",
+      pathname: "/profile",
     },
 
     {
@@ -274,8 +274,8 @@ let empObj = {
       subMenu: [
         {
           icon: "",
-          pathname: "/calls/all",
-          title: "All",
+          pathname: "/",
+          title: "Open Calls",
         },
         // {
         //   icon: "",

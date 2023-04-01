@@ -31,7 +31,7 @@ import { settingState } from "../../state/setting-atom";
 
 function get_single(arr, group) {
   var date = "";
-  if (arr.extra.length > 0) {
+  if (arr.extra && arr.extra.length > 0) {
     arr.extra.map((dat, index) => {
       if (dat.groups == group && dat.values[0].value) {
         date = dat.values[0].value;
@@ -43,22 +43,31 @@ function get_single(arr, group) {
   return Date.parse(date);
 }
 
-function todayFollowFilters(array) {
+function todayFollowFilters(array, callSwitch, user_id) {
   // var today = "";
   if (array.length == 0) return;
   var today = new Date();
 
   var today = helper.formatDate(today, "YYYY-MM-DD");
 
-  return filter(array, (_items) => {
-    //return Date.parse(_items.follow_up_date) === Date.parse(today);
-
-    return get_single(_items, "follow_up") === Date.parse(today);
-  });
+  if (callSwitch) {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return (
+        get_single(_items, "follow_up") === Date.parse(today) &&
+        _items?.assigned_to?.id === user_id
+      );
+    });
+  } else {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return get_single(_items, "follow_up") === Date.parse(today);
+    });
+  }
 }
 
 //todayFollowFilters
-function towFilters(array) {
+function towFilters(array, callSwitch, user_id) {
   var tomorrow = new Date();
 
   tomorrow =
@@ -70,11 +79,26 @@ function towFilters(array) {
 
   tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
 
-  return filter(array, (_items) => {
-    // return Date.parse(_items.follow_up_date) === Date.parse(tomorrow);
+  // return filter(array, (_items) => {
+  //   // return Date.parse(_items.follow_up_date) === Date.parse(tomorrow);
 
-    return get_single(_items, "follow_up") === Date.parse(tomorrow);
-  });
+  //   return get_single(_items, "follow_up") === Date.parse(tomorrow);
+  // });
+
+  if (callSwitch) {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return (
+        get_single(_items, "follow_up") === Date.parse(tomorrow) &&
+        _items?.assigned_to?.id === user_id
+      );
+    });
+  } else {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return get_single(_items, "follow_up") === Date.parse(tomorrow);
+    });
+  }
 }
 
 function nextFilters(array) {
@@ -94,15 +118,30 @@ function nextFilters(array) {
   });
 }
 
-function scheduleFilters(array) {
+function scheduleFilters(array, callSwitch, user_id) {
   if (array.length == 0) return;
   var today = new Date();
 
   var today = helper.formatDate(today, "YYYY-MM-DD");
 
-  return filter(array, (_items) => {
-    return Date.parse(_items.call_schedule_date) === Date.parse(today);
-  });
+  // return filter(array, (_items) => {
+  //   return Date.parse(_items.call_schedule_date) === Date.parse(today);
+  // });
+
+  if (callSwitch) {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return (
+        Date.parse(_items.call_schedule_date) === Date.parse(today) &&
+        _items?.assigned_to?.id === user_id
+      );
+    });
+  } else {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return Date.parse(_items.call_schedule_date) === Date.parse(today);
+    });
+  }
 }
 
 function applySortFilters(array, searchValue, sec, user_id) {
@@ -120,7 +159,7 @@ function applySortFilters(array, searchValue, sec, user_id) {
       return filter(array, (_items) => {
         return (
           _items.sections == null &&
-          _items.user_id === user_id &&
+          _items?.assigned_to?.id === user_id &&
           _items.results &&
           _items.results.id == 3 &&
           ((_items.email &&
@@ -141,7 +180,7 @@ function applySortFilters(array, searchValue, sec, user_id) {
         // if (_items.email) {
         return (
           _items.sections == parseInt(sec) &&
-          _items.user_id === user_id &&
+          _items?.assigned_to?.id === user_id &&
           _items.results.id == 3 &&
           ((_items.email &&
             _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
@@ -238,7 +277,7 @@ const AdminUsers = (props) => {
 
   const setting = useRecoilValue(settingState);
 
-  console.log("logindata", logindata.role);
+ // console.log("logindata", logindata.role);
 
   const backToTop = () => {
     console.log("loginData");
@@ -647,6 +686,8 @@ const AdminUsers = (props) => {
                           tableDragOver={tableDragOver}
                           section={0}
                           setting={setting}
+                          setLoading={setLoading}
+                          headers={headers}
                         />
                       </AccordionPanel>
                     </AccordionItem>
@@ -710,6 +751,8 @@ const AdminUsers = (props) => {
                                 tableDragOver={tableDragOver}
                                 section={val?.id}
                                 setting={setting}
+                                setLoading={setLoading}
+                                headers={headers}
                               />
                             </AccordionPanel>
                           </AccordionItem>
@@ -742,27 +785,39 @@ const AdminUsers = (props) => {
                 title="Today's Call Schedule"
                 theme=" bg-warning text-white"
                 handelGo={handelGo}
-                data={scheduleFilters(callData.contents)}
+                data={scheduleFilters(
+                  callData.contents,
+                  callSwitch,
+                  logindata.userId
+                )}
               />
               <FollowUp
                 title="Today’s Follow Ups"
                 theme="table-dark"
                 handelGo={handelGo}
-                data={todayFollowFilters(callData.contents)}
+                data={todayFollowFilters(
+                  callData.contents,
+                  callSwitch,
+                  logindata.userId
+                )}
               />
 
               <FollowUp
                 title="Tomorrow’s Follow Ups"
                 theme="table-light"
                 handelGo={handelGo}
-                data={towFilters(callData.contents)}
+                data={towFilters(
+                  callData.contents,
+                  callSwitch,
+                  logindata.userId
+                )}
               />
-              <FollowUp
+              {/* <FollowUp
                 title="Next Step"
                 theme=" bg-success text-white"
                 handelGo={handelGo}
                 data={nextFilters(callData.contents)}
-              />
+              /> */}
             </>
           )}
         </div>

@@ -5,14 +5,13 @@ import {
   getCallsFilter,
   getSingleCall,
   getAllReports,
-  getAllNoti
+  getAllNoti,
+  getCallsPagination,
 } from "../service/admin";
 
 /**
  * Populate the default selector return value with a service call.
  */
-
-
 
 export const allUserSelect = selector({
   key: "allUserSelect",
@@ -53,16 +52,44 @@ export const notiSelect = selector({
   },
 });
 
+export const pageLimit = atom({
+  key: "pageLimit",
+  default: 20,
+});
+
+export const pagOffset = atom({
+  key: "pagOffset",
+  default: 1,
+});
+
+export const columnState = atom({
+  key: "columnState",
+  default: "sections",
+});
+
+export const valueState = atom({
+  key: "valueState",
+  default: null,
+});
+
+export const searchAtom = atom({
+  key: "searchAtom",
+  default: "0",
+});
 
 export const cancelSelect = selector({
   key: "cancelSelect",
   get: async ({ get }) => {
     try {
-      const response = await getCallsFilter(1);
+      const response = await getCallsPagination(
+       'results',
+        1,
+        get(pagOffset),
+        get(pageLimit),
+        get(searchAtom)
+      );
 
       //console.log('canN_res',response);
-
-
 
       return response.data || [];
     } catch (error) {
@@ -77,14 +104,18 @@ export const resultState = atom({
   default: 1,
 });
 
-
-
-
 export const clientSelect = selector({
   key: "clientSelect",
   get: async ({ get }) => {
     try {
-      const response = await getCallsFilter(get(resultState));
+      const response = await getCallsPagination(
+        'results',
+        2,
+        get(pagOffset),
+        get(pageLimit),
+        get(searchAtom)
+      );
+
       return response.data || [];
     } catch (error) {
       console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
@@ -97,7 +128,6 @@ export const callIdState = atom({
   key: "callIdState",
   default: 1,
 });
-
 
 export const singleCallselect = selector({
   key: "singleCallselect",
@@ -112,7 +142,6 @@ export const singleCallselect = selector({
   },
 });
 
-
 export const reportCount = atom({
   key: "reportCount",
   default: 0,
@@ -122,15 +151,11 @@ export const reportUser = atom({
   default: 0,
 });
 
-
-
-
-
 export const reportSelect = selector({
   key: "reportSelect",
   get: async ({ get }) => {
     try {
-      const response = await getAllReports(get(reportUser),get(reportCount));
+      const response = await getAllReports(get(reportUser), get(reportCount));
       return response.data || [];
     } catch (error) {
       console.error(`reportSelect -> reportSelect() ERROR: \n${error}`);
@@ -139,21 +164,37 @@ export const reportSelect = selector({
   },
 });
 
-
-
-
-
-
-
-
 export const reportListState = atom({
   key: "reportListState",
   default: reportSelect,
 });
 
+export const searchListSelect = selector({
+  key: "searchListSelect",
+  get: async ({ get }) => {
+    try {
+      const response = await getCallsPagination(
+        get(columnState),
+        get(valueState),
+        get(pagOffset),
+        get(pageLimit),
+        get(searchAtom)
+      );
 
+      //console.log('canN_res',response);
 
+      return response.data || [];
+    } catch (error) {
+      console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
 
+export const searchListState = atom({
+  key: "searchListState",
+  default: searchListSelect,
+});
 
 export const allUserListState = atom({
   key: "allUserListState",
@@ -170,15 +211,10 @@ export const notiState = atom({
   default: notiSelect,
 });
 
-
 export const cancelListState = atom({
   key: "cancelListState",
   default: cancelSelect,
 });
-
-
-
-
 
 export const clientListState = atom({
   key: "clientListState",

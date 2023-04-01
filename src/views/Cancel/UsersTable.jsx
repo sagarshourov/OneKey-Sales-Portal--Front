@@ -10,7 +10,6 @@ import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
-
 import { helper } from "@/utils/helper";
 const UsersTable = (props) => {
   const { users, rowCount, allCheck, setAllCheck } = props;
@@ -58,16 +57,17 @@ const UsersTable = (props) => {
                 />
               </div>
             </th>
-            <th className="whitespace-nowrap">No</th>
+            <th className="whitespace-nowrap">ID</th>
             <th className="whitespace-nowrap">Client</th>
             <th className="text-center whitespace-nowrap">Phone</th>
+            <th className="text-center whitespace-nowrap">Cancel date</th>
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Priority</th>
 
             <th className="text-center whitespace-nowrap">
               First Contact Date
             </th>
-          
+
             <th className="text-center whitespace-nowrap">
               Follow up date set
             </th>
@@ -77,8 +77,7 @@ const UsersTable = (props) => {
 
             <th className="text-center whitespace-nowrap">Age</th>
             <th className="text-center whitespace-nowrap">GPA</th>
-          
-           
+
             <th className="text-center whitespace-nowrap"> Results</th>
             <th className="text-center whitespace-nowrap">
               {" "}
@@ -105,7 +104,7 @@ const UsersTable = (props) => {
                     />
                   </div>
                 </td>
-                <td className="w-40">{count}</td>
+                <td className="w-40">{user?.id}</td>
                 <td>
                   <Link to="#" className="font-medium whitespace-nowrap">
                     {user.first_name} {user.last_name}
@@ -115,11 +114,15 @@ const UsersTable = (props) => {
                   </div>
                 </td>
                 <td className="text-center">{user?.phone_number}</td>
+                <td className="text-center">{user?.cancel_date}</td>
                 <td className="text-center">{user?.whatsapp}</td>
                 <td className="text-center">{user?.priority?.title}</td>
 
-                <td className="text-center">  {helper.formatDate(user?.first_contact, "MMM D, YYYY")}</td>
-              
+                <td className="text-center">
+                  {" "}
+                  {helper.formatDate(user?.first_contact, "MMM D, YYYY")}
+                </td>
+
                 <td className="text-center">
                   {helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
                 </td>
@@ -137,7 +140,7 @@ const UsersTable = (props) => {
                   </div>
                 </td>
                 <td>{user?.package?.title}</td>
-             
+
                 <td className="text-center">{user?.age}</td>
                 <td className="text-center">{user?.gpa}</td>
                 <td className="text-center">
@@ -158,9 +161,7 @@ const UsersTable = (props) => {
                   </div>
                 </td>
 
-
                 <td>{user?.results?.title}</td>
-
 
                 <td>{user?.cancel_reason?.title}</td>
                 <td className="text-center">

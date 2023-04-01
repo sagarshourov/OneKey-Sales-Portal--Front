@@ -68,7 +68,7 @@ const EditCallCon = (props) => {
   const [err, setErr] = useState([]);
   const [emailErr, setEmailErr] = useState([]);
 
-   let navigate = useNavigate();
+  let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const logindata = useRecoilValue(loginState);
@@ -232,7 +232,7 @@ const EditCallCon = (props) => {
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
-       // window.location.reload();
+        // window.location.reload();
         navigate("../calls/all", { replace: true });
       }
     } catch (err) {
@@ -278,10 +278,8 @@ const EditCallCon = (props) => {
         setNotiState(response?.data?.data);
       }
     } catch (err) {
-
-     // console.log(err);
+      // console.log(err);
       if (!err?.response?.data?.success) {
-
       }
 
       setLoading(false);
@@ -477,7 +475,8 @@ const EditCallCon = (props) => {
 
         <div className="mt-5">
           <div className="px-5">
-            {err && Object.keys(err).length > 0 &&
+            {err &&
+              Object.keys(err).length > 0 &&
               Object.values(err).map((text, key) => {
                 return (
                   <h3 className="text-danger py-3 text-center" key={key}>
@@ -1263,7 +1262,7 @@ const EditCallCon = (props) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+            <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-5 gap-4 mt-5">
               <div className="intro-x ">
                 <label className="form-label">Cancellation reason </label>
                 <select
@@ -1282,7 +1281,17 @@ const EditCallCon = (props) => {
                     ))}
                 </select>
               </div>
-
+              {cancelReason && (
+                <div className="intro-y">
+                  <label className="form-label"> Cancel Date</label>
+                  <input
+                    type="date"
+                    name="cancel_date"
+                    className="form-control"
+                    defaultValue={calls?.cancel_date && calls?.cancel_date}
+                  />
+                </div>
+              )}
               {cancelReason && (
                 <div className="intro-y lg:col-span-3">
                   <label className="form-label">Notes</label>

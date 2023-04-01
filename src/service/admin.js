@@ -5,6 +5,29 @@ const token = localStorage.getItem("token");
 
 const headers = { Authorization: `Bearer ${token}` };
 
+export async function getCallsPagination(column, value, offset, limit, search) {
+  const userApiUrl =
+    adminApi() +
+    "call_filter/" +
+    column +
+    "/" +
+    value +
+    "/" +
+    offset +
+    "/" +
+    limit +
+    "/" +
+    search;
+
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    handelError(error);
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
+
 export async function getAllUsers() {
   const userApiUrl = adminApi() + "users";
 

@@ -9,19 +9,27 @@ import {
   AccordionItem,
 } from "@/base-components";
 
-import dom from "@left4code/tw-starter/dist/js/dom";
-
 import { useState } from "react";
 
 import { useParams, Link } from "react-router-dom";
 
-import { useRecoilStateLoadable, useRecoilValue } from "recoil";
-import { callListState } from "../../state/admin-atom";
-
+import {
+  useRecoilStateLoadable,
+  useSetRecoilState,
+  useRecoilValue,
+} from "recoil";
+import {
+  searchListState,
+  pagOffset,
+  pageLimit,
+  searchAtom,
+  columnState,
+  valueState,
+} from "../../state/admin-atom";
 
 import { loginState } from "../../state/login-atom";
 
-import Table from "./Table";
+import SearchTable from "./SearchTable";
 
 import axios from "axios";
 import { adminApi } from "../../configuration";
@@ -116,7 +124,7 @@ const AdminUsers = (props) => {
   let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
 
-  const [callData, setCallState] = useRecoilStateLoadable(callListState);
+  const [callData, setCallState] = useRecoilStateLoadable(searchListState);
   const [rowCount, setRowCount] = useState(10);
   const [search, setSearch] = useState("");
   const [aheck, setAcheck] = useState(false);
@@ -135,7 +143,16 @@ const AdminUsers = (props) => {
   const [row, setRow] = useState([]);
   const [rowId, setRowID] = useState(0);
 
+  const [secTitle, setSecTitle] = useState("");
+
   const setting = useRecoilValue(settingState);
+
+  const setPageOffset = useSetRecoilState(pagOffset);
+  const searchQuery = useSetRecoilState(searchAtom);
+  const limitQuery = useSetRecoilState(pageLimit);
+
+  const columnQuery = useSetRecoilState(columnState);
+  const valueQuery = useSetRecoilState(valueState);
 
   const handelGo = (section) => {
     document.getElementsByClassName(
@@ -206,19 +223,45 @@ const AdminUsers = (props) => {
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
+
+    limitQuery(parseInt(e.target.value));
   };
 
   const handelLoad = () => {
     let count = rowCount + 20;
 
     setRowCount(count);
+    limitQuery(parseInt(count));
   };
 
   const handelSearch = (e) => {
     setSearch(e.target.value);
   };
 
-  let filterData = applySortFilters(callData.contents, search, id);
+  const searchCall = () => {
+    // valueQuery(null);
+    if (search == "") {
+      searchQuery(0);
+      setSearch("");
+    } else {
+      searchQuery(search);
+    }
+    setSecTitle("Search Result ");
+  };
+
+  const resetCall = () => {
+    searchQuery(0);
+    valueQuery(null);
+    setSearch("");
+  };
+
+  const handelSection = (e) => {
+    valueQuery(e.target.value);
+    setSearch("");
+    searchQuery(0);
+
+    setSecTitle(e.target.selectedOptions[0].text);
+  };
 
   const deleteAdmin = async () => {
     setLoading(true);
@@ -320,15 +363,13 @@ const AdminUsers = (props) => {
     }
   };
 
-  
-
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Search Call List</h2>
 
       <div className="col-span-1 lg:order-1 order-2 lg:col-span-3">
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className="lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
+          <div className="lg:basis-8/12 grid grid-cols-4 lg:grid-cols-6 gap-2">
             <Link
               className="btn btn-elevated-primary shadow-md mr-2 py-2"
               to="/calls/add"
@@ -401,38 +442,54 @@ const AdminUsers = (props) => {
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
 
-          <div className="lg:basis-2/12   grid  grid-cols-2">
+          <div className="lg:basis-4/12   grid  grid-cols-1 lg:grid-cols-5 gap-3">
+            <select
+              onChange={(e) => handelSection(e)}
+              className="w-full  form-select box mt-3 sm:mt-0"
+            >
+              <option value="null">Non Section</option>
+              {setting.sections &&
+                setting.sections.map((val, indx) => (
+                  <option key={indx} value={val?.id}>
+                    {val?.title}
+                  </option>
+                ))}
+            </select>
             <select
               onChange={handelPageCount.bind(this)}
-              className="w-full lg:w-20 form-select box mt-3 sm:mt-0"
+              className="w-full  form-select box mt-3 sm:mt-0"
             >
-              <option value="10">10</option>
+              <option value="20">20</option>
               <option value="25">25</option>
               <option value="35">35</option>
               <option value="50">50</option>
-              <option value="10000">All</option>
+              <option value="100">100</option>
             </select>
 
-            <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-              <div className="relative w-52 text-slate-500">
+            <div className="w-full">
+              <div className=" text-slate-500">
                 <input
                   onChange={handelSearch.bind(this)}
                   type="text"
-                  className="form-control w-52 box"
+                  className="form-control  box"
                   placeholder="Search..."
-                />
-                <Lucide
-                  icon="Search"
-                  className="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0"
                 />
               </div>
             </div>
+
+            <button onClick={searchCall} className="btn-primary">
+              Search{" "}
+            </button>
+
+            <button onClick={resetCall} className="btn-danger text-white">
+              Reset Search{" "}
+            </button>
           </div>
         </div>
         {/* BEGIN: Data List */}
 
         <div className="intro-y mt-5 col-span-12 ">
-          {callData.state === "hasValue" && (
+          {callData.state === "hasValue" ? (
             <>
               {loading && (
                 <div className="h-full w-full bg-gray-50/75 grid  absolute z-[100]">
@@ -451,16 +508,12 @@ const AdminUsers = (props) => {
               >
                 <AccordionGroup className="accordion-boxed ">
                   <AccordionItem className="box">
-                    <Accordion>All</Accordion>
+                    <Accordion>{secTitle}</Accordion>
                     <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
-                      <Table
+                      <SearchTable
                         rowCount={rowCount}
                         setDeleteConfirmationModal={setDeleteConfirmationModal}
-                        users={applySortFilters(
-                          callData.contents,
-                          search,
-                          "all"
-                        )}
+                        users={callData.contents}
                         setUserId={setCallId}
                         setCallState={setCallState}
                         allCheck={allCheck}
@@ -475,12 +528,15 @@ const AdminUsers = (props) => {
                         tableDragOver={tableDragOver}
                         section={0}
                         setting={setting}
+                        loadMore={handelLoad}
                       />
                     </AccordionPanel>
                   </AccordionItem>
                 </AccordionGroup>
               </div>
             </>
+          ) : (
+            <h1 className="p-5">Loading...</h1>
           )}
         </div>
 

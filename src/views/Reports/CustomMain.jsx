@@ -1,25 +1,15 @@
 import {
-  Lucide,
-  Modal,
-  LoadingIcon,
-  ModalBody,
-  Alert,
-  Litepicker,
+  Litepicker, LoadingIcon, Lucide,
+  Modal, ModalBody
 } from "@/base-components";
-import Select from "react-tailwindcss-select";
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import Select from "react-tailwindcss-select";
 
 import {
-  useRecoilStateLoadable,
-  useSetRecoilState,
-  useRecoilValue,
+  useRecoilStateLoadable, useRecoilValue, useSetRecoilState
 } from "recoil";
 import {
-  reportListState,
-  reportCount,
-  reportUser,
-  allUserListState,
+  allUserListState, reportCount, reportListState, reportUser
 } from "../../state/admin-atom";
 
 import { loginState } from "../../state/login-atom";
@@ -83,9 +73,7 @@ const CustomMain = (props) => {
 
   const [allCheck, setAllCheck] = useState([]);
 
-  const [field, setField] = useState("first_name");
-  const [compere, setCompere] = useState("like");
-  const [value, setValue] = useState("");
+
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");

@@ -6,9 +6,14 @@ import {
   useRecoilStateLoadable,
   useSetRecoilState,
   useRecoilValue,
+  useRecoilRefresher_UNSTABLE,
 } from "recoil";
-import { clientListState, resultState } from "../../state/admin-atom";
-
+import {
+  clientListState,
+  pagOffset,
+  pageLimit,
+  searchAtom,
+} from "../../state/admin-atom";
 import { useParams, Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { settingState } from "../../state/setting-atom";
@@ -38,11 +43,16 @@ const headers = {
   ContentType: "application/json",
 };
 
-const ClientsMain = (props) => {
+const ClientMain = (props) => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);
-  const [callData, setUserState] = useRecoilStateLoadable(clientListState);
-  const [rowCount, setRowCount] = useState(10);
+  const [usersData, setUserState] = useRecoilStateLoadable(clientListState);
+
+  const setPageOffset = useSetRecoilState(pagOffset);
+  const searchQuery = useSetRecoilState(searchAtom);
+  const limitQuery = useSetRecoilState(pageLimit);
+
+  const [rowCount, setRowCount] = useState(200);
   const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");
   const [user_id, setUserId] = useState(0);
@@ -51,38 +61,54 @@ const ClientsMain = (props) => {
 
   const setting = useRecoilValue(settingState);
 
-  const setResultID = useSetRecoilState(resultState);
-  // setResultID(2);
-  // console.log("userdata", usersData);
-
-  // useEffect(() => {
-  //   setResultID(2);
-  //   console.log("set state");
-  // }, []);
-
+  //const resetcallIdState = useResetRecoilState(callIdState);
   useEffect(() => {
-    console.log("set state");
-    setResultID(2);
     return () => {
-      console.log("cleaned up");
+      console.log("releasing Clients....");
+      setPageOffset(1);
+      searchQuery(0);
+      limitQuery(20);
     };
   }, []);
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
+    limitQuery(parseInt(e.target.value));
   };
 
-  const handelLoad = () => {
-    let count = rowCount + 20;
+  // const handelLoad = () => {
+  //   let count = rowCount + 20;
 
-    setRowCount(count);
+  //   setRowCount(count);
+  // };
+
+  const handelLoad = (rowCount) => {
+    //let count = rowCount + 20;
+
+    setRowCount(rowCount);
+
+    setPageOffset(rowCount);
   };
 
   const handelSearch = (e) => {
     setSearch(e.target.value);
   };
 
-  let filterData = applySortFilters(callData.contents, search);
+  const searchCall = () => {
+    if (search == "") {
+      searchQuery(0);
+      setSearch("");
+    } else {
+      searchQuery(search);
+    }
+  };
+
+  const resetCall = () => {
+    searchQuery(0);
+    setSearch("");
+  };
+
+  console.log("searching", search);
 
   const deleteAdmin = async () => {
     setLoading(true);
@@ -130,7 +156,7 @@ const ClientsMain = (props) => {
 
   return (
     <>
-      <h2 className="intro-y text-lg font-medium mt-10 ">Clients List</h2>
+      <h2 className="intro-y text-lg font-medium mt-10 ">Clients Call List</h2>
       <div className="grid grid-cols-12 gap-6 mt-5">
         {/* <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
           <div className="hidden md:block mx-auto text-slate-500">
@@ -164,7 +190,7 @@ const ClientsMain = (props) => {
         </div> */}
 
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className="lg:basis-9/12 grid grid-cols-1 lg:grid-cols-6 gap-2">
+          <div className=" lg:basis-8/12 grid grid-cols-1 lg:grid-cols-6 gap-2">
             <Link
               className="btn btn-elevated-primary shadow-md mr-2 py-2"
               to="/calls/add"
@@ -214,10 +240,10 @@ const ClientsMain = (props) => {
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
 
-          <div className="lg:basis-2/12   grid  grid-cols-2">
+          <div className="lg:basis-4/12   grid  grid-cols-1 lg:grid-cols-4 gap-3">
             <select
               onChange={handelPageCount.bind(this)}
-              className="w-full lg:w-20 form-select box mt-3 sm:mt-0"
+              className="w-full  form-select box mt-3 sm:mt-0"
             >
               <option value="10">10</option>
               <option value="25">25</option>
@@ -226,44 +252,62 @@ const ClientsMain = (props) => {
               <option value="100">100</option>
             </select>
 
-            <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-              <div className="relative md:w-36 lg:w-52 text-slate-500">
+            <div className="w-full">
+              <div className=" text-slate-500">
                 <input
                   onChange={handelSearch.bind(this)}
                   type="text"
-                  className="form-control md:w-36 lg:w-52 box"
+                  className="form-control  box"
                   placeholder="Search..."
-                />
-                <Lucide
-                  icon="Search"
-                  className="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0"
                 />
               </div>
             </div>
+
+            <button onClick={searchCall} className="btn-primary">
+              Search{" "}
+            </button>
+
+            <button onClick={resetCall} className="btn-danger text-white">
+              Reset Search{" "}
+            </button>
           </div>
         </div>
 
         {/* BEGIN: Data List */}
 
         <div className="intro-y col-span-12  overflow-auto ">
-          {callData.state === "hasValue" && (
+          {usersData.state === "hasValue" ? (
             <UsersTable
               rowCount={rowCount}
               setDeleteConfirmationModal={setDeleteConfirmationModal}
-              users={filterData}
+              users={usersData.contents}
               setUserId={setUserId}
               allCheck={allCheck}
               setAllCheck={setAllCheck}
             />
+          ) : (
+            "Loading..."
           )}
         </div>
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
-        <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
-          <button onClick={handelLoad} className="btn">
-            Load more..
-          </button>
-        </div>
+        {usersData.state === "hasValue" && usersData.contents.length > 0 && (
+          <div className="intro-y  mt-5 col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+            <button
+              onClick={() => handelLoad(rowCount - 20)}
+              className="btn"
+              disabled={rowCount < 21 ? true : false}
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => handelLoad(rowCount + 20)}
+              className="btn ml-5"
+            >
+              Next
+            </button>
+          </div>
+        )}
         {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}
@@ -317,4 +361,4 @@ const ClientsMain = (props) => {
   );
 };
 
-export default ClientsMain;
+export default ClientMain;

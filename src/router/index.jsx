@@ -83,6 +83,10 @@ function Router() {
       children: [
         {
           path: "/",
+          element: <Calls />,
+        },
+        {
+          path: "/profile",
           element: <AdminDashBoard />,
         },
         {
@@ -221,6 +225,11 @@ function Router() {
       children: [
         {
           path: "/",
+          element: <Calls />,
+        },
+
+        {
+          path: "/profile",
           element: <AdminDashBoard />,
         },
 
@@ -309,8 +318,12 @@ function Router() {
       element: auth ? <MainLayout /> : <Navigate to="/login" />,
       children: [
         {
-          path: "/",
+          path: "/profile",
           element: <AdminDashBoard />,
+        },
+        {
+          path: "/",
+          element: <Calls />,
         },
         {
           path: "/calls/:id",

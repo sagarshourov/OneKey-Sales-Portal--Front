@@ -1,18 +1,17 @@
 import { Checkbox, Tippy } from "@/base-components";
 
-import axios from "axios";
 import { helper } from "@/utils/helper";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import CopyEle from "./CopyEle";
 import { filter } from "lodash";
-import { adminApi, getBaseApi } from "../../configuration";
 const fText = (text) => {
   return text ? text.substr(0, 10) + "..." : "";
 };
 
 const get_section = (array, val) => {
-  if (val) {
+
+  if(val){
     var dat = filter(array, (_items) => {
       return _items.id === val;
     });
@@ -21,25 +20,10 @@ const get_section = (array, val) => {
   return "";
 };
 
-const remove_style_tr = () => {
-  var table = document.querySelectorAll("tr");
-
-  table.forEach(ele => {
-
-    ele.style.borderTop = "none";
-    // check for the particulr class
-    console.log(ele);
-  
-  });
-
-  
-};
-
-const UsersTable = (props) => {
+const SearchTable = (props) => {
   const {
     users,
     setHistory,
-    setCallState,
     setUserId,
     setDeleteConfirmationModal,
     allCheck,
@@ -53,15 +37,9 @@ const UsersTable = (props) => {
     tableDragOver,
     section,
     setting,
-    setLoading,
-    headers,
+    loadMore,
+    rowCount,
   } = props;
-
-  const [rowCount, setRowCount] = useState(10);
-
-  const [startRow, setStartRow] = useState([]);
-
-  const [targetRow, setTargetRow] = useState([]);
 
   const handelChange = (e, id, type) => {
     e.preventDefault();
@@ -94,65 +72,12 @@ const UsersTable = (props) => {
     }
   };
 
-  const handleCheck = (e) => {
-    const { id, checked, name } = e.target;
 
-    updateFunc(id, name, checked);
-
-    console.log(checked);
-  };
-  const loadMore = () => {
-    let count = rowCount + 20;
-    setRowCount(count);
-  };
-
-  const allOver = (e) => {
-    //  console.log(e.target.parentNode.id);
-    setTargetRow(e.target.parentNode);
-
-    e.target.parentNode.style.borderTop = "14px  solid green";
-  };
-
-  const DragEnd = async (e) => {
-    targetRow.borderTop = "none";
-
-    // console.log("DragEnd", e);
-
-    // console.log("target end", targetRow.id);
-    // console.log("start row", startRow.target.id);
-
-    remove_style_tr();
-    const URL = adminApi() + "calls_sort";
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        URL,
-        { start: parseInt(startRow.target.id), end: parseInt(targetRow.id) },
-        {
-          headers,
-        }
-      );
-
-      if (response?.data?.success) {
-        setLoading(false);
-        setCallState(response?.data?.data);
-      }
-    } catch (err) {
-      console.log(err);
-      setLoading(false);
-    }
-  };
-
-  const DragLeave = (e) => {
-    e.target.parentNode.style.borderTop = "none";
-    console.log("drag leave", e);
-  };
 
   return (
     <div className="overflow-auto relative">
       <p className="text-orange-500 text-stone-600"></p>
-      <table id="tbl" className="table  mt-2">
+      <table className="table  mt-2">
         <thead className={theme}>
           <tr>
             <th className="whitespace-nowrap">
@@ -171,7 +96,7 @@ const UsersTable = (props) => {
 
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
-
+            <th className="whitespace-nowrap">Sections</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
 
             <th className="text-center whitespace-nowrap">Assigned To</th>
@@ -255,15 +180,7 @@ const UsersTable = (props) => {
                 <tr
                   key={key}
                   className={"border-t pt-2" + dark}
-                  draggable={true}
-                  onDragStart={(e) => {
-                    dragStart(e, user.id);
-                    setStartRow(e);
-                  }}
-                  id={user.sort}
-                  onDragOver={(e) => allOver(e)}
-                  onDragEnd={(e) => DragEnd(e)}
-                  onDragLeave={(e) => DragLeave(e)}
+                  // onDragOver={(e) => dragover(e)}
                 >
                   <td>
                     <div className="form-check mt-2">
@@ -278,20 +195,20 @@ const UsersTable = (props) => {
                       />
                     </div>
                   </td>
-                  <td className="w-40">{user.id}</td>
+                  <td className="w-40">{count}</td>
                   <td>
                     <Link
                       to="#"
                       draggable={false}
                       className="font-medium whitespace-nowrap"
                     >
-                      {user.first_name} {user.last_name} 
+                      {user.first_name} {user.last_name}
                     </Link>
                     <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                       <CopyEle email={user.email} />
                     </div>
                   </td>
-
+                  <td>{get_section(setting.sections, user?.sections)}</td>
                   <td>
                     {user?.assigned_to?.first_name}{" "}
                     {user?.assigned_to?.last_name}
@@ -422,4 +339,4 @@ const UsersTable = (props) => {
   );
 };
 
-export default UsersTable;
+export default SearchTable;
