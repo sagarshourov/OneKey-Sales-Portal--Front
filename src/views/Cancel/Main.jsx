@@ -282,7 +282,7 @@ const CancelMain = (props) => {
         </div>
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
-        {usersData.state === "hasValue" && usersData.contents > 0 && (
+        {usersData.state === "hasValue" && (
           <div className="intro-y  mt-5 col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
             <button
               onClick={() => handelLoad(rowCount - 20)}
