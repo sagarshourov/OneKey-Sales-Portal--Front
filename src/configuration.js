@@ -13,8 +13,9 @@
  export const adminApi = () => `http://localhost:8000/api/admin/`;
 
 export const handelError = (error) => {
- localStorage.clear();
- window.location.href = "/login";
+    console.log(error);
+ //localStorage.clear();
+// window.location.href = "/login";
 };
 
 

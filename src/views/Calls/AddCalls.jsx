@@ -44,7 +44,6 @@ function removeArr(array, index) {
 }
 
 const AddCalls = (props) => {
- 
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [callData, setCallState] = useRecoilState(callListState);
@@ -112,6 +111,9 @@ const AddCalls = (props) => {
     let newObj = {
       id: myNextStepState[myNextStepState.length - 1].id + 1,
       values: [
+        {
+          value: "",
+        },
         {
           value: "",
         },
@@ -208,6 +210,7 @@ const AddCalls = (props) => {
           content: "Client Recovering Request",
           call_id: call?.id,
           user_id: logindata.userId,
+          is_read: 0,
         },
         {
           //user id is creator of notifications
@@ -479,7 +482,6 @@ const AddCalls = (props) => {
                       : "form-control"
                   }
                   placeholder=""
-                  required
                   onChange={(e) => checkEmail(e)}
                 />
 
@@ -531,7 +533,15 @@ const AddCalls = (props) => {
               </div>
               <div className="intro-x ">
                 <label className="form-label">Priority</label>
-                <select name="priority" className="form-control">
+
+                <input
+                  type="text"
+                  name="priority"
+                  className=" form-control"
+                  placeholder=""
+                />
+
+                {/* <select name="priority" className="form-control">
                   <option value="0">Select..</option>
                   {setting.priorities &&
                     setting.priorities.map((val, indx) => (
@@ -539,7 +549,7 @@ const AddCalls = (props) => {
                         {val?.title}
                       </option>
                     ))}
-                </select>
+                </select> */}
               </div>
               <div className="intro-x ">
                 <label className="form-label">Education level </label>

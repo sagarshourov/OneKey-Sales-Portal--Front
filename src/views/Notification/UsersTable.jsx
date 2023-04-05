@@ -27,13 +27,16 @@ const UsersTable = (props) => {
 
   return (
     <>
+    <div className="bg-danger text-white bg-red-400 text-white"></div>
       <table className="table table-report  mt-2">
         <thead>
           <tr>
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Type</th>
             <th className="whitespace-nowrap">Notifications</th>
-            <th className="whitespace-nowrap">From</th>
+            <th className="whitespace-nowrap">Sender</th>
+
+            <th className="whitespace-nowrap">Receiver</th>
 
             <th className="whitespace-nowrap"></th>
           </tr>
@@ -44,8 +47,10 @@ const UsersTable = (props) => {
 
             var row_color = "bg-white";
 
-            if (user.is_read == null) {
+            if (user.is_read == 0) {
               row_color = "alert-success-soft ";
+            }else if(user.is_read ==2){
+              row_color = " bg-red-400 text-danger ";
             }
 
             return (
@@ -65,12 +70,24 @@ const UsersTable = (props) => {
                     </Link>
                   )}
                 </td>
+                <td>
+                  {user.receiver && (
+                    <Link
+                      className="flex items-center text-info mr-3"
+                      to={"/profile/" + user?.to_id}
+                    >
+                      <Lucide icon="User" className="w-4 h-4 mr-1 " />{" "}
+                      {user.receiver.first_name} {user.receiver.last_name}
+                    </Link>
+                  )}
+                </td>
                 <td className="table-report__action w-56">
                   <div className="flex justify-center items-center">
                     <button
                       className="flex items-center text-info mr-3"
                       onClick={(e) => {
                         setUserId(user.user_id);
+                        setNotiId(user?.id);
                         handelView(user);
                       }}
                     >

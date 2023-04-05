@@ -12,17 +12,18 @@ import {
   ModalBody,
 } from "@/base-components";
 import axios from "axios";
-import dom from "@left4code/tw-starter/dist/js/dom";
-import * as $_ from "lodash";
+
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import { getBaseApi, adminApi } from "../../configuration";
 import { Link, useNavigate } from "react-router-dom";
-import { first } from "lodash";
 
+import { helper } from "@/utils/helper";
 import { loginState } from "../../state/login-atom";
 import { authHeader } from "../../service/auth-header";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useRecoilStateLoadable } from "recoil";
+
+import { notiState } from "../../state/admin-atom";
 
 const Logout = (props) => {
   const [loginsta, setLoginState] = useRecoilState(loginState);
@@ -30,6 +31,8 @@ const Logout = (props) => {
   const [alert, setAlert] = useState(true);
   const [headers, setToken] = useState(authHeader());
   let navigate = useNavigate();
+
+  const [notiData, setNotiState] = useRecoilStateLoadable(notiState);
   const handelLogout = () => {
     //useResetRecoilState(loginState);
     localStorage.clear();
@@ -119,6 +122,45 @@ const Logout = (props) => {
     setAlert(false);
   };
 
+  const notiIcon = () => {
+    var notiIcon = "";
+
+    notiData.state === "hasValue" &&
+      notiData.contents.map((noti, key) => {
+        if (noti.is_read === 0) {
+          notiIcon = "notification--bullet";
+        }
+      });
+
+    return notiIcon;
+  };
+
+  const readNotification = async () => {
+    console.log("Read notification");
+    const LOGIN_URL = adminApi() + "read_all_noti";
+
+    const headers = {
+      Authorization: `Bearer ${loginsta.token}`,
+      ContentType: "application/json",
+    };
+
+    try {
+      const response = await axios.post(
+        LOGIN_URL,
+        { is_read: 1, user_id: loginsta.userId },
+        {
+          headers,
+        }
+      );
+      setLoading(false);
+      setNotiState(response?.data?.data?.noti);
+      //window.location.reload();
+    } catch (err) {
+      console.log("err", err);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {/* BEGIN: Top Bar */}
@@ -177,9 +219,14 @@ const Logout = (props) => {
 
         {/* END: Search Result */}
         {/* BEGIN: Notifications */}
-        <div className="intro-x dropdown mr-5 sm:mr-6">
+        <div
+          onClick={(e) => readNotification(e)}
+          className="intro-x dropdown mr-5 sm:mr-6"
+        >
           <div
-            className="dropdown-toggle notification notification--bullet cursor-pointer"
+            className={
+              "dropdown-toggle notification  cursor-pointer " + notiIcon()
+            }
             role="button"
             aria-expanded="false"
             data-tw-toggle="dropdown"
@@ -189,9 +236,48 @@ const Logout = (props) => {
               className="notification__icon dark:text-slate-500"
             />
           </div>
-          <div className="notification-content pt-2 dropdown-menu">
+          {/* <div className="notification-content pt-2 dropdown-menu">
             <div className="notification-content__box dropdown-content">
               <div className="notification-content__title">Notifications</div>
+            </div>
+          </div> */}
+
+          <div className="notification-content pt-2 dropdown-menu">
+            <div className="notification-content__box dropdown-content">
+              <Link to="/notifications" className="notification-content__title">
+                Notifications
+              </Link>
+
+              {notiData.state === "hasValue" &&
+                notiData.contents.slice(0, 5).map((noti, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className={classnames({
+                        "cursor-pointer relative flex": true,
+                        "mt-5": 1,
+                      })}
+                    >
+                      {/* <div className="w-10 h-10 flex-none image-fit mr-1">
+                    <img
+                      alt="Rocketman - HTML Admin Template"
+                      className="rounded-full"
+                      src=""
+                    />
+                    <div className="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white dark:border-darkmode-600"></div>
+                  </div> */}
+                      <div className="ml-2">
+                        <span className="text-slate-500">{noti.content}</span>
+                        <div className="text-xs text-slate-400 mt-1">
+                          {helper.formatDate(
+                            noti.created_at,
+                            "ddd, MMMM D, YYYY"
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </div>

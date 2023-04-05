@@ -46,6 +46,8 @@ const NotificationMain = (props) => {
 
   const [noti_id, setNotiId] = useState([]);
 
+  const [message, setMessage] = useState(false);
+
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
   };
@@ -60,22 +62,24 @@ const NotificationMain = (props) => {
     setSearch(e.target.value);
   };
 
-  const updateRead = async (id, type, call_id, user_id) => {
+  const updateRead = async (read, id, type, call_id, user_id) => {
     const LOGIN_URL = adminApi() + "notifications/" + id;
 
     try {
       const response = await axios.put(
         LOGIN_URL,
-        { is_read: 1, call_id: call_id, type: type, user_id: user_id },
+        { is_read: read, call_id: call_id, type: type, user_id: user_id },
         {
           headers,
         }
       );
       setLoading(false);
-
       setNotiState(response?.data?.data?.noti);
-
-      setCall(response?.data?.data?.call);
+      if (type === 2) {
+        setCallViewModal(false);
+      } else {
+        setCall(response?.data?.data?.call);
+      }
 
       //window.location.reload();
     } catch (err) {
@@ -85,12 +89,12 @@ const NotificationMain = (props) => {
   };
 
   const handelView = (e) => {
-    console.log("sagar", e);
+
 
     setNotiFrom(e.user.first_name + " " + e.user.last_name);
 
     if (e.type === 1) {
-      updateRead(e.id, e.type, e.call_id, e.user_id);
+      updateRead(1, e.id, e.type, e.call_id, e.user_id);
       setCallViewModal(true);
     }
   };
@@ -118,8 +122,6 @@ const NotificationMain = (props) => {
     }
   };
   const approveUser = async (id) => {
-    console.log("approve", user_id);
-
     const LOGIN_URL = adminApi() + "calls/" + id;
     setLoading(true);
     try {
@@ -131,13 +133,28 @@ const NotificationMain = (props) => {
         }
       );
       setLoading(false);
-      setAllCallState(response?.data?.data);
-      setCallViewModal(false);
+      // setAllCallState(response?.data?.data);
+
+      setNotiState(response?.data?.data?.noti);
+
+      setAllCallState(response?.data?.data?.call);
+
+      setMessage(true);
+
+      setTimeout(function () {
+        setCallViewModal(false);
+        setMessage(false);
+      }, 1000);
+      //  setCallViewModal(false);
       //window.location.reload();
     } catch (err) {
       console.log("err", err);
       setLoading(false);
     }
+  };
+
+  const rejectUser = (call_id) => {
+    updateRead(2, noti_id, 2, call_id, user_id);
   };
 
   return (
@@ -256,6 +273,12 @@ const NotificationMain = (props) => {
       >
         <ModalBody className="p-0">
           <h3 className="text-xl pt-5 text-center">User Details</h3>
+
+          {message && (
+            <h3 className="text-success py-3 text-center">
+              Approved Successfully !
+            </h3>
+          )}
           <div className="my-5 ">
             <div className="intro-y p-5 box grid grid-cols-2 gap-2">
               <div className="flex items-center">
@@ -288,15 +311,15 @@ const NotificationMain = (props) => {
             <button
               type="button"
               onClick={() => {
-                setCallViewModal(false);
+                rejectUser(call?.id);
               }}
-              className="btn btn-outline-secondary w-24 mr-1"
+              className="btn btn-outline-danger w-24 mr-1"
             >
-              Cancel
+              Reject
             </button>
 
             <button
-              onClick={() => approveUser(call.id)}
+              onClick={() => approveUser(call?.id)}
               type="button"
               className="btn btn-success text-white"
             >

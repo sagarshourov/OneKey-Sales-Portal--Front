@@ -51,6 +51,12 @@ function filterExtra(array, group) {
   });
 }
 
+function filterSingle(array, filed) {
+  return filter(array, (_items) => {
+    return _items.field == filed;
+  });
+}
+
 function employeeFilters(array) {
   return filter(array, (_items) => {
     return _items.is_admin !== 1;
@@ -187,6 +193,9 @@ const EditCallCon = (props) => {
         {
           value: "",
         },
+        {
+          value: "",
+        },
       ],
     };
     let myStep = myNextStepState;
@@ -265,6 +274,7 @@ const EditCallCon = (props) => {
           content: "Client Recovering Request",
           call_id: call?.id,
           user_id: logindata.userId,
+          is_read: 0
         },
         {
           //user id is creator of notifications
@@ -466,6 +476,10 @@ const EditCallCon = (props) => {
 
   // console.log('calls', calls);
 
+  let assigned_filter = calls.history
+    ? filterSingle(calls.history, "assigned_to")
+    : [];
+
   return (
     <>
       {" "}
@@ -492,31 +506,46 @@ const EditCallCon = (props) => {
                 <h3 className="text-xl font-medium">Form Information</h3>
               </div>
               <div className="lg:basis-5/12">
-                {calls.assigned_to && calls.assigned_date && (
+                {assigned_filter.length > 0 && (
                   <div className="relative before:hidden before:lg:block before:absolute before:w-[69%] before:h-[3px] before:top-0 before:bottom-0 before:mt-4 before:bg-slate-100 before:dark:bg-darkmode-400 flex flex-col lg:flex-row justify-center px-5 sm:px-20">
-                    <div className="intro-x lg:text-center flex items-center lg:block flex-1 z-10">
-                      <button
-                        type="button"
-                        className="w-50 h-10 rounded-full btn btn-primary"
-                      >
-                        Assigned
-                      </button>
-                      <div className="lg:w-32 font-medium text-base lg:mt-1 ml-3 lg:mx-auto">
-                        {calls.assigned_to.first_name}{" "}
-                        {calls.assigned_to.last_name}
-                      </div>
+                    {assigned_filter.map((data, index) => {
+                      //  console.log(data);
 
-                      <div className="lg:w-32  ml-3 lg:mx-auto">
-                        <small className="w-100 mb-5">
-                          (
-                          {helper.formatDate(
-                            calls?.assigned_date,
-                            "ddd, MMMM D, YYYY"
-                          )}
-                          )
-                        </small>
-                      </div>
-                    </div>
+                      var selected =
+                        "btn text-slate-500 bg-slate-100 dark:bg-darkmode-400 dark:border-darkmode-400";
+                      if (index == 0) {
+                        selected = " btn btn-primary";
+                      }
+
+                      return (
+                        <div
+                          key={index}
+                          className="intro-x lg:text-center flex items-center lg:block flex-1 z-10"
+                        >
+                          <button
+                            type="button"
+                            className={"w-50 h-10 rounded-full " + selected}
+                          >
+                            Assigned
+                          </button>
+                          <div className="lg:w-32 font-medium text-base lg:mt-1 ml-3 lg:mx-auto">
+                            {data?.user?.first_name}
+                          </div>
+
+                          <div className="lg:w-32  ml-3 lg:mx-auto">
+                            <small className="w-100 mb-5">
+                              (
+                              {helper.formatDate(
+                                data?.assigned_date,
+                                "ddd, MMMM D, YYYY"
+                              )}
+                              )
+                            </small>
+                          </div>
+                        </div>
+                      );
+                    })}
+
                     <div className="intro-x lg:text-center flex items-center mt-5 lg:mt-0 lg:block flex-1 z-10">
                       <button
                         type="button"
@@ -632,7 +661,16 @@ const EditCallCon = (props) => {
               </div>
               <div className="intro-x ">
                 <label className="form-label">Priority</label>
-                <select
+               
+
+                <input
+                  type="text"
+                  name="priority"
+                  className=" form-control"
+                  placeholder=""
+                  defaultValue={calls?.priority}
+                />
+                {/* <select
                   name="priority"
                   defaultValue={calls?.priority && calls?.priority.id}
                   className="form-control"
@@ -644,7 +682,7 @@ const EditCallCon = (props) => {
                         {val?.title}
                       </option>
                     ))}
-                </select>
+                </select> */}
               </div>
               <div className="intro-x ">
                 <label className="form-label">Education level </label>
@@ -1214,51 +1252,56 @@ const EditCallCon = (props) => {
                 </div>
 
                 {calls.history &&
-                  calls.history.map((data, index) => {
-                    var color = "bg-white";
+                  filterSingle(calls.history, "feedbacks").map(
+                    (data, index) => {
+                      var color = "bg-white";
 
-                    if (data?.user?.is_admin == 1) {
-                      color = "bg-warning text-white";
-                    }
-                    if (data?.user?.is_admin == 2) {
-                      color = "bg-info text-white";
-                    }
+                      if (data?.user?.is_admin == 1) {
+                        color = "bg-warning text-white";
+                      }
+                      if (data?.user?.is_admin == 2) {
+                        color = "bg-info text-white";
+                      }
 
-                    return (
-                      <div
-                        key={index}
-                        className={
-                          color +
-                          "  dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
-                        }
-                      >
-                        <div className="mr-3">
-                          <div className="image-fit w-12 h-12">
-                            <img
-                              className="rounded-full"
-                              src={
-                                getBaseApi() +
-                                "file/" +
-                                data?.user?.profile?.file_path
-                              }
-                            />
+                      return (
+                        <div
+                          key={index}
+                          className={
+                            color +
+                            "  dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
+                          }
+                        >
+                          <div className="mr-3">
+                            <div className="image-fit w-12 h-12">
+                              <img
+                                className="rounded-full"
+                                src={
+                                  getBaseApi() +
+                                  "file/" +
+                                  data?.user?.profile?.file_path
+                                }
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <a
+                              href=""
+                              className="text-primary font-medium mr-3"
+                            >
+                              {data?.user?.first_name} {data?.user?.last_name}
+                            </a>
+                            {data?.value}
+                            <div className="text-slate-500 text-xs mt-1.5">
+                              {helper.formatDate(
+                                data?.created_at,
+                                "ddd, MMMM D, YYYY h:mm A"
+                              )}
+                            </div>
                           </div>
                         </div>
-                        <div>
-                          <a href="" className="text-primary font-medium mr-3">
-                            {data?.user?.first_name} {data?.user?.last_name}
-                          </a>
-                          {data?.value}
-                          <div className="text-slate-500 text-xs mt-1.5">
-                            {helper.formatDate(
-                              data?.created_at,
-                              "ddd, MMMM D, YYYY h:mm A"
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    }
+                  )}
               </div>
             </div>
 

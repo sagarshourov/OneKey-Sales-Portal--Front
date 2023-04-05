@@ -24,26 +24,17 @@ const get_section = (array, val) => {
 const remove_style_tr = () => {
   var table = document.querySelectorAll("tr");
 
-  table.forEach((ele) => {
+  table.forEach(ele => {
+
     ele.style.borderTop = "none";
     // check for the particulr class
     console.log(ele);
+  
   });
+
+  
 };
 
-function extra_title(arr, group, index) {
-  var value;
-  if (arr.extra && arr.extra.length > 0) {
-    arr.extra.map((dat, key) => {
-      if (dat.groups == group && dat.values[index]?.value) {
-        value = dat.values[index]?.value;
-      }
-    });
-  }
-  //console.log(date);
-
-  return value;
-}
 const UsersTable = (props) => {
   const {
     users,
@@ -117,17 +108,9 @@ const UsersTable = (props) => {
 
   const allOver = (e) => {
     //  console.log(e.target.parentNode.id);
-    e.target.parentNode.style.borderTop = "14px  solid green";
-    // let children = Array.from(e.target.parentNode.parentNode.children);
-    // if (children.indexOf(e.target.parentNode) > children.indexOf(targetRow)) {
-    //   // e.target.parentNode.style.borderTop = "none";
-    //   e.target.parentNode.style.borderBottom = "14px  solid green";
-    // } else {
-    //   e.target.parentNode.style.borderTop = "14px  solid green";
-    //   //  e.target.parentNode.style.borderBottom = "none";
-    // }
-
     setTargetRow(e.target.parentNode);
+
+    e.target.parentNode.style.borderTop = "14px  solid green";
   };
 
   const DragEnd = async (e) => {
@@ -163,7 +146,6 @@ const UsersTable = (props) => {
 
   const DragLeave = (e) => {
     e.target.parentNode.style.borderTop = "none";
-    // e.target.parentNode.style.borderBottom = "none";
     console.log("drag leave", e);
   };
 
@@ -189,14 +171,13 @@ const UsersTable = (props) => {
 
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
-            <th className="whitespace-nowrap">E-mail</th>
+
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
 
             <th className="text-center whitespace-nowrap">Assigned To</th>
-            <th className="text-center whitespace-nowrap">Priority</th>
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
-
+            <th className="text-center whitespace-nowrap">Case Type</th>
             {/* <th className="text-center whitespace-nowrap">GPA</th> */}
             {/* <th className="text-center whitespace-nowrap">Priority</th> */}
             {/* <th className="text-center whitespace-nowrap">Referred by</th>
@@ -204,23 +185,19 @@ const UsersTable = (props) => {
             <th className="text-center whitespace-nowrap">
               Call Schedule Date
             </th>
-            <th className="text-center whitespace-nowrap">Case Type</th>
-
-            <th className="text-center whitespace-nowrap"> First Call Date</th>
-            <th className="text-center whitespace-nowrap">First Call Note</th>
+            <th className="text-center whitespace-nowrap">Next steps</th>
             <th className="text-center whitespace-nowrap">Package</th>
+            <th className="text-center whitespace-nowrap">Status</th>
+
+            <th className="text-center whitespace-nowrap">First Call Notes</th>
+            <th className="text-center whitespace-nowrap">
+              Follow up date set
+            </th>
+            <th className="text-center whitespace-nowrap">
+              Follow up call notes
+            </th>
 
             <th className="text-center whitespace-nowrap">Agreement Sent</th>
-
-            <th className="text-center whitespace-nowrap">Agreement Signed</th>
-
-            <th className="text-center whitespace-nowrap">Status</th>
-            <th className="text-center whitespace-nowrap"> Next Step Date</th>
-
-            <th className="text-center whitespace-nowrap"> Next Step Note</th>
-
-            <th className="text-center whitespace-nowrap">Follow up date</th>
-            <th className="text-center whitespace-nowrap">Follow up note</th>
 
             {/* <th className="text-center whitespace-nowrap">
               {" "}
@@ -303,16 +280,14 @@ const UsersTable = (props) => {
                   </td>
                   <td className="w-40">{user.id}</td>
                   <td>
-                    {user.first_name} {user.last_name}
-                  </td>
-                  <td>
-                    <div
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                      className="text-slate-500 text-xs whitespace-nowrap mt-0.5"
+                    <Link
+                      to="#"
+                      draggable={false}
+                      className="font-medium whitespace-nowrap"
                     >
+                      {user.first_name} {user.last_name} 
+                    </Link>
+                    <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                       <CopyEle email={user.email} />
                     </div>
                   </td>
@@ -321,10 +296,16 @@ const UsersTable = (props) => {
                     {user?.assigned_to?.first_name}{" "}
                     {user?.assigned_to?.last_name}
                   </td>
-                  <td>{user?.priority}</td>
+
                   <td>{user?.whatsapp}</td>
 
                   <td className="text-center">{user?.age}</td>
+
+                  <td className="text-center">
+                    {user?.case_type == 1 && "F-1"}{" "}
+                    {user?.case_type == 2 && "F-1/F2"}
+                  </td>
+
                   <td className="text-center">
                     {user?.call_schedule_date &&
                       helper.formatDate(
@@ -332,14 +313,7 @@ const UsersTable = (props) => {
                         "MMM D, YYYY"
                       )}{" "}
                   </td>
-
-                  <td className="text-center">
-                    {user?.case_type == 1 && "F-1"}{" "}
-                    {user?.case_type == 2 && "F-1/F2"}
-                  </td>
-
-                  <td className="text-center">{user?.first_contact}</td>
-                  <td className="text-center">{user?.first_call_notes}</td>
+                  <td className="text-center">{user?.next_step}</td>
                   <td>
                     <select
                       onChange={(e) => handelChange(e, user.id, "n")}
@@ -357,13 +331,6 @@ const UsersTable = (props) => {
                         ))}
                     </select>
                   </td>
-
-                  <td className="text-center">
-                    {user.ag === 0 ? "No" : "Yes"}
-                  </td>
-
-                  <td> {user.agreed_to_signed === 0 ? "No" : "Yes"}</td>
-
                   <td>
                     <select
                       onChange={(e) => handelChange(e, user.id, "n")}
@@ -381,14 +348,23 @@ const UsersTable = (props) => {
                         ))}
                     </select>
                   </td>
-                  <td>
-                    {helper.formatDate(
-                      extra_title(user, "my_step", 0),
-                      "MMM D, YYYY"
-                    )}
+                  <td
+                    onClick={() =>
+                      setHistory("last_status_notes", user.history, user.id)
+                    }
+                    className="text-center"
+                  >
+                    <div className="text-center">
+                      <Tippy
+                        tag="a"
+                        href="#"
+                        className="tooltip"
+                        content={user?.last_status_notes}
+                      >
+                        {fText(user?.last_status_notes)}
+                      </Tippy>
+                    </div>
                   </td>
-                  <td>{extra_title(user, "my_step", 1)}</td>
-
                   <td className="text-center">
                     {user?.follow_up_date &&
                       helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
@@ -413,8 +389,16 @@ const UsersTable = (props) => {
                   </td>
 
                   <td className="text-center">
+                    {user.ag === 0 ? "No" : "Yes"}
+                  </td>
+
+                  <td
+                    className="text-center"
+                    onClick={() =>
+                      setHistory("feedbacks", user.history, user.id)
+                    }
+                  >
                     <div className="text-center">
-                      {" "}
                       <Tippy
                         tag="a"
                         href="#"

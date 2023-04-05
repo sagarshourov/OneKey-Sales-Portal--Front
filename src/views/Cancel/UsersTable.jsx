@@ -104,7 +104,7 @@ const UsersTable = (props) => {
                     />
                   </div>
                 </td>
-                <td className="w-40">{user?.id}</td>
+                <td className="w-40">{user?.sort}</td>
                 <td>
                   <Link to="#" className="font-medium whitespace-nowrap">
                     {user.first_name} {user.last_name}

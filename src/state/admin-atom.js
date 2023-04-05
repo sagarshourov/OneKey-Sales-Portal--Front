@@ -59,7 +59,7 @@ export const pageLimit = atom({
 
 export const pagOffset = atom({
   key: "pagOffset",
-  default: 1,
+  default: 0,
 });
 
 export const columnState = atom({
@@ -76,17 +76,22 @@ export const searchAtom = atom({
   key: "searchAtom",
   default: "0",
 });
+export const CancelOrder = atom({
+  key: "CancelOrder",
+  default: "DESC",
+});
 
 export const cancelSelect = selector({
   key: "cancelSelect",
   get: async ({ get }) => {
     try {
       const response = await getCallsPagination(
-       'results',
+        "results",
         1,
         get(pagOffset),
         get(pageLimit),
-        get(searchAtom)
+        get(searchAtom),
+        get(CancelOrder)
       );
 
       //console.log('canN_res',response);
@@ -109,11 +114,12 @@ export const clientSelect = selector({
   get: async ({ get }) => {
     try {
       const response = await getCallsPagination(
-        'results',
+        "results",
         2,
         get(pagOffset),
         get(pageLimit),
-        get(searchAtom)
+        get(searchAtom),
+        'ASC'
       );
 
       return response.data || [];
@@ -178,7 +184,8 @@ export const searchListSelect = selector({
         get(valueState),
         get(pagOffset),
         get(pageLimit),
-        get(searchAtom)
+        get(searchAtom),
+        "ASC"
       );
 
       //console.log('canN_res',response);

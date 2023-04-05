@@ -20,20 +20,37 @@ const MySection = (props) => {
               name={"my_step[" + index + "][next_step_date]"}
               className=" pl-12 form-control"
               onChange={(e) => onChange(e.target.value, index, 0)}
-              defaultValue={data.values && data.values[0] ? data.values[0].value : ""}
+              defaultValue={
+                data.values && data.values[0] ? data.values[0].value : ""
+              }
             />
           </div>
         </div>
 
+       
+
         <div className="intro-y lg:col-span-5">
           <label className="form-label">Next Step Notes</label>
           <textarea
-         
             name={"my_step[" + index + "][next_step_notes]"}
             className="form-control"
             placeholder=""
             onChange={(e) => onChange(e.target.value, index, 1)}
-            defaultValue={data.values && data.values[1] ? data.values[1].value : ""}
+            defaultValue={
+              data.values && data.values[1] ? data.values[1].value : ""
+            }
+          />
+        </div>
+        <div className="intro-y">
+          <label className="form-label">Call Schedule time</label>
+          <input
+            type="time"
+            name={"my_step[" + index + "][next_step_time]"}
+            onChange={(e) => onChange(e.target.value, index, 2)}
+            className=" form-control"
+            defaultValue={
+              data.values && data.values[2] ? data.values[2].value : ""
+            }
           />
         </div>
         {/* <div className="intro-y">

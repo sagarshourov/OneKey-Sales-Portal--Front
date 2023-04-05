@@ -5,7 +5,14 @@ const token = localStorage.getItem("token");
 
 const headers = { Authorization: `Bearer ${token}` };
 
-export async function getCallsPagination(column, value, offset, limit, search) {
+export async function getCallsPagination(
+  column,
+  value,
+  offset,
+  limit,
+  search,
+  order
+) {
   const userApiUrl =
     adminApi() +
     "call_filter/" +
@@ -17,7 +24,9 @@ export async function getCallsPagination(column, value, offset, limit, search) {
     "/" +
     limit +
     "/" +
-    search;
+    search +
+    "/" +
+    order;
 
   try {
     const response = await axios.get(userApiUrl, { headers });

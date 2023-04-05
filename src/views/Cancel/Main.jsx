@@ -1,18 +1,19 @@
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 
 import {
   useRecoilStateLoadable,
   useSetRecoilState,
   useRecoilValue,
-  useRecoilRefresher_UNSTABLE
+  useRecoilRefresher_UNSTABLE,
 } from "recoil";
 import {
   cancelListState,
   pagOffset,
   pageLimit,
   searchAtom,
+  CancelOrder
 } from "../../state/admin-atom";
 import { useParams, Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
@@ -21,7 +22,6 @@ import axios from "axios";
 import { adminApi } from "../../configuration";
 
 import { filter } from "lodash";
-
 
 const token = localStorage.getItem("token");
 
@@ -39,6 +39,9 @@ const CancelMain = (props) => {
   const searchQuery = useSetRecoilState(searchAtom);
   const limitQuery = useSetRecoilState(pageLimit);
 
+  const cancelOrder = useSetRecoilState(CancelOrder);
+  
+
   const [rowCount, setRowCount] = useState(200);
   const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");
@@ -48,16 +51,13 @@ const CancelMain = (props) => {
 
   const setting = useRecoilValue(settingState);
 
-
-
   useEffect(() => {
     return () => {
-
-      console.log('releasing Cancel....');
+      console.log("releasing Cancel....");
       setPageOffset(1);
       searchQuery(0);
       limitQuery(20);
-
+      cancelOrder('DESC');
     };
   }, []);
 
@@ -99,8 +99,6 @@ const CancelMain = (props) => {
     setSearch("");
   };
 
-
-
   const deleteAdmin = async () => {
     setLoading(true);
     const URL = adminApi() + "calls/0";
@@ -138,11 +136,16 @@ const CancelMain = (props) => {
       );
       if (response?.data?.success) {
         setLoading(false);
-       // window.location.reload();
+        window.location.reload();
       }
     } catch (err) {
       setLoading(false);
     }
+  };
+
+  const handelOrder = (e) => {
+    console.log("order", e.target.value);
+    cancelOrder(e.target.value);
   };
 
   return (
@@ -181,7 +184,7 @@ const CancelMain = (props) => {
         </div> */}
 
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className=" lg:basis-8/12 grid grid-cols-1 lg:grid-cols-6 gap-2">
+          <div className=" lg:basis-7/12 grid grid-cols-1 lg:grid-cols-6 gap-2">
             <Link
               className="btn btn-elevated-primary shadow-md mr-2 py-2"
               to="/calls/add"
@@ -231,7 +234,15 @@ const CancelMain = (props) => {
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
 
-          <div className="lg:basis-4/12   grid  grid-cols-1 lg:grid-cols-4 gap-3">
+          <div className="lg:basis-5/12   grid  grid-cols-1 lg:grid-cols-5 gap-3">
+            <select
+              onChange={(e) => handelOrder(e)}
+              className="w-full  form-select box mt-3 sm:mt-0"
+            >
+               <option value="DESC">Descending</option>
+              <option value="ASC">Ascending</option>
+             
+            </select>
             <select
               onChange={handelPageCount.bind(this)}
               className="w-full  form-select box mt-3 sm:mt-0"

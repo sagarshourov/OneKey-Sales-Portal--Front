@@ -101,7 +101,44 @@ function towFilters(array, callSwitch, user_id) {
   }
 }
 
-function nextFilters(array) {
+function todayNextFilters(array, callSwitch, user_id) {
+  // var tomorrow = new Date();
+
+  // tomorrow =
+  //   tomorrow.getFullYear() +
+  //   "-" +
+  //   (tomorrow.getMonth() + 1) +
+  //   "-" +
+  //   (tomorrow.getDate() + 1);
+
+  // tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
+
+  // return filter(array, (_items) => {
+  //   return get_single(_items, "my_step") === Date.parse(tomorrow);
+  // });
+
+  if (array.length == 0) return;
+  var today = new Date();
+
+  var today = helper.formatDate(today, "YYYY-MM-DD");
+
+  if (callSwitch) {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return (
+        get_single(_items, "my_step") === Date.parse(today) &&
+        _items?.assigned_to?.id === user_id
+      );
+    });
+  } else {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return get_single(_items, "my_step") === Date.parse(today);
+    });
+  }
+}
+
+function tomorrowNextFilters(array, callSwitch, user_id) {
   var tomorrow = new Date();
 
   tomorrow =
@@ -113,9 +150,24 @@ function nextFilters(array) {
 
   tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
 
-  return filter(array, (_items) => {
-    return get_single(_items, "my_step") === Date.parse(tomorrow);
-  });
+  // return filter(array, (_items) => {
+  //   return get_single(_items, "my_step") === Date.parse(tomorrow);
+  // });
+
+  if (callSwitch) {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return (
+        get_single(_items, "my_step") === Date.parse(tomorrow) &&
+        _items?.assigned_to?.id === user_id
+      );
+    });
+  } else {
+    return filter(array, (_items) => {
+      //return Date.parse(_items.follow_up_date) === Date.parse(today)
+      return get_single(_items, "my_step") === Date.parse(tomorrow);
+    });
+  }
 }
 
 function scheduleFilters(array, callSwitch, user_id) {
@@ -277,7 +329,7 @@ const AdminUsers = (props) => {
 
   const setting = useRecoilValue(settingState);
 
- // console.log("logindata", logindata.role);
+  // console.log("logindata", logindata.role);
 
   const backToTop = () => {
     console.log("loginData");
@@ -791,7 +843,7 @@ const AdminUsers = (props) => {
                   logindata.userId
                 )}
               />
-              <FollowUp
+              {/* <FollowUp
                 title="Today’s Follow Ups"
                 theme="table-dark"
                 handelGo={handelGo}
@@ -811,13 +863,28 @@ const AdminUsers = (props) => {
                   callSwitch,
                   logindata.userId
                 )}
-              />
-              {/* <FollowUp
-                title="Next Step"
+              /> */}
+              <FollowUp
+                title="Today's Next Step"
                 theme=" bg-success text-white"
                 handelGo={handelGo}
-                data={nextFilters(callData.contents)}
-              /> */}
+                data={todayNextFilters(
+                  callData.contents,
+                  callSwitch,
+                  logindata.userId
+                )}
+              />
+
+              <FollowUp
+                title="Tomorrow’s Next Step"
+                theme=" table-light text-white"
+                handelGo={handelGo}
+                data={tomorrowNextFilters(
+                  callData.contents,
+                  callSwitch,
+                  logindata.userId
+                )}
+              />
             </>
           )}
         </div>
