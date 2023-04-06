@@ -61,13 +61,16 @@ const ClientMain = (props) => {
 
   const setting = useRecoilValue(settingState);
 
+  const refreshCall = useRecoilRefresher_UNSTABLE(clientListState);
+
   //const resetcallIdState = useResetRecoilState(callIdState);
   useEffect(() => {
     return () => {
       console.log("releasing Clients....");
-      setPageOffset(1);
+      setPageOffset(0);
       searchQuery(0);
       limitQuery(20);
+      refreshCall();
     };
   }, []);
 

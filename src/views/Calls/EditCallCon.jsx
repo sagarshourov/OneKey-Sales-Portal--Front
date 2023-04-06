@@ -604,7 +604,7 @@ const EditCallCon = (props) => {
                       : "form-control"
                   }
                   placeholder=""
-                  required
+                  
                   onChange={(e) => checkEmail(e)}
                   defaultValue={calls?.email}
                 />

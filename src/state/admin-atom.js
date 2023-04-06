@@ -8,7 +8,7 @@ import {
   getAllNoti,
   getCallsPagination,
 } from "../service/admin";
-
+import { loginState } from "../state/login-atom";
 /**
  * Populate the default selector return value with a service call.
  */
@@ -17,7 +17,7 @@ export const allUserSelect = selector({
   key: "allUserSelect",
   get: async ({ get }) => {
     try {
-      const response = await getAllUsers();
+      const response = await getAllUsers(get(loginState));
       return response.data || [];
     } catch (error) {
       console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
@@ -30,7 +30,7 @@ export const callSelect = selector({
   key: "callSelect",
   get: async ({ get }) => {
     try {
-      const response = await getAllCalls();
+      const response = await getAllCalls(get(loginState));
       return response.data || [];
     } catch (error) {
       console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
@@ -43,7 +43,7 @@ export const notiSelect = selector({
   key: "notiSelect",
   get: async ({ get }) => {
     try {
-      const response = await getAllNoti();
+      const response = await getAllNoti(get(loginState));
       return response.data || [];
     } catch (error) {
       console.error(`getAllNoti -> allUserSelect() ERROR: \n${error}`);
@@ -86,6 +86,7 @@ export const cancelSelect = selector({
   get: async ({ get }) => {
     try {
       const response = await getCallsPagination(
+        get(loginState),
         "results",
         1,
         get(pagOffset),
@@ -114,6 +115,7 @@ export const clientSelect = selector({
   get: async ({ get }) => {
     try {
       const response = await getCallsPagination(
+        get(loginState),
         "results",
         2,
         get(pagOffset),
@@ -139,7 +141,7 @@ export const singleCallselect = selector({
   key: "singleCallselect",
   get: async ({ get }) => {
     try {
-      const response = await getSingleCall(get(callIdState));
+      const response = await getSingleCall(get(loginState),get(callIdState));
       return response.data || [];
     } catch (error) {
       console.error(`getSingleCall -> getSingleCall() ERROR: \n${error}`);
@@ -161,7 +163,7 @@ export const reportSelect = selector({
   key: "reportSelect",
   get: async ({ get }) => {
     try {
-      const response = await getAllReports(get(reportUser), get(reportCount));
+      const response = await getAllReports(get(loginState),get(reportUser), get(reportCount));
       return response.data || [];
     } catch (error) {
       console.error(`reportSelect -> reportSelect() ERROR: \n${error}`);
@@ -180,6 +182,7 @@ export const searchListSelect = selector({
   get: async ({ get }) => {
     try {
       const response = await getCallsPagination(
+        get(loginState),
         get(columnState),
         get(valueState),
         get(pagOffset),

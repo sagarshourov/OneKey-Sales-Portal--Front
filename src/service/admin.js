@@ -1,11 +1,12 @@
 import axios from "axios";
 import { adminApi, getBaseApi, handelError } from "../configuration";
 
-const token = localStorage.getItem("token");
+// const token = localStorage.getItem("token");
 
-const headers = { Authorization: `Bearer ${token}` };
+// const headers = { Authorization: `Bearer ${token}` };
 
 export async function getCallsPagination(
+  loginstate,
   column,
   value,
   offset,
@@ -13,6 +14,9 @@ export async function getCallsPagination(
   search,
   order
 ) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
+
   const userApiUrl =
     adminApi() +
     "call_filter/" +
@@ -37,7 +41,9 @@ export async function getCallsPagination(
   }
 }
 
-export async function getAllUsers() {
+export async function getAllUsers(loginstate) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
   const userApiUrl = adminApi() + "users";
 
   try {
@@ -49,7 +55,9 @@ export async function getAllUsers() {
   }
 }
 
-export async function getAllCalls() {
+export async function getAllCalls(loginstate) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
   const userApiUrl = adminApi() + "calls";
 
   try {
@@ -61,7 +69,10 @@ export async function getAllCalls() {
   }
 }
 
-export async function getAllReports(user_id, count) {
+export async function getAllReports(loginstate, user_id, count) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
+
   const userApiUrl = adminApi() + "reports/" + user_id + "/" + count;
 
   try {
@@ -73,7 +84,9 @@ export async function getAllReports(user_id, count) {
   }
 }
 
-export async function getCallsFilter(results) {
+export async function getCallsFilter(loginstate, results) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
   const userApiUrl = adminApi() + "call_filter/results/" + results;
 
   try {
@@ -85,7 +98,9 @@ export async function getCallsFilter(results) {
   }
 }
 
-export async function getAllNoti() {
+export async function getAllNoti(loginstate) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
   const userApiUrl = adminApi() + "notifications";
 
   try {
@@ -97,7 +112,10 @@ export async function getAllNoti() {
   }
 }
 
-export async function getSingleCall(id) {
+export async function getSingleCall(loginstate, id) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
+
   const userApiUrl = adminApi() + "calls/" + id;
 
   try {
