@@ -293,7 +293,7 @@ const CustomMain = (props) => {
               onClick={() => handelLoad(rowCount - 20)}
               className="btn"
               disabled={rowCount < 21 ? true : false}
-            >
+            > 
               Prev
             </button>
             <button
@@ -325,6 +325,9 @@ const CustomMain = (props) => {
               This process cannot be undone.
             </div>
           </div>
+
+
+          
           <div className="px-5 pb-8 text-center">
             <button
               type="button"
