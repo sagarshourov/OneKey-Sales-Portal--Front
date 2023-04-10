@@ -2,11 +2,10 @@ import { atom, selector, atomFamily, selectorFamily } from "recoil";
 import {
   getAllUsers,
   getAllCalls,
-  getCallsFilter,
   getSingleCall,
   getAllReports,
   getAllNoti,
-  getCallsPagination,
+  getCallsPagination
 } from "../service/admin";
 import { loginState } from "../state/login-atom";
 /**
@@ -81,18 +80,27 @@ export const CancelOrder = atom({
   default: "DESC",
 });
 
+export const CancelUser = atom({
+  key: "CancelUser",
+  default: 0,
+});
+
+
+
 export const cancelSelect = selector({
   key: "cancelSelect",
   get: async ({ get }) => {
     try {
       const response = await getCallsPagination(
         get(loginState),
+        get(CancelUser),
         "results",
         1,
         get(pagOffset),
         get(pageLimit),
         get(searchAtom),
-        get(CancelOrder)
+        get(CancelOrder),
+      
       );
 
       //console.log('canN_res',response);
@@ -110,12 +118,18 @@ export const resultState = atom({
   default: 1,
 });
 
+export const clientUser = atom({
+  key: "clientUser",
+  default: 0,
+});
+
 export const clientSelect = selector({
   key: "clientSelect",
   get: async ({ get }) => {
     try {
       const response = await getCallsPagination(
         get(loginState),
+        get(clientUser),
         "results",
         2,
         get(pagOffset),
@@ -176,6 +190,11 @@ export const reportListState = atom({
   key: "reportListState",
   default: reportSelect,
 });
+export const searchUser = atom({
+  key: "searchUser",
+  default: 0,
+});
+
 
 export const searchListSelect = selector({
   key: "searchListSelect",
@@ -183,6 +202,9 @@ export const searchListSelect = selector({
     try {
       const response = await getCallsPagination(
         get(loginState),
+
+        get(searchUser),
+        
         get(columnState),
         get(valueState),
         get(pagOffset),
@@ -235,3 +257,9 @@ export const singleCallState = atom({
   key: "singleCallState",
   default: singleCallselect,
 });
+
+
+
+
+
+

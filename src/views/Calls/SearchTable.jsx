@@ -1,68 +1,43 @@
-import { Checkbox, Tippy } from "@/base-components";
+import { Lucide, Tippy, LoadingIcon, Checkbox } from "@/base-components";
+
+import { filter } from "lodash";
+import { useState } from "react";
+// function findById(array, id) {
+//   return filter(array, (_items) => {
+//     return _items.id === id;
+//   });
+// }
+
+import { Link } from "react-router-dom";
 
 import { helper } from "@/utils/helper";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import CopyEle from "./CopyEle";
-import { filter } from "lodash";
-const fText = (text) => {
-  return text ? text.substr(0, 10) + "..." : "";
-};
 
-const get_section = (array, val) => {
-
-  if(val){
-    var dat = filter(array, (_items) => {
-      return _items.id === val;
+function extra_title(arr, group, index) {
+  var value = "";
+  if (arr.extra && arr.extra.length > 0) {
+    arr.extra.map((dat, key) => {
+      //   console.log("value dat", dat);
+      if (dat.groups == group && dat.values[index]?.value) {
+        value = dat.values[index]?.value;
+      }
     });
-    return dat[0].title;
   }
-  return "";
-};
 
-const SearchTable = (props) => {
-  const {
-    users,
-    setHistory,
-    setUserId,
-    setDeleteConfirmationModal,
-    allCheck,
-    setAllCheck,
-    updateFunc,
-    aheck,
-    setAcheck,
-    theme,
-    dragStart,
-    dragover,
-    tableDragOver,
-    section,
-    setting,
-    loadMore,
-    rowCount,
-  } = props;
+  if (index === 0 && value !== "") {
+    return helper.formatDate(value, "MMM D, YYYY");
+  }
 
-  const handelChange = (e, id, type) => {
+  // console.log("value", value);
+
+  return value;
+}
+
+const UsersTable = (props) => {
+  const { users, rowCount, allCheck, setAllCheck } = props;
+
+  const handelChange = (e, id) => {
     e.preventDefault();
-
-    var val = 0;
-    if (type == "n") {
-      val = parseInt(e.target.value);
-    }
-    updateFunc(id, e.target.name, val);
   };
-
-  const handelAllCheck = (e) => {
-    const { checked } = e.target;
-
-    if (checked) {
-      setAllCheck(users.map((li) => li.id));
-      setAcheck(true);
-    } else {
-      setAllCheck([]);
-      setAcheck(false);
-    }
-  };
-
   const handelSingleCheck = (e) => {
     const { id, checked } = e.target;
 
@@ -71,14 +46,24 @@ const SearchTable = (props) => {
       setAllCheck(allCheck.filter((item) => item !== parseInt(id)));
     }
   };
+  const handelAllCheck = (e) => {
+    const { checked } = e.target;
 
-
-
+    if (checked) {
+      setAllCheck(users.map((li) => li.id));
+      // setAcheck(true);
+    } else {
+      setAllCheck([]);
+      // setAcheck(false);
+    }
+  };
+  const fText = (text) => {
+    return text ? text.substr(0, 10) + "..." : "";
+  };
   return (
     <div className="overflow-auto relative">
-      <p className="text-orange-500 text-stone-600"></p>
-      <table className="table  mt-2">
-        <thead className={theme}>
+      <table className="table table-report -mt-2">
+        <thead>
           <tr>
             <th className="whitespace-nowrap">
               <div className=" mt-2">
@@ -93,16 +78,16 @@ const SearchTable = (props) => {
                 />
               </div>
             </th>
-
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
-            <th className="whitespace-nowrap">Sections</th>
+            <th className="whitespace-nowrap">E-mail</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
 
             <th className="text-center whitespace-nowrap">Assigned To</th>
+            <th className="text-center whitespace-nowrap">Priority</th>
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
-            <th className="text-center whitespace-nowrap">Case Type</th>
+
             {/* <th className="text-center whitespace-nowrap">GPA</th> */}
             {/* <th className="text-center whitespace-nowrap">Priority</th> */}
             {/* <th className="text-center whitespace-nowrap">Referred by</th>
@@ -110,19 +95,23 @@ const SearchTable = (props) => {
             <th className="text-center whitespace-nowrap">
               Call Schedule Date
             </th>
-            <th className="text-center whitespace-nowrap">Next steps</th>
-            <th className="text-center whitespace-nowrap">Package</th>
-            <th className="text-center whitespace-nowrap">Status</th>
+            <th className="text-center whitespace-nowrap">Case Type</th>
 
-            <th className="text-center whitespace-nowrap">First Call Notes</th>
-            <th className="text-center whitespace-nowrap">
-              Follow up date set
-            </th>
-            <th className="text-center whitespace-nowrap">
-              Follow up call notes
-            </th>
+            <th className="text-center whitespace-nowrap"> First Call Date</th>
+            <th className="text-center whitespace-nowrap">First Call Note</th>
+            <th className="text-center whitespace-nowrap">Package</th>
 
             <th className="text-center whitespace-nowrap">Agreement Sent</th>
+
+            <th className="text-center whitespace-nowrap">Agreement Signed</th>
+
+            <th className="text-center whitespace-nowrap">Status</th>
+            <th className="text-center whitespace-nowrap"> Next Step Date</th>
+
+            <th className="text-center whitespace-nowrap"> Next Step Note</th>
+
+            <th className="text-center whitespace-nowrap">Follow up date</th>
+            <th className="text-center whitespace-nowrap">Follow up note</th>
 
             {/* <th className="text-center whitespace-nowrap">
               {" "}
@@ -155,33 +144,8 @@ const SearchTable = (props) => {
                 dark = " alert-success-soft ";
               }
 
-              // var team_id = user?.user?.team;
-              // if (
-              //   // IR
-              //   user?.gpa &&
-              //   team_id &&
-              //   parseFloat(user.gpa) < 2.5 &&
-              //   team_id == 1
-              // ) {
-              //   dark = " alert-danger-soft ";
-              // } else if (
-              //   // TR
-              //   user?.gpa &&
-              //   team_id &&
-              //   parseFloat(user.gpa) < 13 &&
-              //   team_id == 2
-              // ) {
-              //   dark = " alert-danger-soft ";
-              // } else {
-              //   dark = " bg-white";
-              // }
-
               return (
-                <tr
-                  key={key}
-                  className={"border-t pt-2" + dark}
-                  // onDragOver={(e) => dragover(e)}
-                >
+                <tr key={key} className={"border-t pt-2" + dark}>
                   <td>
                     <div className="form-check mt-2">
                       <Checkbox
@@ -195,34 +159,20 @@ const SearchTable = (props) => {
                       />
                     </div>
                   </td>
-                  <td className="w-40">{count}</td>
+                  <td className="w-40">{user.id}</td>
                   <td>
-                    <Link
-                      to="#"
-                      draggable={false}
-                      className="font-medium whitespace-nowrap"
-                    >
-                      {user.first_name} {user.last_name}
-                    </Link>
-                    <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
-                      <CopyEle email={user.email} />
-                    </div>
+                    {user.first_name} {user.last_name}
                   </td>
-                  <td>{get_section(setting.sections, user?.sections)}</td>
+                  <td>{user?.email}</td>
+
                   <td>
                     {user?.assigned_to?.first_name}{" "}
                     {user?.assigned_to?.last_name}
                   </td>
-
+                  <td>{user?.priority}</td>
                   <td>{user?.whatsapp}</td>
 
                   <td className="text-center">{user?.age}</td>
-
-                  <td className="text-center">
-                    {user?.case_type == 1 && "F-1"}{" "}
-                    {user?.case_type == 2 && "F-1/F2"}
-                  </td>
-
                   <td className="text-center">
                     {user?.call_schedule_date &&
                       helper.formatDate(
@@ -230,58 +180,37 @@ const SearchTable = (props) => {
                         "MMM D, YYYY"
                       )}{" "}
                   </td>
-                  <td className="text-center">{user?.next_step}</td>
-                  <td>
-                    <select
-                      onChange={(e) => handelChange(e, user.id, "n")}
-                      name="package"
-                      className="form-select form-select-sm mt-2 w-20"
-                      defaultValue={user?.package?.id}
-                    >
-                      <option value="0">Select..</option>
 
-                      {setting.packages &&
-                        setting.packages.map((val, indx) => (
-                          <option key={indx} value={val?.id}>
-                            {val?.title}
-                          </option>
-                        ))}
-                    </select>
+                  <td className="text-center">
+                    {user?.case_type == 1 && "F-1"}{" "}
+                    {user?.case_type == 2 && "F-1/F2"}
                   </td>
-                  <td>
-                    <select
-                      onChange={(e) => handelChange(e, user.id, "n")}
-                      name="status"
-                      className="form-select form-select-sm mt-2 w-20"
-                      defaultValue={user?.status}
-                    >
-                      <option value="0">Select..</option>
 
-                      {setting.status &&
-                        setting.status.map((val, indx) => (
-                          <option key={indx} value={val?.id}>
-                            {val?.title}
-                          </option>
-                        ))}
-                    </select>
+                  <td className="text-center">{user?.first_contact}</td>
+                  <td className="text-center">{user?.first_call_notes}</td>
+                  <td>{user?.package?.title}</td>
+
+                  <td className="text-center">
+                    {user.ag === 0 ? "No" : "Yes"}
                   </td>
-                  <td
-                    onClick={() =>
-                      setHistory("last_status_notes", user.history, user.id)
-                    }
-                    className="text-center"
-                  >
+
+                  <td> {user.agreed_to_signed === 0 ? "No" : "Yes"}</td>
+
+                  <td>{user?.statu?.title}</td>
+                  <td>{extra_title(user, "my_step", 0)}</td>
+                  <td>
                     <div className="text-center">
                       <Tippy
                         tag="a"
                         href="#"
                         className="tooltip"
-                        content={user?.last_status_notes}
+                        content={extra_title(user, "my_step", 1)}
                       >
-                        {fText(user?.last_status_notes)}
+                        {fText(extra_title(user, "my_step", 1))}
                       </Tippy>
                     </div>
                   </td>
+
                   <td className="text-center">
                     {user?.follow_up_date &&
                       helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
@@ -306,16 +235,8 @@ const SearchTable = (props) => {
                   </td>
 
                   <td className="text-center">
-                    {user.ag === 0 ? "No" : "Yes"}
-                  </td>
-
-                  <td
-                    className="text-center"
-                    onClick={() =>
-                      setHistory("feedbacks", user.history, user.id)
-                    }
-                  >
                     <div className="text-center">
+                      {" "}
                       <Tippy
                         tag="a"
                         href="#"
@@ -331,12 +252,8 @@ const SearchTable = (props) => {
             })}
         </tbody>
       </table>
-
-      <button className="btn btn-default m-5" onClick={loadMore}>
-        Load more ...
-      </button>
     </div>
   );
 };
 
-export default SearchTable;
+export default UsersTable;

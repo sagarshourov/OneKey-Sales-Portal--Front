@@ -1,7 +1,7 @@
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
 import { useState, useEffect } from "react";
-
+import classnames from "classnames";
 import {
   useRecoilStateLoadable,
   useSetRecoilState,
@@ -13,14 +13,15 @@ import {
   pagOffset,
   pageLimit,
   searchAtom,
-  CancelOrder
+  CancelOrder,
+  CancelUser,
 } from "../../state/admin-atom";
 import { useParams, Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { settingState } from "../../state/setting-atom";
 import axios from "axios";
 import { adminApi } from "../../configuration";
-
+import { loginState } from "../../state/login-atom";
 import { filter } from "lodash";
 
 const token = localStorage.getItem("token");
@@ -30,17 +31,30 @@ const headers = {
   ContentType: "application/json",
 };
 
+function applyAllFilters(array, user_id) {
+  if (array.length == 0) return;
+  if (user_id !== 0) {
+    return filter(array, (_items) => _items?.assigned_to?.id === user_id);
+  } else {
+    return array;
+  }
+}
+
 const CancelMain = (props) => {
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(cancelListState);
+  const loginData = useRecoilValue(loginState);
+
+  const [callSwitch, setCallSwitch] = useState(false);
 
   const setPageOffset = useSetRecoilState(pagOffset);
   const searchQuery = useSetRecoilState(searchAtom);
   const limitQuery = useSetRecoilState(pageLimit);
 
   const cancelOrder = useSetRecoilState(CancelOrder);
-  
+
+  const canUser = useSetRecoilState(CancelUser);
 
   const [rowCount, setRowCount] = useState(200);
   const [formdata, setFormdata] = useState([]);
@@ -57,7 +71,8 @@ const CancelMain = (props) => {
       setPageOffset(1);
       searchQuery(0);
       limitQuery(20);
-      cancelOrder('DESC');
+      cancelOrder("DESC");
+      canUser(0);
     };
   }, []);
 
@@ -148,6 +163,19 @@ const CancelMain = (props) => {
     cancelOrder(e.target.value);
   };
 
+  const CallSwitch = () => {
+    setCallSwitch(() => !callSwitch);
+
+
+    if(callSwitch){
+      canUser(0);
+    }else{
+      canUser(loginData.userId);
+    }
+
+   
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Canceled Call List</h2>
@@ -184,7 +212,7 @@ const CancelMain = (props) => {
         </div> */}
 
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className=" lg:basis-7/12 grid grid-cols-1 lg:grid-cols-6 gap-2">
+          <div className=" lg:basis-5/12 grid grid-cols-1 lg:grid-cols-5 gap-2">
             <Link
               className="btn btn-elevated-primary shadow-md mr-2 py-2"
               to="/calls/add"
@@ -229,19 +257,32 @@ const CancelMain = (props) => {
               </>
             )}
           </div>
-          {/* <div className="hidden md:block mx-auto text-slate-500">
-               {filterData.length} {" /"}
-              {callData.state === "hasValue" && callData.contents["length"]}
-            </div> */}
+          <div className="lg:basis-2/12   grid  grid-cols-1 lg:grid-cols-1 gap-3">
+            {loginData.role !== 3 && (
+              <div
+                onClick={CallSwitch}
+                className="dark-mode-switcher cursor-pointer shadow-md box border rounded-full w-36  h-10 flex items-center justify-center z-50 "
+              >
+                <div className="mr-4 text-slate-600 dark:text-slate-200">
+                  Switch Calls
+                </div>
+                <div
+                  className={classnames({
+                    "dark-mode-switcher__toggle border": true,
+                    "dark-mode-switcher__toggle--active": callSwitch,
+                  })}
+                ></div>
+              </div>
+            )}
+          </div>
 
-          <div className="lg:basis-5/12   grid  grid-cols-1 lg:grid-cols-5 gap-3">
+          <div className="lg:basis-5/12   grid  grid-cols-1 lg:grid-cols-6 gap-3">
             <select
               onChange={(e) => handelOrder(e)}
               className="w-full  form-select box mt-3 sm:mt-0"
             >
-               <option value="DESC">Descending</option>
+              <option value="DESC">Descending</option>
               <option value="ASC">Ascending</option>
-             
             </select>
             <select
               onChange={handelPageCount.bind(this)}
@@ -310,6 +351,7 @@ const CancelMain = (props) => {
             </button>
           </div>
         )}
+        
         {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}

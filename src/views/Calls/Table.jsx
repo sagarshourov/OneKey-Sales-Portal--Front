@@ -32,15 +32,21 @@ const remove_style_tr = () => {
 };
 
 function extra_title(arr, group, index) {
-  var value;
+  var value = "";
   if (arr.extra && arr.extra.length > 0) {
     arr.extra.map((dat, key) => {
+      //   console.log("value dat", dat);
       if (dat.groups == group && dat.values[index]?.value) {
         value = dat.values[index]?.value;
       }
     });
   }
-  //console.log(date);
+
+  if (index === 0 && value !== "") {
+    return helper.formatDate(value, "MMM D, YYYY");
+  }
+
+  // console.log("value", value);
 
   return value;
 }
@@ -381,13 +387,19 @@ const UsersTable = (props) => {
                         ))}
                     </select>
                   </td>
+                  <td>{extra_title(user, "my_step", 0)}</td>
                   <td>
-                    {helper.formatDate(
-                      extra_title(user, "my_step", 0),
-                      "MMM D, YYYY"
-                    )}
+                    <div className="text-center">
+                      <Tippy
+                        tag="a"
+                        href="#"
+                        className="tooltip"
+                        content={extra_title(user, "my_step", 1)}
+                      >
+                        {fText(extra_title(user, "my_step", 1))}
+                      </Tippy>
+                    </div>
                   </td>
-                  <td>{extra_title(user, "my_step", 1)}</td>
 
                   <td className="text-center">
                     {user?.follow_up_date &&

@@ -5,8 +5,48 @@ import { adminApi, getBaseApi, handelError } from "../configuration";
 
 // const headers = { Authorization: `Bearer ${token}` };
 
+export async function getPreMadeReport(
+  loginstate,
+  startDate,
+  endDate,
+  User,
+  Type,
+  offset,
+  pageLimit,
+  order
+) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
+
+  const userApiUrl =
+    adminApi() +
+    "pre_filter/" +
+    startDate +
+    "/" +
+    endDate +
+    "/" +
+    User +
+    "/" +
+    Type +
+    "/" +
+    offset+
+    "/"+
+    pageLimit +
+    "/" +
+    order;
+
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    handelError(error);
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
+
 export async function getCallsPagination(
   loginstate,
+  user_id,
   column,
   value,
   offset,
@@ -20,6 +60,8 @@ export async function getCallsPagination(
   const userApiUrl =
     adminApi() +
     "call_filter/" +
+    user_id +
+    "/" +
     column +
     "/" +
     value +

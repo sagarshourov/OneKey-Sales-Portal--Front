@@ -1,5 +1,5 @@
 import { Lucide, Tippy, LoadingIcon, Checkbox } from "@/base-components";
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import CopyEle from "../Calls/CopyEle";
 
@@ -10,13 +10,52 @@ const fText = (text) => {
 };
 
 const UsersTable = (props) => {
-  const { users, rowCount } = props;
+  const { users, setAllCheck, setAcheck, allCheck } = props;
+  const [rowCount, setRowCount] = useState(10);
+  const handelSingleCheck = (e) => {
+    const { id, checked } = e.target;
+
+    setAllCheck([...allCheck, parseInt(id)]);
+    if (!checked) {
+      setAllCheck(allCheck.filter((item) => item !== parseInt(id)));
+    }
+  };
+
+  const handelAllCheck = (e) => {
+    const { checked } = e.target;
+
+    if (checked) {
+      setAllCheck(users.map((li) => li.id));
+      setAcheck(true);
+    } else {
+      setAllCheck([]);
+      setAcheck(false);
+    }
+  };
+
+  const loadMore = () => {
+    let count = rowCount + 20;
+    setRowCount(count);
+  };
 
   return (
     <>
       <table className="table  mt-2">
         <thead>
           <tr>
+            <th className="whitespace-nowrap">
+              <div className=" mt-2">
+                <Checkbox
+                  className="form-check-input"
+                  key={0}
+                  type="checkbox"
+                  name="allcheck"
+                  id={0}
+                  handleClick={handelAllCheck}
+                  // isChecked={allCheck.length > 0 ? true : false}
+                />
+              </div>
+            </th>
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
@@ -101,11 +140,24 @@ const UsersTable = (props) => {
                 <tr
                   key={key}
                   className={"border-t pt-2" + dark}
-                  draggable={true}
-                  onDragStart={(e) => dragStart(e, user.id)}
+
                   // onDragOver={(e) => dragover(e)}
                 >
-                  <td className="w-40">{count}</td>
+                  <td>
+                    <div className="form-check mt-2">
+                      <Checkbox
+                        className="form-check-input "
+                        key={key}
+                        type="checkbox"
+                        name="select"
+                        id={user.id}
+                        handleClick={handelSingleCheck}
+                        isChecked={allCheck.includes(user.id)}
+                      />
+                    </div>
+                  </td>
+
+                  <td className="w-40">{user.id}</td>
                   <td>
                     <Link
                       to="#"
@@ -177,9 +229,6 @@ const UsersTable = (props) => {
                     {user.agreed_to_signed === 0 ? "No" : "Yes"}
                   </td>
 
-
-                  
-
                   <td className="text-center">
                     <div className="text-center">
                       <Tippy
@@ -197,6 +246,12 @@ const UsersTable = (props) => {
             })}
         </tbody>
       </table>
+      {users.length > 0 && rowCount < users.length && (
+        <button className="btn btn-default m-5" onClick={loadMore}>
+          Load more ...
+        </button>
+      )}
+      ;
     </>
   );
 };

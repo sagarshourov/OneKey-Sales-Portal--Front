@@ -5,22 +5,40 @@ import {
   Lucide,
   Modal,
   ModalBody,
+  AccordionPanel,
+  Accordion,
+  AccordionGroup,
+  AccordionItem,
 } from "@/base-components";
 import classnames from "classnames";
-
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Select from "react-tailwindcss-select";
-import { useRecoilStateLoadable, useRecoilValue } from "recoil";
-import { allUserListState, callListState } from "../../state/admin-atom";
-
+import {
+  useRecoilStateLoadable,
+  useSetRecoilState,
+  useRecoilValue,
+} from "recoil";
+import { allUserListState } from "../../state/admin-atom";
+import {
+  preMadeState,
+  pStartDate,
+  pEndDate,
+  pUser,
+  pType,
+  pOffset,
+  pLimit,
+} from "../../state/report-atom";
 import { loginState } from "../../state/login-atom";
-
+import { helper } from "@/utils/helper";
 import Table from "./Table";
 
 import axios from "axios";
 import { adminApi } from "../../configuration";
 
 import { filter } from "lodash";
+import SinglePicker from "./SinglePicker";
+import MultiPicker from "./MultiPicker";
 
 //console.log("report", Date.parse("2022-12-21 10:31:12"));
 
@@ -35,42 +53,14 @@ function findEmp(array, user_id) {
   return state;
 }
 
-function applySortFilters(array, status, min, max, emp) {
-  if (status === 10) {
-    return filter(array, (_items) => {
-      return (
-        findEmp(emp, _items.user_id) &&
-        Date.parse(_items.created_at) >= min &&
-        Date.parse(_items.created_at) <= max &&
-        _items?.ag === 1
-      );
-    });
-  } else if (status === 11) {
-    return filter(array, (_items) => {
-      return (
-        findEmp(emp, _items.user_id) &&
-        Date.parse(_items.created_at) >= min &&
-        Date.parse(_items.created_at) <= max &&
-        _items?.agreed_to_signed === 1
-      );
-    });
-  } else {
-    return filter(array, (_items) => {
-      return (
-        findEmp(emp, _items.user_id) &&
-        Date.parse(_items.created_at) >= min &&
-        Date.parse(_items.created_at) <= max &&
-        _items?.status === status
-      );
-    });
-  }
+function filterSection(array, sec) {
+  return filter(array, (_items) => _items?.results === sec);
 }
+
 const options = (datas) => {
   let data = [];
-
   datas.map((val, index) => {
     // console.log('val',val);
-
     data.push({ value: val.id, label: val.first_name + " " + val.last_name });
   });
 
@@ -81,30 +71,68 @@ const AdminUsers = (props) => {
   // let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
 
-  const [callData, setCallState] = useRecoilStateLoadable(callListState);
+  const [callData, setCallState] = useRecoilStateLoadable(preMadeState);
   const [usersData, setUserState] = useRecoilStateLoadable(allUserListState);
+
+  //atoms
+
+  const sStartDate = useSetRecoilState(pStartDate);
+
+  const sEndDate = useSetRecoilState(pEndDate);
+  const setEmployee = useSetRecoilState(pUser);
+  const setType = useSetRecoilState(pType);
+  const setPageLimit = useSetRecoilState(pLimit);
+
+  const setPageOffset = useSetRecoilState(pOffset);
+
   const logindata = useRecoilValue(loginState);
+
   const [rowCount, setRowCount] = useState(10);
 
-  const [search, setSearch] = useState("");
   const [aheck, setAcheck] = useState(false);
   const [call_id, setCallId] = useState(0);
   const [loading, setLoading] = useState(false);
-
   const [allCheck, setAllCheck] = useState([]);
-
   const [daterange, setDaterange] = useState("");
-
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [status, setStatus] = useState(0);
-  const [user_id, selectUser] = useState(0);
+  const [callSwitch, setCallSwitch] = useState(false);
+  const [offset, setOffset] = useState(false);
+  const [dateMode, setDateMode] = useState(false);
 
+
+  
   const [empName, setEmpName] = useState("");
-
   const [emp, setEmp] = useState(null);
 
-  const [cancel, setCancel] = useState(false);
+  useEffect(() => {
+    var warper = dom(".wrapper")[0];
+    const onScroll = () => setOffset(window.pageYOffset);
+    // // clean up code
+    // window.removeEventListener("scroll", onScroll);
+    warper.addEventListener(
+      "scroll",
+      function () {
+        if (warper.scrollTop > 150) {
+          setOffset(true);
+        } else {
+          setOffset(false);
+        }
+      },
+      { passive: true }
+    );
+
+    return () => {
+      sStartDate("2022-01-01");
+      sEndDate("2028-01-01");
+      setEmployee(0);
+      setType(0);
+      setPageLimit(200);
+
+      warper.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   const headers = {
     Authorization: `Bearer ${logindata?.token}`,
@@ -137,32 +165,57 @@ const AdminUsers = (props) => {
     setRowCount(parseInt(e.target.value));
   };
 
-  const handelLoad = () => {
-    let count = rowCount + 20;
+  // const handelLoad = () => {
+  //   let count = rowCount + 20;
 
-    setRowCount(count);
+  //   setRowCount(count);
+  //  // setPageLimit(count);
+
+  //   setPageOffset(rowCount);
+  // };
+
+  const handelLoad = (rowCount) => {
+    //let count = rowCount + 20;
+
+    setRowCount(rowCount);
+
+    setPageOffset(rowCount);
   };
 
-  const handelSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  let filterData = applySortFilters(
-    callData.contents,
-    parseInt(status),
-    startDate,
-    endDate,
-    emp
-  );
+  // let filterData = applySortFilters(
+  //   callData.contents,
+  //   parseInt(status),
+  //   startDate,
+  //   endDate,
+  //   emp
+  // );
 
   const handelRange = (date) => {
+    console.log("date", date);
+
     setDaterange(date);
 
-    var spilt = date.split("-");
+    if (dateMode) {
+      sStartDate(helper.formatDate(date, "YYYY-MM-DD"));
+      sEndDate(helper.formatDate(date, "YYYY-MM-DD"));
 
-    setStartDate(Date.parse(spilt[0]));
+      //setStartDate(Date.parse(date));
 
-    setEndDate(Date.parse(spilt[1]));
+      // setEndDate(endDate);
+    } else {
+      var spilt = date.split("-");
+
+      var startDate = Date.parse(spilt[0]);
+
+      var endDate = Date.parse(spilt[1]);
+
+      sStartDate(helper.formatDate(startDate, "YYYY-MM-DD"));
+      sEndDate(helper.formatDate(endDate, "YYYY-MM-DD"));
+
+      // setStartDate(startDate);
+
+      // setEndDate(endDate);
+    }
 
     //  console.log("change date");
   };
@@ -179,7 +232,6 @@ const AdminUsers = (props) => {
 
       if (response?.data?.success) {
         setCallState(response?.data?.data);
-
         setDeleteConfirmationModal(false);
         setLoading(false);
       } else {
@@ -190,51 +242,29 @@ const AdminUsers = (props) => {
     }
   };
 
-  const bulkUpdate = async (name, value) => {
-    const URL = adminApi() + "calls/0";
-    setLoading(true);
-
-    try {
-      const response = await axios.put(
-        URL,
-        { ids: allCheck, name: name, value: value },
-        {
-          headers,
-        }
-      );
-
-      if (response?.data?.success) {
-        setLoading(false);
-        setCallState(response?.data?.data);
-        setAllCheck([]);
-        setAcheck(false);
-      }
-    } catch (err) {
-      setLoading(false);
-    }
-  };
-
   const handelStatus = (e) => {
+    console.log("status", e.target.value);
     setStatus(e.target.value);
-  };
-
-  const handelUserSelect = (e) => {
-    selectUser(e.target.value);
-
-    setEmpName(e.target.selectedOptions[0].text);
+    setType(e.target.value);
   };
 
   const handleEmp = (value) => {
     setEmp(value);
-
-    //console.log("emp", emp);
+    var dat = [];
+    value.map((val, ind) => {
+      dat.push(val.value);
+    });
+    setEmployee(dat);
   };
 
-  const handelAgreement = () => {
-    setAgreement(() => !agreement);
-  };
-  const handelCancel = () => {
-    setCancel(() => !cancel);
+  const CallSwitch = () => {
+    setCallSwitch(() => !callSwitch);
+    setDateMode(true);
+    if (callSwitch) {
+      setDateMode(false);
+    } else {
+      setDateMode(true);
+    }
   };
 
   return (
@@ -243,41 +273,55 @@ const AdminUsers = (props) => {
         {" "}
         Generate{" "}
         {status == 1
-          ? "Hot"
+          ? "Hot "
           : status == 2
-          ? "Warm"
+          ? "Warm "
           : status == 3
-          ? "Cold"
+          ? "Cold "
           : status == 10
-          ? "Agreement sent"
+          ? "Agreement sent "
           : status == 11
-          ? "Agreement Signed"
+          ? "Agreement Signed "
+          : status == 12
+          ? "First Call"
+          : status == 13
+          ? "Follow Up "
+          : status == 14
+          ? "Cancel "
           : ""}{" "}
         Report{" "}
       </h2>
       <div className=" mt-5">
         <div className="intro-y flex flex-row mt-2">
-          <div className="basis-3/4 grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <div className="basis-full lg:basis-7/12 grid grid-cols-1 lg:grid-cols-5 gap-4">
+            <div
+              onClick={CallSwitch}
+              className="dark-mode-switcher cursor-pointer shadow-md box border rounded-full w-auto  h-10 flex items-center justify-center z-50 "
+            >
+              <div className="mr-4 text-slate-600 dark:text-slate-200">
+                Single Date
+              </div>
+              <div
+                className={classnames({
+                  "dark-mode-switcher__toggle border": true,
+                  "dark-mode-switcher__toggle--active": callSwitch,
+                })}
+              ></div>
+            </div>
             <div>
-              <Litepicker
-                value={daterange}
-                onChange={handelRange}
-                options={{
-                  // format: "YYYY-MM-DD",
-                  autoApply: false,
-                  singleMode: false,
-                  numberOfColumns: 2,
-                  numberOfMonths: 2,
-                  showWeekNumbers: true,
-                  dropdowns: {
-                    minYear: 1990,
-                    maxYear: 2030,
-                    months: true,
-                    years: true,
-                  },
-                }}
-                className="form-control w-56 block mx-auto"
-              />
+              {dateMode ? (
+                <SinglePicker
+                  daterange={daterange}
+                  handelRange={handelRange}
+                  dateMode={dateMode}
+                />
+              ) : (
+                <MultiPicker
+                  daterange={daterange}
+                  handelRange={handelRange}
+                  dateMode={dateMode}
+                />
+              )}
             </div>
             {/* <select
               className="form-control"
@@ -325,6 +369,9 @@ const AdminUsers = (props) => {
                 <option value="3">Cold Report</option>
                 <option value="10">Agreement sent</option> {/*fake value */}
                 <option value="11">Agreement Signed</option> {/*fake value */}
+                <option value="12">First Call Report</option> {/*fake value */}
+                <option value="13">Follow Up Report</option> {/*fake value */}
+                <option value="14">Cancel Report</option> {/*fake value */}
               </select>
             </div>
 
@@ -363,7 +410,7 @@ const AdminUsers = (props) => {
             </div> */}
           </div>
 
-          <div className=" basis-1/4 flex flex-row-reverse pl-10">
+          <div className="basis-full lg:basis-5/12 flex flex-row-reverse pl-10">
             <div>
               <select
                 onChange={handelPageCount.bind(this)}
@@ -378,33 +425,75 @@ const AdminUsers = (props) => {
           </div>
         </div>
         {/* BEGIN: Data List */}
+        <div className={offset ? "fixed w-full top-0 bg-white p-5 z-50 box " : ""}>
+          <div className="intro-y z-1 col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+            <div className="basis-full lg:basis-4/12 ">
+              {allCheck.length > 0 && (
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 content-end">
+                  <button
+                    onClick={() => setDeleteConfirmationModal(true)}
+                    className="btn btn-elevated-danger"
+                  >
+                    Delete
+                  </button>
 
-        {filterData.length > 0 && (
-          <div className="flex justify-center ">
-            <Alert className="alert-dark mb-2 w-auto my-5">
-              <div className="flex items-center">
-                <div className="font-medium text-lg">
-                  {status == 1
-                    ? "Hot"
-                    : status == 2
-                    ? "Warm"
-                    : status == 3
-                    ? "Cold"
-                    : status == 10
-                    ? "Agreement sent"
-                    : status == 11
-                    ? "Agreement Signed"
-                    : ""}{" "}
-                  Report ({daterange})
+                  <Link
+                    className="btn btn-elevated-primary shadow-md mr-2 py-2"
+                    to={"/calls/edit/" + allCheck[0]}
+                  >
+                    Edit Call
+                  </Link>
                 </div>
-              </div>
-              <div className="mt-3 text-center">{empName}</div>
-            </Alert>
+              )}
+            </div>
+
+            <div className="basis-full lg:basis-3/12   grid  grid-cols-1 lg:grid-cols-1 gap-3">
+              {callData.contents.length > 0 && (
+                <Alert className="alert-dark mb-2 w-auto my-5">
+                  <div className="flex items-center">
+                    <div className="font-medium text-lg">
+                      {status == 1
+                        ? "Hot"
+                        : status == 2
+                        ? "Warm"
+                        : status == 3
+                        ? "Cold"
+                        : status == 10
+                        ? "Agreement sent"
+                        : status == 11
+                        ? "Agreement Signed"
+                        : status == 12
+                        ? "First Call"
+                        : status == 13
+                        ? "Follow Up "
+                        : status == 14
+                        ? "Cancel "
+                        : ""}{" "}
+                      Report ({daterange})
+                    </div>
+                  </div>
+                  <div className="mt-3 text-center">{empName}</div>
+                </Alert>
+              )}
+            </div>
+            <div className="lg:basis-4/12 basis-full   grid  grid-cols-1 lg:grid-cols-6 gap-3"></div>
           </div>
-        )}
+        </div>
 
         <div className="intro-y col-span-12 overflow-auto relative">
-          {callData.state === "hasValue" && filterData.length > 0 ? (
+          {callData.state === "loading" && (
+            <div className="h-full w-full bg-gray-50/75 grid  absolute z-[100]">
+              <div className="w-24 h-24 place-self-center">
+                <LoadingIcon
+                  icon="three-dots"
+                  color="gray"
+                  className="w-4 h-4 ml-2"
+                />
+              </div>
+            </div>
+          )}
+
+          {callData.state === "hasValue" && callData.contents.length > 0 ? (
             <>
               {loading && (
                 <div className="h-full w-full bg-gray-50/75 grid  absolute z-[100]">
@@ -417,18 +506,63 @@ const AdminUsers = (props) => {
                   </div>
                 </div>
               )}
-              <Table
-                rowCount={rowCount}
-                setDeleteConfirmationModal={setDeleteConfirmationModal}
-                users={filterData}
-                setUserId={setCallId}
-                setCallState={setCallState}
-                allCheck={allCheck}
-                setAllCheck={setAllCheck}
-                updateFunc={updateFunc}
-                aheck={aheck}
-                setAcheck={setAcheck}
-              />
+
+              <AccordionGroup className="accordion-boxed ">
+                <AccordionItem className="box">
+                  <Accordion>Open Calls</Accordion>
+                  <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
+                    <Table
+                      setDeleteConfirmationModal={setDeleteConfirmationModal}
+                      users={filterSection(callData.contents, 3)}
+                      setUserId={setCallId}
+                      setCallState={setCallState}
+                      allCheck={allCheck}
+                      setAllCheck={setAllCheck}
+                      updateFunc={updateFunc}
+                      aheck={aheck}
+                      setAcheck={setAcheck}
+                    />
+                  </AccordionPanel>
+                </AccordionItem>
+              </AccordionGroup>
+
+              <AccordionGroup className="accordion-boxed mt-5">
+                <AccordionItem className="box">
+                  <Accordion>Cancel Calls</Accordion>
+                  <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
+                    <Table
+                      setDeleteConfirmationModal={setDeleteConfirmationModal}
+                      users={filterSection(callData.contents, 1)}
+                      setUserId={setCallId}
+                      setCallState={setCallState}
+                      allCheck={allCheck}
+                      setAllCheck={setAllCheck}
+                      updateFunc={updateFunc}
+                      aheck={aheck}
+                      setAcheck={setAcheck}
+                    />
+                  </AccordionPanel>
+                </AccordionItem>
+              </AccordionGroup>
+
+              <AccordionGroup className="accordion-boxed mt-5">
+                <AccordionItem className="box">
+                  <Accordion>Clients Calls</Accordion>
+                  <AccordionPanel className="text-slate-600 dark:text-slate-500 leading-relaxed">
+                    <Table
+                      setDeleteConfirmationModal={setDeleteConfirmationModal}
+                      users={filterSection(callData.contents, 2)}
+                      setUserId={setCallId}
+                      setCallState={setCallState}
+                      allCheck={allCheck}
+                      setAllCheck={setAllCheck}
+                      updateFunc={updateFunc}
+                      aheck={aheck}
+                      setAcheck={setAcheck}
+                    />
+                  </AccordionPanel>
+                </AccordionItem>
+              </AccordionGroup>
             </>
           ) : (
             <div className="flex justify-center ">
@@ -445,13 +579,25 @@ const AdminUsers = (props) => {
         </div>
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
-        {filterData.length > 0 && (
-          <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
-            <button onClick={handelLoad} className="btn">
-              Load more..
+
+        {callData.state === "hasValue" && (
+          <div className="intro-y  mt-5 col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+            <button
+              onClick={() => handelLoad(rowCount - 20)}
+              className="btn"
+              disabled={rowCount < 21 ? true : false}
+            >
+              Prev
+            </button>
+            <button
+              onClick={() => handelLoad(rowCount + 20)}
+              className="btn ml-5"
+            >
+              Next
             </button>
           </div>
         )}
+
         {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}

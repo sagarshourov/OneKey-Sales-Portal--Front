@@ -43,6 +43,20 @@ function get_single(arr, group) {
   return Date.parse(date);
 }
 
+function sectionFind(array, id) {
+  if (array.length == 0) return 0;
+  var re = 0;
+  array.map((arr, ind) => {
+    if (arr.id === id) {
+      re = id;
+
+      // console.log(arr);
+    }
+  });
+
+  return re;
+}
+
 function todayFollowFilters(array, callSwitch, user_id) {
   // var today = "";
   if (array.length == 0) return;
@@ -102,21 +116,6 @@ function towFilters(array, callSwitch, user_id) {
 }
 
 function todayNextFilters(array, callSwitch, user_id) {
-  // var tomorrow = new Date();
-
-  // tomorrow =
-  //   tomorrow.getFullYear() +
-  //   "-" +
-  //   (tomorrow.getMonth() + 1) +
-  //   "-" +
-  //   (tomorrow.getDate() + 1);
-
-  // tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
-
-  // return filter(array, (_items) => {
-  //   return get_single(_items, "my_step") === Date.parse(tomorrow);
-  // });
-
   if (array.length == 0) return;
   var today = new Date();
 
@@ -196,6 +195,51 @@ function scheduleFilters(array, callSwitch, user_id) {
   }
 }
 
+function applyAllFilters(array, searchValue, sections, user_id) {
+  //  console.log(sections);
+  if (array.length == 0) return;
+  if (user_id !== 0) {
+    return filter(array, (_items) => {
+      return (
+        _items.sections !== sectionFind(sections, _items.sections) &&
+        _items?.assigned_to?.id === user_id &&
+        _items.results &&
+        _items.results.id == 3 &&
+        ((_items.email &&
+          _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+            -1) ||
+          (_items.first_name &&
+            _items.first_name
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1) ||
+          (_items.phone_number &&
+            _items.phone_number
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1))
+      );
+    });
+  } else {
+    return filter(array, (_items) => {
+      return (
+        _items.sections !== sectionFind(sections, _items.sections) &&
+        _items.results &&
+        _items.results.id == 3 &&
+        ((_items.email &&
+          _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+            -1) ||
+          (_items.first_name &&
+            _items.first_name
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1) ||
+          (_items.phone_number &&
+            _items.phone_number
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1))
+      );
+    });
+  }
+}
+
 function applySortFilters(array, searchValue, sec, user_id) {
   if (array.length == 0) return;
   // if (sec == "no") {
@@ -207,93 +251,50 @@ function applySortFilters(array, searchValue, sec, user_id) {
   // } else
 
   if (user_id !== 0) {
-    if (sec == "all") {
-      return filter(array, (_items) => {
-        return (
-          _items.sections == null &&
-          _items?.assigned_to?.id === user_id &&
-          _items.results &&
-          _items.results.id == 3 &&
-          ((_items.email &&
-            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-              -1) ||
-            (_items.first_name &&
-              _items.first_name
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1) ||
-            (_items.phone_number &&
-              _items.phone_number
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1))
-        );
-      });
-    } else {
-      return filter(array, (_items) => {
-        // if (_items.email) {
-        return (
-          _items.sections == parseInt(sec) &&
-          _items?.assigned_to?.id === user_id &&
-          _items.results.id == 3 &&
-          ((_items.email &&
-            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-              -1) ||
-            (_items.first_name &&
-              _items.first_name
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1) ||
-            (_items.phone_number &&
-              _items.phone_number
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1))
-        );
-        // } else {
-        //   return true;
-        // }
-      });
-    }
+    return filter(array, (_items) => {
+      // if (_items.email) {
+      return (
+        _items.sections == parseInt(sec) &&
+        _items?.assigned_to?.id === user_id &&
+        _items.results.id == 3 &&
+        ((_items.email &&
+          _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+            -1) ||
+          (_items.first_name &&
+            _items.first_name
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1) ||
+          (_items.phone_number &&
+            _items.phone_number
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1))
+      );
+      // } else {
+      //   return true;
+      // }
+    });
   } else {
-    if (sec == "all") {
-      return filter(array, (_items) => {
-        return (
-          _items.sections == null &&
-          _items.results &&
-          _items.results.id == 3 &&
-          ((_items.email &&
-            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-              -1) ||
-            (_items.first_name &&
-              _items.first_name
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1) ||
-            (_items.phone_number &&
-              _items.phone_number
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1))
-        );
-      });
-    } else {
-      return filter(array, (_items) => {
-        // if (_items.email) {
-        return (
-          _items.sections == parseInt(sec) &&
-          _items.results.id == 3 &&
-          ((_items.email &&
-            _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-              -1) ||
-            (_items.first_name &&
-              _items.first_name
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1) ||
-            (_items.phone_number &&
-              _items.phone_number
-                .toLowerCase()
-                .indexOf(searchValue.toLowerCase()) !== -1))
-        );
-        // } else {
-        //   return true;
-        // }
-      });
-    }
+    return filter(array, (_items) => {
+      // if (_items.email) {
+      return (
+        _items.sections == parseInt(sec) &&
+        _items.results.id == 3 &&
+        ((_items.email &&
+          _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+            -1) ||
+          (_items.first_name &&
+            _items.first_name
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1) ||
+          (_items.phone_number &&
+            _items.phone_number
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) !== -1))
+      );
+      // } else {
+      //   return true;
+      // }
+    });
   }
 }
 
@@ -518,10 +519,7 @@ const AdminUsers = (props) => {
   const [offset, setOffset] = useState(false);
 
   useEffect(() => {
-    //const chatMessages = document.getElementById("whatsAppChat");
-
     var warper = dom(".wrapper")[0];
-
     const onScroll = () => setOffset(window.pageYOffset);
     // // clean up code
     // window.removeEventListener("scroll", onScroll);
@@ -548,7 +546,13 @@ const AdminUsers = (props) => {
   return (
     <div className="">
       <h2 className="intro-y text-lg font-medium mt-10 ">Call List</h2>
-      <div className={offset ? "fixed top-0 bg-white p-5 z-50 box " : ""}>
+      <div
+        className={
+          offset && allCheck.length > 0
+            ? "fixed top-0 bg-white p-5 z-50 box "
+            : ""
+        }
+      >
         <div className="intro-y   col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
           <div className="bg-info bg-danger bg-success bg-warning bg-yellow-400 bg-secondary bg-purple-600 z-10 z-50"></div>
           <div className="  lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2 ">
@@ -718,10 +722,10 @@ const AdminUsers = (props) => {
                           setDeleteConfirmationModal={
                             setDeleteConfirmationModal
                           }
-                          users={applySortFilters(
+                          users={applyAllFilters(
                             callData.contents,
                             search,
-                            "all",
+                            setting.sections,
                             callSwitch ? logindata.userId : 0
                           )}
                           setUserId={setCallId}
