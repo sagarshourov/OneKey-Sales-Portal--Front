@@ -25,13 +25,14 @@ const Main = (props) => {
   const [modelDescription, setModelDescription] = useState("");
   const options = {
     plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
-    droppable: true,
+    droppable: false,
     headerToolbar: {
       left: "prev,next today",
       center: "title",
       right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
     },
     aspectRatio: 1.5,
+    height : 'auto',
     navLinks: true,
     editable: true,
     events: events,

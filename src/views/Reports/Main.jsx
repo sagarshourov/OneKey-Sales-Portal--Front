@@ -338,7 +338,7 @@ const AdminUsers = (props) => {
                   );
                 })}
             </select> */}
-            <div>
+            <div className="relative">
               {usersData.state == "hasValue" && (
                 <Select
                   primaryColor={"indigo"}
@@ -426,7 +426,7 @@ const AdminUsers = (props) => {
         </div>
         {/* BEGIN: Data List */}
         <div className={offset ? "fixed w-full top-0 bg-white p-5 z-50 box " : ""}>
-          <div className="intro-y z-1 col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
+          <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
             <div className="basis-full lg:basis-4/12 ">
               {allCheck.length > 0 && (
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 content-end">
@@ -447,7 +447,7 @@ const AdminUsers = (props) => {
               )}
             </div>
 
-            <div className="basis-full lg:basis-3/12   grid  grid-cols-1 lg:grid-cols-1 gap-3">
+            <div className="basis-full lg:basis-3/12  grid  grid-cols-1 lg:grid-cols-1 gap-3">
               {callData.contents.length > 0 && (
                 <Alert className="alert-dark mb-2 w-auto my-5">
                   <div className="flex items-center">

@@ -42,6 +42,20 @@ function applySortFilters(array, searchValue) {
   });
 }
 
+function format_time(dat) {
+
+
+  
+  if (dat.cst) {
+    console.log('cst',dat.cst);
+    return dat.call_schedule_date + "T" + dat.cst + ":00";
+  }else{
+    return dat.call_schedule_date ? dat.call_schedule_date : '' ;
+  }
+
+ 
+}
+
 function event_format(data) {
   let obj = [];
 
@@ -51,7 +65,7 @@ function event_format(data) {
       obj.push({
         id: dat.id,
         ev_id: dat.id,
-        start: dat.call_schedule_date,
+        start: format_time(dat),
         description: "Call Schedule Date",
         title: dat?.first_name + " " + dat?.last_name,
       });
@@ -240,7 +254,7 @@ const Events = (props) => {
             </div>
 
             {eventDatas.state == "hasValue" && (
-              <Calendar
+              <Calendar 
                 type="2"
                 deleteEvent={deleteEvent}
                 setEventId={setEventId}

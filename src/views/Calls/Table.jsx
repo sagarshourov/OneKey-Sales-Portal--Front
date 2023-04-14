@@ -345,7 +345,19 @@ const UsersTable = (props) => {
                   </td>
 
                   <td className="text-center">{user?.first_contact}</td>
-                  <td className="text-center">{user?.first_call_notes}</td>
+                  <td className="text-center">
+                    <div className="text-center">
+                      <Tippy
+                        tag="a"
+                        href="#"
+                        className="tooltip"
+                        content={user?.first_call_notes}
+                      >
+                        {fText(user?.first_call_notes)}
+                      </Tippy>
+                    </div>
+                  </td>
+
                   <td>
                     <select
                       onChange={(e) => handelChange(e, user.id, "n")}

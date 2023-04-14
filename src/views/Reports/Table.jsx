@@ -9,6 +9,26 @@ const fText = (text) => {
   return text ? text.substr(0, 10) + "..." : "";
 };
 
+function extra_title(arr, group, index) {
+  var value = "";
+  if (arr.extra && arr.extra.length > 0) {
+    arr.extra.map((dat, key) => {
+      //   console.log("value dat", dat);
+      if (dat.groups == group && dat.values[index]?.value) {
+        value = dat.values[index]?.value;
+      }
+    });
+  }
+
+  if (index === 0 && value !== "") {
+    return helper.formatDate(value, "MMM D, YYYY");
+  }
+
+  // console.log("value", value);
+
+  return value;
+}
+
 const UsersTable = (props) => {
   const { users, setAllCheck, setAcheck, allCheck } = props;
   const [rowCount, setRowCount] = useState(10);
@@ -39,7 +59,7 @@ const UsersTable = (props) => {
   };
 
   return (
-    <>
+    <div className="overflow-auto relative">
       <table className="table  mt-2">
         <thead>
           <tr>
@@ -58,38 +78,30 @@ const UsersTable = (props) => {
             </th>
             <th className="whitespace-nowrap">No</th>
             <th className="whitespace-nowrap">Client</th>
-            {/* <th className="text-center whitespace-nowrap">Phone</th> */}
-            <th className="text-center whitespace-nowrap">WhatsApp</th>
-            <th className="text-center whitespace-nowrap">Age</th>
-            <th className="text-center whitespace-nowrap">Case Type</th>
-            {/* <th className="text-center whitespace-nowrap">GPA</th> */}
-            {/* <th className="text-center whitespace-nowrap">Priority</th> */}
-            {/* <th className="text-center whitespace-nowrap">Referred by</th>
-            <th className="text-center whitespace-nowrap">Memo</th> */}
             <th className="text-center whitespace-nowrap">
               Call Schedule Date
             </th>
-            <th className="text-center whitespace-nowrap">Next steps</th>
-            <th className="text-center whitespace-nowrap">Package</th>
-            <th className="text-center whitespace-nowrap">Status</th>
+            <th className="text-center whitespace-nowrap">Case Type</th>
+            <th className="text-center whitespace-nowrap">Age</th>
 
-            <th className="text-center whitespace-nowrap">First Call Notes</th>
-            <th className="text-center whitespace-nowrap">
-              Follow up date set
-            </th>
-            <th className="text-center whitespace-nowrap">
-              Follow up call notes
-            </th>
+            <th className="text-center whitespace-nowrap"> First Call Date</th>
+            <th className="text-center whitespace-nowrap">First Call Note</th>
+
+            <th className="text-center whitespace-nowrap">Package</th>
 
             <th className="text-center whitespace-nowrap">Agreement Sent</th>
             <th className="text-center whitespace-nowrap">Agreement Signed</th>
 
-            {/* <th className="text-center whitespace-nowrap">
-              {" "}
-              Cancellation reason
-            </th> */}
+            <th className="text-center whitespace-nowrap">Status</th>
 
-            <th className="text-center whitespace-nowrap"> Feedback</th>
+            <th className="text-center whitespace-nowrap">Next step Date</th>
+            <th className="text-center whitespace-nowrap">Next step Note</th>
+
+            <th className="text-center whitespace-nowrap"> Follow up Date</th>
+            <th className="text-center whitespace-nowrap"> Follow up Note</th>
+
+            <th className="text-center whitespace-nowrap"> Cancel Reason</th>
+            <th className="text-center whitespace-nowrap"> Cancel Date</th>
           </tr>
         </thead>
         <tbody>
@@ -170,17 +182,6 @@ const UsersTable = (props) => {
                       <CopyEle email={user.email} />
                     </div>
                   </td>
-
-                  {/* <td>{user?.phone_number}</td> */}
-                  <td>{user?.whatsapp}</td>
-
-                  <td className="text-center">{user?.age}</td>
-
-                  <td className="text-center">
-                    {user?.case_type == 1 && "F-1"}{" "}
-                    {user?.case_type == 2 && "F-1/F2"}
-                  </td>
-
                   <td className="text-center">
                     {user?.call_schedule_date &&
                       helper.formatDate(
@@ -188,21 +189,50 @@ const UsersTable = (props) => {
                         "MMM D, YYYY"
                       )}{" "}
                   </td>
-                  <td className="text-center">{user?.next_step}</td>
-                  <td>{user?.package?.title}</td>
-                  <td>{user?.statu?.title}</td>
+                  <td className="text-center">
+                    {user?.case_type == 1 && "F-1"}{" "}
+                    {user?.case_type == 2 && "F-1/F2"}
+                  </td>
+                  <td className="text-center">{user?.age}</td>
+                  <td className="text-center">{user?.first_contact}</td>
                   <td className="text-center">
                     <div className="text-center">
                       <Tippy
                         tag="a"
                         href="#"
                         className="tooltip"
-                        content={user?.last_status_notes}
+                        content={user?.first_call_notes}
                       >
-                        {fText(user?.last_status_notes)}
+                        {fText(user?.first_call_notes)}
                       </Tippy>
                     </div>
                   </td>
+
+                  <td className="text-center"> {user?.package?.title}</td>
+
+                  <td className="text-center">
+                    {user.ag === 0 ? "No" : "Yes"}
+                  </td>
+
+                  <td className="text-center">
+                    {user.agreed_to_signed === 0 ? "No" : "Yes"}
+                  </td>
+                  <td>{user?.statu?.title}</td>
+
+                  <td>{extra_title(user, "my_step", 0)}</td>
+                  <td>
+                    <div className="text-center">
+                      <Tippy
+                        tag="a"
+                        href="#"
+                        className="tooltip"
+                        content={extra_title(user, "my_step", 1)}
+                      >
+                        {fText(extra_title(user, "my_step", 1))}
+                      </Tippy>
+                    </div>
+                  </td>
+
                   <td className="text-center">
                     {user?.follow_up_date &&
                       helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
@@ -221,26 +251,8 @@ const UsersTable = (props) => {
                     </div>
                   </td>
 
-                  <td className="text-center">
-                    {user.ag === 0 ? "No" : "Yes"}
-                  </td>
-
-                  <td className="text-center">
-                    {user.agreed_to_signed === 0 ? "No" : "Yes"}
-                  </td>
-
-                  <td className="text-center">
-                    <div className="text-center">
-                      <Tippy
-                        tag="a"
-                        href="#"
-                        className="tooltip"
-                        content={user?.feedbacks}
-                      >
-                        {fText(user?.feedbacks)}
-                      </Tippy>
-                    </div>
-                  </td>
+                  <td className="text-center">{user?.cancel_reason?.title}</td>
+                  <td className="text-center">{user?.cancel_date}</td>
                 </tr>
               );
             })}
@@ -252,7 +264,7 @@ const UsersTable = (props) => {
         </button>
       )}
       ;
-    </>
+    </div>
   );
 };
 

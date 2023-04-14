@@ -1064,11 +1064,11 @@ const EditCallCon = (props) => {
             <div className="border border-dashed border-2 p-2 lg:p-5 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
-                  <label className="form-label">Last Call Notes</label>
+                  <label className="form-label">First Call Notes</label>
                   <textarea
-                    name="last_status_notes"
+                    name="first_call_notes"
                     defaultValue={
-                      calls?.last_status_notes && calls?.last_status_notes
+                      calls?.first_call_notes && calls?.first_call_notes
                     }
                     className=" form-control"
                     placeholder=""
