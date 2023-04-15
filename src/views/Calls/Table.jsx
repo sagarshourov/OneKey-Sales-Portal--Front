@@ -27,7 +27,6 @@ const remove_style_tr = () => {
   table.forEach((ele) => {
     ele.style.borderTop = "none";
     // check for the particulr class
-    console.log(ele);
   });
 };
 
@@ -257,6 +256,8 @@ const UsersTable = (props) => {
                 dark = " alert-warning-soft ";
               } else if (is_admin == 2) {
                 dark = " alert-success-soft ";
+              }else if(allCheck.includes(user.id)){
+                dark = " alert-secondary ";  
               }
 
               // var team_id = user?.user?.team;
@@ -327,7 +328,7 @@ const UsersTable = (props) => {
                     {user?.assigned_to?.first_name}{" "}
                     {user?.assigned_to?.last_name}
                   </td>
-                  <td>{user?.priority}</td>
+                  <td>{user?.priorities?.title}</td>
                   <td>{user?.whatsapp}</td>
 
                   <td className="text-center">{user?.age}</td>

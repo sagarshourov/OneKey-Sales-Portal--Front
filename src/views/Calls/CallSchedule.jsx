@@ -16,7 +16,7 @@ const CallSchedule = (props) => {
           {data && data.map((val, index) => (
             <tr
               key={index}
-              onClick={() => handelGo(val.sections)}
+              onClick={() => handelGo(val.sections , val)}
               className="cursor-pointer"
             >
               <td>{val?.email}</td>

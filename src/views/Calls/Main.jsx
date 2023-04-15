@@ -28,6 +28,7 @@ import FollowUp from "./FollowUp";
 import CallSchedule from "./CallSchedule";
 import classnames from "classnames";
 import { settingState } from "../../state/setting-atom";
+import CallViewModal from "./CallViewModal";
 
 function get_single(arr, group) {
   var date = "";
@@ -328,6 +329,21 @@ const AdminUsers = (props) => {
   const [rowId, setRowID] = useState(0);
   const [callSwitch, setCallSwitch] = useState(false);
 
+
+  const [showCallVew, setCallView] = useState(false);
+
+
+ const  handelCallModel = (show)=>{
+  console.log('handel call view');
+
+  setCallView(show);
+ }
+ const [singleCall, setSingleCall] = useState([]);
+
+
+
+
+
   const setting = useRecoilValue(settingState);
 
   // console.log("logindata", logindata.role);
@@ -343,7 +359,12 @@ const AdminUsers = (props) => {
     window.open(getBaseApi() + "call/export", "_blank");
   };
 
-  const handelGo = (section) => {
+  const handelGo = (section , call) => {
+
+    console.log('handel go', call);
+    setSingleCall(call);
+    handelCallModel(true);
+
     document.getElementsByClassName(
       "item" + section
     )[0].parentNode.style.display = "block";
@@ -893,6 +914,8 @@ const AdminUsers = (props) => {
           )}
         </div>
       </div>
+
+      <CallViewModal showCallVew={showCallVew} setCallView={setCallView} handelCallModel={handelCallModel} data={singleCall} />
       {/* Grid */}
       {/* BEGIN: Delete Confirmation Modal */}
       <Modal
