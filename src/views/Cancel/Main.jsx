@@ -66,6 +66,12 @@ const CancelMain = (props) => {
   const setting = useRecoilValue(settingState);
 
   useEffect(() => {
+    if (loginData.role === 2) {
+      setCallSwitch(true);
+      canUser(loginData.userId);
+
+    
+    }
     return () => {
       console.log("releasing Cancel....");
       setPageOffset(1);
@@ -166,14 +172,11 @@ const CancelMain = (props) => {
   const CallSwitch = () => {
     setCallSwitch(() => !callSwitch);
 
-
-    if(callSwitch){
+    if (callSwitch) {
       canUser(0);
-    }else{
+    } else {
       canUser(loginData.userId);
     }
-
-   
   };
 
   return (
@@ -351,7 +354,7 @@ const CancelMain = (props) => {
             </button>
           </div>
         )}
-        
+
         {/* END: Pagination */}
       </div>
       {/* BEGIN: Delete Confirmation Modal */}

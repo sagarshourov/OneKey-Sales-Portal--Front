@@ -328,7 +328,7 @@ const UsersTable = (props) => {
                     {user?.assigned_to?.first_name}{" "}
                     {user?.assigned_to?.last_name}
                   </td>
-                  <td>{user?.priorities?.title}</td>
+                  <td>{user?.priority}</td>
                   <td>{user?.whatsapp}</td>
 
                   <td className="text-center">{user?.age}</td>

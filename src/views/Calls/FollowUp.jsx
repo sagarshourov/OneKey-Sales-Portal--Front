@@ -7,13 +7,12 @@ const FollowUp = (props) => {
     var time = "";
     if (arr.extra && arr.extra.length > 0) {
       arr.extra.map((dat, index) => {
-        if (dat.groups == group && dat.values[2]?.value) {
-          time = dat.values[2]?.value;
+        if (dat.groups == group) {
+          time = dat.values[2].value ? dat.values[2].value : '' ;
         }
       });
     }
     //console.log(date);
-
     return time;
   }
 

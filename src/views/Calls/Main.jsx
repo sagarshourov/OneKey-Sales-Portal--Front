@@ -324,6 +324,12 @@ const AdminUsers = (props) => {
 
   const logindata = useRecoilValue(loginState);
 
+
+  //console.log('logindata',logindata);
+
+
+
+
   const [histoyText, setHistoryText] = useState("");
   const [row, setRow] = useState([]);
   const [rowId, setRowID] = useState(0);
@@ -542,6 +548,9 @@ const AdminUsers = (props) => {
   useEffect(() => {
     var warper = dom(".wrapper")[0];
     const onScroll = () => setOffset(window.pageYOffset);
+
+
+    if(logindata.role === 2) setCallSwitch(true);
     // // clean up code
     // window.removeEventListener("scroll", onScroll);
     warper.addEventListener(

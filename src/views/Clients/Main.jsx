@@ -1,7 +1,7 @@
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
 import { useState, useEffect } from "react";
-
+import classnames from "classnames";
 import {
   useRecoilStateLoadable,
   useSetRecoilState,
@@ -13,13 +13,14 @@ import {
   pagOffset,
   pageLimit,
   searchAtom,
+  clientUser,
 } from "../../state/admin-atom";
 import { useParams, Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { settingState } from "../../state/setting-atom";
 import axios from "axios";
 import { adminApi } from "../../configuration";
-
+import { loginState } from "../../state/login-atom";
 import { filter } from "lodash";
 
 function applySortFilters(array, searchValue) {
@@ -52,25 +53,32 @@ const ClientMain = (props) => {
   const searchQuery = useSetRecoilState(searchAtom);
   const limitQuery = useSetRecoilState(pageLimit);
 
+  const cliUser = useSetRecoilState(clientUser);
+
   const [rowCount, setRowCount] = useState(200);
   const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");
   const [user_id, setUserId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [allCheck, setAllCheck] = useState([]);
-
+  const loginData = useRecoilValue(loginState);
   const setting = useRecoilValue(settingState);
-
+  const [callSwitch, setCallSwitch] = useState(false);
   const refreshCall = useRecoilRefresher_UNSTABLE(clientListState);
 
   //const resetcallIdState = useResetRecoilState(callIdState);
   useEffect(() => {
+    if (loginData.role === 2) {
+      setCallSwitch(true);
+      cliUser(loginData.userId);
+    }
     return () => {
       console.log("releasing Clients....");
       setPageOffset(0);
       searchQuery(0);
       limitQuery(20);
       refreshCall();
+      cliUser(0);
     };
   }, []);
 
@@ -156,7 +164,15 @@ const ClientMain = (props) => {
       setLoading(false);
     }
   };
+  const CallSwitch = () => {
+    setCallSwitch(() => !callSwitch);
 
+    if (callSwitch) {
+      cliUser(0);
+    } else {
+      cliUser(loginData.userId);
+    }
+  };
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Clients Call List</h2>
@@ -242,6 +258,25 @@ const ClientMain = (props) => {
                {filterData.length} {" /"}
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
+
+          <div className="lg:basis-2/12   grid  grid-cols-1 lg:grid-cols-1 gap-3">
+            {loginData.role !== 3 && (
+              <div
+                onClick={CallSwitch}
+                className="dark-mode-switcher cursor-pointer shadow-md box border rounded-full w-36  h-10 flex items-center justify-center z-50 "
+              >
+                <div className="mr-4 text-slate-600 dark:text-slate-200">
+                  Switch Calls
+                </div>
+                <div
+                  className={classnames({
+                    "dark-mode-switcher__toggle border": true,
+                    "dark-mode-switcher__toggle--active": callSwitch,
+                  })}
+                ></div>
+              </div>
+            )}
+          </div>
 
           <div className="lg:basis-4/12   grid  grid-cols-1 lg:grid-cols-4 gap-3">
             <select

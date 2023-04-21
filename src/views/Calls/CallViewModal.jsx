@@ -102,7 +102,7 @@ const CallViewModal = (props) => {
                 className=" form-control"
                 type="text"
                 name="priority"
-                defaultValue={data?.priorities?.title}
+                defaultValue={data?.priority}
               />
             </div>
             <div className="intro-x ">
@@ -134,7 +134,7 @@ const CallViewModal = (props) => {
                 className=" form-control"
                 type="text"
                 name="priority"
-                defaultValue={data?.priorities?.title}
+                defaultValue={data?.priority}
               />
             </div>
 
