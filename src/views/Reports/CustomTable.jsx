@@ -9,7 +9,7 @@ import { useState } from "react";
 // }
 
 import { Link } from "react-router-dom";
-
+import { helper } from "@/utils/helper";
 const formatDate = (dat) => {
   //const date = dat.split(" ");
   return dat.split("T")[0];
@@ -18,6 +18,24 @@ const formatDate = (dat) => {
 const fText = (text) => {
   return text ? text.substr(0, 10) + "..." : "";
 };
+
+function extra_title(arr, group, index) {
+  var value = "";
+  if (arr.extra && arr.extra.length > 0) {
+    arr.extra.map((dat, key) => {
+      //   console.log("value dat", dat);
+      if (dat.groups == group && dat.values[index]?.value) {
+        value = dat.values[index]?.value;
+      }
+    });
+  }
+
+  if (index === 0 && value !== "") {
+    return helper.formatDate(value, "MMM D, YYYY");
+  }
+
+  return value;
+}
 
 const CustomTable = (props) => {
   const {
@@ -31,6 +49,7 @@ const CustomTable = (props) => {
     aheck,
     setAcheck,
     cols,
+    emp,
   } = props;
 
   return (
@@ -82,15 +101,7 @@ const CustomTable = (props) => {
 
                 {cols !== null &&
                   cols.map((val, index) => {
-                    // if (val.value == "status") {
-
-                    //   console.log(user[val.value]);
-                    //   return (
-                    //    <td key={index} className="text-center">st</td>
-                    //   );
-                    // }
-
-                    if (val.value == "agreement_sent") {
+                    if (val.value == "ag") {
                       return user[val.value] !== null ? (
                         <td key={index} className="text-center">
                           {user.ag == 1 ? "Yes" : "No"}
@@ -102,11 +113,155 @@ const CustomTable = (props) => {
                       );
                     }
 
+                    if (val.value == "agreed_to_signed") {
+                      return user[val.value] !== null ? (
+                        <td key={index} className="text-center">
+                          {user.agreed_to_signed == 1 ? "Yes" : "No"}
+                        </td>
+                      ) : (
+                        <td key={index} className="text-center"></td>
+                      );
+                    }
+
+                    if (val.value == "statu") {
+                      return user[val.value] !== null ? (
+                        <td key={index} className="text-center">
+                          {user?.statu?.title}
+                        </td>
+                      ) : (
+                        <td key={index} className="text-center"></td>
+                      );
+                    }
+                    if (val.value == "cancel_reason") {
+                      return user[val.value] !== null ? (
+                        <td key={index} className="text-center">
+                          {user?.cancel_reason?.title}
+                        </td>
+                      ) : (
+                        <td key={index} className="text-center"></td>
+                      );
+                    }
+
                     if (val.value == "assigned_to") {
                       return user[val.value] !== null ? (
                         <td key={index} className="text-center">
                           {user[val.value].first_name}{" "}
                           {user[val.value].last_name}
+                        </td>
+                      ) : (
+                        <td key={index} className="text-center"></td>
+                      );
+                    }
+
+                    if (val.value == "next_step_date") {
+                      return (
+                        <td key={index} className="text-center">
+                          {/* {extra_title(user, "my_step", 0)} */}
+
+                          {extra_title(user, "my_step", 0)}
+                        </td>
+                      );
+                    }
+
+                    if (val.value == "follow_up_note") {
+                      return (
+                        <td key={index} className="text-center">
+                          <div className="text-center">
+                            <Tippy
+                              tag="a"
+                              href="#"
+                              className="tooltip"
+                              content={user?.follow_up_notes}
+                            >
+                              {fText(user?.follow_up_notes)}
+                            </Tippy>
+                          </div>
+                        </td>
+                      );
+                    }
+
+                    if (val.value == "last_status_notes") {
+                      return (
+                        <td key={index} className="text-center">
+                          <div className="text-center">
+                            <Tippy
+                              tag="a"
+                              href="#"
+                              className="tooltip"
+                              content={user?.last_status_notes}
+                            >
+                              {fText(user?.last_status_notes)}
+                            </Tippy>
+                          </div>
+                        </td>
+                      );
+                    }
+
+                    if (val.value == "follow_up_date") {
+                      return (
+                        <td key={index} className="text-center">
+                          {user?.follow_up_date &&
+                            helper.formatDate(
+                              user?.follow_up_date,
+                              "MMM D, YYYY"
+                            )}
+                        </td>
+                      );
+                    }
+
+                    if (val.value == "call_schedule_date") {
+                      return (
+                        <td key={index} className="text-center">
+                          {user?.call_schedule_date &&
+                            helper.formatDate(
+                              user?.call_schedule_date,
+                              "MMM D, YYYY"
+                            )}
+                        </td>
+                      );
+                    }
+
+                    if (val.value == "first_contact") {
+                      return (
+                        <td key={index} className="text-center">
+                          {user?.first_contact &&
+                            helper.formatDate(
+                              user?.first_contact,
+                              "MMM D, YYYY"
+                            )}
+                        </td>
+                      );
+                    }
+
+                    if (val.value == "cancel_date") {
+                      return (
+                        <td key={index} className="text-center">
+                          {user?.cancel_date &&
+                            helper.formatDate(user?.cancel_date, "MMM D, YYYY")}
+                        </td>
+                      );
+                    }
+
+                    if (val.value == "assigned_to") {
+                      return (
+                        <td key={index} className="text-center">
+                          {user?.assigned_to &&
+                            user?.assigned_to?.first_name +
+                              " " +
+                              user?.assigned_to?.last_name}
+                        </td>
+                      );
+                    }
+
+                    // if (val.value == "case_type") {
+                    //   return  <td key={index} className="text-center">case_type</td>;
+
+                    // }
+
+                    if (val.value == "case_type") {
+                      return user[val.value] !== null ? (
+                        <td key={index} className="text-center">
+                          {user.case_type == 1 ? "F-1" : "F-1/F2"}
                         </td>
                       ) : (
                         <td key={index} className="text-center"></td>

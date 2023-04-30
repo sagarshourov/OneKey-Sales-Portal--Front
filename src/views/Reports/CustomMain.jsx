@@ -83,6 +83,7 @@ const CustomMain = (props) => {
   const [cols, setCol] = useState(null);
 
   const handleChange = (value) => {
+    console.log('col',value);
     setCol(value);
   };
 
@@ -165,21 +166,61 @@ const CustomMain = (props) => {
     parseInt(user_id)
   );
 
-  const options = () => {
-    let data = [];
+  const options = () => { 
 
-    callData.contents[0] &&
-      Object.keys(callData.contents[0]).map((val, index) => {
-        // console.log('val',val);
+   // No, Client, Call Schedule Date, Case Type, Age, First Call Date, First Call Note, Package, Agreement Sent, Agreement Signed, Status, Next Step Date, Next Step Note, 
+   
+   
+   //Follow Up Date, Follow Up Note,Cancel Reason, Cancel Date, 
 
-        if (r_fields.includes(val)) {
-        } else {
-          data.push({ value: val, label: val.replaceAll("_", " ") });
-        }
-      });
+    let data = [
+      
+      // {value : 'id' , label : 'ID'},
+    {value : 'first_name' , label : 'First Name'},
+    {value : 'last_name' , label : 'Last Name'},
+    {value : 'email' , label : 'E-mail'},
+    {value : 'call_schedule_date' , label : 'Call Schedule Date'},
+    {value : 'case_type' , label : 'Case Type'},
+    {value : 'age' , label : 'Age'},
+    {value : 'first_contact' , label : 'First Call Date'},
+    {value : 'last_status_notes' , label : 'First Call Note'},
+    {value : 'package' , label : 'Package'},
+    {value : 'ag' , label : 'Agreement Sent'},
+    {value : 'agreed_to_signed' , label : 'Agreement Signed'},
+    {value : 'statu' , label : 'Status'},
+
+
+    {value : 'next_step_date' , label : 'Next Step Date'},
+    {value : 'follow_up_date' , label : 'Follow Up Date'},
+    {value : 'follow_up_note' , label : 'Follow Up Note'},
+
+
+    {value : 'cancel_reason' , label : 'Cancel Reason'},
+    {value : 'cancel_date' , label : 'Cancel Date'},
+    {value : 'assigned_to' , label : 'Assigned To'},
+    
+  
+  ];
+
 
     return data;
-  };
+  }
+
+  // const options = () => {
+  //   let data = [];
+
+  //   callData.contents[0] &&
+  //     Object.keys(callData.contents[0]).map((val, index) => {
+  //       // console.log('val',val);
+
+  //       if (r_fields.includes(val)) {
+  //       } else {
+  //         data.push({ value: val, label: val.replaceAll("_", " ") });
+  //       }
+  //     });
+
+  //   return data;
+  // };
 
   // };
 
@@ -279,6 +320,7 @@ const CustomMain = (props) => {
                 aheck={aheck}
                 setAcheck={setAcheck}
                 cols={cols}
+                emp={usersData}
               />
             </>
           ) : (

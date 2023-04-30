@@ -2,7 +2,7 @@ import { Lucide, Tippy, LoadingIcon, Checkbox } from "@/base-components";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import CopyEle from "../Calls/CopyEle";
-
+import { filter } from "lodash";
 import { helper } from "@/utils/helper";
 
 const fText = (text) => {
@@ -24,13 +24,26 @@ function extra_title(arr, group, index) {
     return helper.formatDate(value, "MMM D, YYYY");
   }
 
-  // console.log("value", value);
-
   return value;
 }
 
+function findByID(array, id) {
+  var data = filter(array, (_items) => {
+    return _items.id == id;
+  });
+
+  if (data[0]) {
+    return data[0]?.first_name + " " + data[0]?.last_name;
+  } else {
+    return "";
+  }
+}
+
 const UsersTable = (props) => {
-  const { users, setAllCheck, setAcheck, allCheck } = props;
+  const { users, setAllCheck, setAcheck, allCheck, emp } = props;
+
+  console.log("emp", emp);
+
   const [rowCount, setRowCount] = useState(10);
   const handelSingleCheck = (e) => {
     const { id, checked } = e.target;
@@ -102,6 +115,7 @@ const UsersTable = (props) => {
 
             <th className="text-center whitespace-nowrap"> Cancel Reason</th>
             <th className="text-center whitespace-nowrap"> Cancel Date</th>
+            <th className="text-center whitespace-nowrap">Assigned to</th>
           </tr>
         </thead>
         <tbody>
@@ -253,6 +267,10 @@ const UsersTable = (props) => {
 
                   <td className="text-center">{user?.cancel_reason?.title}</td>
                   <td className="text-center">{user?.cancel_date}</td>
+
+                  <td className="text-center">
+                    {findByID(emp.contents, user?.assigned_to)}
+                  </td>
                 </tr>
               );
             })}

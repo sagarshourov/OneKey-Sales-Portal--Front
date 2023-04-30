@@ -197,7 +197,6 @@ const UsersTable = (props) => {
             <th className="whitespace-nowrap">E-mail</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
 
-            <th className="text-center whitespace-nowrap">Assigned To</th>
             <th className="text-center whitespace-nowrap">Priority</th>
             <th className="text-center whitespace-nowrap">WhatsApp</th>
             <th className="text-center whitespace-nowrap">Age</th>
@@ -233,6 +232,7 @@ const UsersTable = (props) => {
             </th> */}
 
             <th className="text-center whitespace-nowrap"> Feedback</th>
+            <th className="text-center whitespace-nowrap">Assigned To</th>
           </tr>
         </thead>
         <tbody>
@@ -256,8 +256,8 @@ const UsersTable = (props) => {
                 dark = " alert-warning-soft ";
               } else if (is_admin == 2) {
                 dark = " alert-success-soft ";
-              }else if(allCheck.includes(user.id)){
-                dark = " alert-secondary ";  
+              } else if (allCheck.includes(user.id)) {
+                dark = " alert-secondary ";
               }
 
               // var team_id = user?.user?.team;
@@ -324,10 +324,6 @@ const UsersTable = (props) => {
                     </div>
                   </td>
 
-                  <td>
-                    {user?.assigned_to?.first_name}{" "}
-                    {user?.assigned_to?.last_name}
-                  </td>
                   <td>{user?.priority}</td>
                   <td>{user?.whatsapp}</td>
 
@@ -345,7 +341,10 @@ const UsersTable = (props) => {
                     {user?.case_type == 2 && "F-1/F2"}
                   </td>
 
-                  <td className="text-center">{user?.first_contact}</td>
+                  <td className="text-center">
+                    {user?.first_contact &&
+                      helper.formatDate(user?.first_contact, "MMM D, YYYY")}
+                  </td>
                   <td className="text-center">
                     <div className="text-center">
                       <Tippy
@@ -449,6 +448,10 @@ const UsersTable = (props) => {
                         {fText(user?.feedbacks)}
                       </Tippy>
                     </div>
+                  </td>
+                  <td>
+                    {user?.assigned_to?.first_name}{" "}
+                    {user?.assigned_to?.last_name}
                   </td>
                 </tr>
               );

@@ -181,18 +181,65 @@ function scheduleFilters(array, callSwitch, user_id) {
   // });
 
   if (callSwitch) {
-    return filter(array, (_items) => {
+    var data = filter(array, (_items) => {
       //return Date.parse(_items.follow_up_date) === Date.parse(today)
       return (
         Date.parse(_items.call_schedule_date) === Date.parse(today) &&
         _items?.assigned_to?.id === user_id
       );
     });
+
+    return data.sort(
+      (a, b) => parseInt(a.call_schedule_time) - parseInt(b.call_schedule_time)
+    );
+
+    // return data;
   } else {
-    return filter(array, (_items) => {
+    var data = filter(array, (_items) => {
       //return Date.parse(_items.follow_up_date) === Date.parse(today)
       return Date.parse(_items.call_schedule_date) === Date.parse(today);
     });
+
+    return data.sort(
+      (a, b) => parseInt(a.call_schedule_time) - parseInt(b.call_schedule_time)
+    );
+
+    //return data;
+  }
+}
+
+function tomorrowScheduleFilters(array, callSwitch, user_id) {
+  if (array.length == 0) return;
+
+  var tomorrow = new Date();
+
+  tomorrow =
+    tomorrow.getFullYear() +
+    "-" +
+    (tomorrow.getMonth() + 1) +
+    "-" +
+    (tomorrow.getDate() + 1);
+
+  tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
+
+  if (callSwitch) {
+    var data = filter(array, (_items) => {
+      return (
+        Date.parse(_items.call_schedule_date) === Date.parse(tomorrow) &&
+        _items?.assigned_to?.id === user_id
+      );
+    });
+    return data.sort(
+      (a, b) => parseInt(a.call_schedule_time) - parseInt(b.call_schedule_time)
+    );
+  } else {
+    var data = filter(array, (_items) => {
+      return Date.parse(_items.call_schedule_date) === Date.parse(tomorrow);
+    });
+    return data.sort(
+      (a, b) => parseInt(a.call_schedule_time) - parseInt(b.call_schedule_time)
+    );
+    //return data;
   }
 }
 
@@ -324,31 +371,21 @@ const AdminUsers = (props) => {
 
   const logindata = useRecoilValue(loginState);
 
-
   //console.log('logindata',logindata);
-
-
-
 
   const [histoyText, setHistoryText] = useState("");
   const [row, setRow] = useState([]);
   const [rowId, setRowID] = useState(0);
   const [callSwitch, setCallSwitch] = useState(false);
 
-
   const [showCallVew, setCallView] = useState(false);
 
+  const handelCallModel = (show) => {
+    console.log("handel call view");
 
- const  handelCallModel = (show)=>{
-  console.log('handel call view');
-
-  setCallView(show);
- }
- const [singleCall, setSingleCall] = useState([]);
-
-
-
-
+    setCallView(show);
+  };
+  const [singleCall, setSingleCall] = useState([]);
 
   const setting = useRecoilValue(settingState);
 
@@ -365,9 +402,8 @@ const AdminUsers = (props) => {
     window.open(getBaseApi() + "call/export", "_blank");
   };
 
-  const handelGo = (section , call) => {
-
-    console.log('handel go', call);
+  const handelGo = (section, call) => {
+    console.log("handel go", call);
     setSingleCall(call);
     handelCallModel(true);
 
@@ -549,8 +585,7 @@ const AdminUsers = (props) => {
     var warper = dom(".wrapper")[0];
     const onScroll = () => setOffset(window.pageYOffset);
 
-
-    if(logindata.role === 2) setCallSwitch(true);
+    if (logindata.role === 2) setCallSwitch(true);
     // // clean up code
     // window.removeEventListener("scroll", onScroll);
     warper.addEventListener(
@@ -877,6 +912,18 @@ const AdminUsers = (props) => {
                   logindata.userId
                 )}
               />
+
+              <CallSchedule
+                title="Tomorrow Call Schedule"
+                theme=" table-dark text-white"
+                handelGo={handelGo}
+                data={tomorrowScheduleFilters(
+                  callData.contents,
+                  callSwitch,
+                  logindata.userId
+                )}
+              />
+
               {/* <FollowUp
                 title="Today’s Follow Ups"
                 theme="table-dark"
@@ -924,7 +971,12 @@ const AdminUsers = (props) => {
         </div>
       </div>
 
-      <CallViewModal showCallVew={showCallVew} setCallView={setCallView} handelCallModel={handelCallModel} data={singleCall} />
+      <CallViewModal
+        showCallVew={showCallVew}
+        setCallView={setCallView}
+        handelCallModel={handelCallModel}
+        data={singleCall}
+      />
       {/* Grid */}
       {/* BEGIN: Delete Confirmation Modal */}
       <Modal

@@ -521,6 +521,7 @@ const AdminUsers = (props) => {
                       updateFunc={updateFunc}
                       aheck={aheck}
                       setAcheck={setAcheck}
+                      emp={usersData}
                     />
                   </AccordionPanel>
                 </AccordionItem>
@@ -540,6 +541,7 @@ const AdminUsers = (props) => {
                       updateFunc={updateFunc}
                       aheck={aheck}
                       setAcheck={setAcheck}
+                      emp={usersData}
                     />
                   </AccordionPanel>
                 </AccordionItem>
@@ -559,6 +561,7 @@ const AdminUsers = (props) => {
                       updateFunc={updateFunc}
                       aheck={aheck}
                       setAcheck={setAcheck}
+                      emp={usersData}
                     />
                   </AccordionPanel>
                 </AccordionItem>
