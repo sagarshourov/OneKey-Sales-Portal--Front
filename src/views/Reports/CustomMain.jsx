@@ -183,7 +183,7 @@ const CustomMain = (props) => {
     {value : 'case_type' , label : 'Case Type'},
     {value : 'age' , label : 'Age'},
     {value : 'first_contact' , label : 'First Call Date'},
-    {value : 'last_status_notes' , label : 'First Call Note'},
+    {value : 'first_call_notes' , label : 'First Call Note'},
     {value : 'package' , label : 'Package'},
     {value : 'ag' , label : 'Agreement Sent'},
     {value : 'agreed_to_signed' , label : 'Agreement Signed'},

@@ -274,7 +274,7 @@ const EditCallCon = (props) => {
           content: "Client Recovering Request",
           call_id: call?.id,
           user_id: logindata.userId,
-          is_read: 0
+          is_read: 0,
         },
         {
           //user id is creator of notifications
@@ -480,6 +480,31 @@ const EditCallCon = (props) => {
     ? filterSingle(calls.history, "assigned_to")
     : [];
 
+  const markRead = async (id) => {
+    console.log("sagar");
+
+    const URL = adminApi() + "update_feedback";
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        URL,
+        { id: id },
+        {
+          headers,
+        }
+      );
+
+      if (response?.data?.success) {
+        setLoading(false);
+         window.location.reload();
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {" "}
@@ -604,7 +629,6 @@ const EditCallCon = (props) => {
                       : "form-control"
                   }
                   placeholder=""
-                  
                   onChange={(e) => checkEmail(e)}
                   defaultValue={calls?.email}
                 />
@@ -661,7 +685,6 @@ const EditCallCon = (props) => {
               </div>
               <div className="intro-x ">
                 <label className="form-label">Priority</label>
-               
 
                 <input
                   type="text"
@@ -1046,7 +1069,7 @@ const EditCallCon = (props) => {
                     ))}
                 </select>
               </div>
-              {fCallResult && (
+              {/* {fCallResult && (
                 <div className="intro-x lg:col-span-3">
                   <label className="form-label"> Notes</label>
                   <textarea
@@ -1059,7 +1082,7 @@ const EditCallCon = (props) => {
                     }
                   />
                 </div>
-              )}
+              )} */}
             </div>
             <div className="border border-dashed border-2 p-2 lg:p-5 mt-5">
               <div className="grid grid-cols-1  gap-4">
@@ -1247,19 +1270,28 @@ const EditCallCon = (props) => {
                     name="feedbacks"
                     className=" form-control"
                     placeholder=""
-                    defaultValue={calls?.feedbacks && calls?.feedbacks}
                   />
                 </div>
 
                 {calls.history &&
                   filterSingle(calls.history, "feedbacks").map(
                     (data, index) => {
-                      var color = "bg-white";
+                      var color = "bg-white ";
 
-                      if (data?.user?.is_admin == 1) {
+                      if (
+                        data?.user?.is_admin === 1 &&
+                        index === 0 &&
+                        calls.feedbacks &&
+                        calls.feedbacks !== ""
+                      ) {
                         color = "bg-warning text-white";
                       }
-                      if (data?.user?.is_admin == 2) {
+                      if (
+                        data?.user?.is_admin === 2 &&
+                        index === 0 &&
+                        calls.feedbacks &&
+                        calls.feedbacks !== ""
+                      ) {
                         color = "bg-info text-white";
                       }
 
@@ -1268,7 +1300,7 @@ const EditCallCon = (props) => {
                           key={index}
                           className={
                             color +
-                            "  dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
+                            " relative  dark:bg-darkmode-400 shadow-sm border border-slate-200 rounded-md p-5 flex flex-col sm:flex-row items-start gap-y-3 "
                           }
                         >
                           <div className="mr-3">
@@ -1297,6 +1329,17 @@ const EditCallCon = (props) => {
                                 "ddd, MMMM D, YYYY h:mm A"
                               )}
                             </div>
+                          </div>
+
+                          <div className="absolute right-5">
+                            {index === 0 &&
+                              calls.feedbacks &&
+                              calls.feedbacks !== "" && (
+                                <input
+                                  onClick={() => markRead(calls.id)}
+                                  type="checkbox"
+                                />
+                              )}
                           </div>
                         </div>
                       );

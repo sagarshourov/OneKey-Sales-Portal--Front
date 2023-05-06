@@ -180,7 +180,7 @@ const CustomTable = (props) => {
                       );
                     }
 
-                    if (val.value == "last_status_notes") {
+                    if (val.value == "first_call_notes") {
                       return (
                         <td key={index} className="text-center">
                           <div className="text-center">
@@ -188,9 +188,9 @@ const CustomTable = (props) => {
                               tag="a"
                               href="#"
                               className="tooltip"
-                              content={user?.last_status_notes}
+                              content={user?.first_call_notes}
                             >
-                              {fText(user?.last_status_notes)}
+                              {fText(user?.first_call_notes)}
                             </Tippy>
                           </div>
                         </td>

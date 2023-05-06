@@ -861,7 +861,7 @@ const AddCalls = (props) => {
                     ))}
                 </select>
               </div>
-              {fCallResult && (
+              {/* {fCallResult && (
                 <div className="intro-x col-span-3">
                   <label className="form-label"> Notes</label>
                   <textarea
@@ -870,14 +870,14 @@ const AddCalls = (props) => {
                     placeholder=""
                   />
                 </div>
-              )}
+              )} */}
             </div>
             <div className="border border-dashed border-2 lg:p-5 p-2 mt-5">
               <div className="grid grid-cols-1  gap-4">
                 <div className="intro-y">
                   <label className="form-label">First Call Notes</label>
                   <textarea
-                    name="last_status_notes"
+                    name="first_call_notes"
                     className=" form-control"
                     placeholder=""
                   />

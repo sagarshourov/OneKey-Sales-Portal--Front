@@ -1,24 +1,21 @@
-import { Checkbox, Tippy } from "@/base-components";
+import {
+  Checkbox,
+  Tippy,
+  Modal,
+  ModalHeader,
+  LoadingIcon,
+  ModalBody,
+  ModalFooter,
+} from "@/base-components";
 
-import axios from "axios";
 import { helper } from "@/utils/helper";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import CopyEle from "./CopyEle";
+import axios from "axios";
 import { filter } from "lodash";
-import { adminApi, getBaseApi } from "../../configuration";
+import { useState } from "react";
+import { adminApi } from "../../configuration";
+import CopyEle from "./CopyEle";
 const fText = (text) => {
   return text ? text.substr(0, 10) + "..." : "";
-};
-
-const get_section = (array, val) => {
-  if (val) {
-    var dat = filter(array, (_items) => {
-      return _items.id === val;
-    });
-    return dat[0].title;
-  }
-  return "";
 };
 
 const remove_style_tr = () => {
@@ -33,7 +30,7 @@ const remove_style_tr = () => {
 function extra_title(arr, group, index) {
   var value = "";
   if (arr.extra && arr.extra.length > 0) {
-    arr.extra.map((dat, key) => {
+    arr.extra.map((dat) => {
       //   console.log("value dat", dat);
       if (dat.groups == group && dat.values[index]?.value) {
         value = dat.values[index]?.value;
@@ -54,18 +51,12 @@ const UsersTable = (props) => {
     users,
     setHistory,
     setCallState,
-    setUserId,
-    setDeleteConfirmationModal,
     allCheck,
     setAllCheck,
     updateFunc,
-    aheck,
     setAcheck,
     theme,
     dragStart,
-    dragover,
-    tableDragOver,
-    section,
     setting,
     setLoading,
     headers,
@@ -76,7 +67,11 @@ const UsersTable = (props) => {
   const [startRow, setStartRow] = useState([]);
 
   const [targetRow, setTargetRow] = useState([]);
+  const [infoModal, setInfoModal] = useState(false);
+  const [innerLoading, setInnerLoading] = useState(false);
+  const [feedback, setFeedback] = useState("");
 
+  const [callId, setCallId] = useState(0);
   const handelChange = (e, id, type) => {
     e.preventDefault();
 
@@ -108,13 +103,6 @@ const UsersTable = (props) => {
     }
   };
 
-  const handleCheck = (e) => {
-    const { id, checked, name } = e.target;
-
-    updateFunc(id, name, checked);
-
-    console.log(checked);
-  };
   const loadMore = () => {
     let count = rowCount + 20;
     setRowCount(count);
@@ -135,7 +123,7 @@ const UsersTable = (props) => {
     setTargetRow(e.target.parentNode);
   };
 
-  const DragEnd = async (e) => {
+  const DragEnd = async () => {
     targetRow.borderTop = "none";
 
     // console.log("DragEnd", e);
@@ -146,6 +134,9 @@ const UsersTable = (props) => {
     remove_style_tr();
     const URL = adminApi() + "calls_sort";
     setLoading(true);
+
+
+
 
     try {
       const response = await axios.post(
@@ -158,6 +149,7 @@ const UsersTable = (props) => {
 
       if (response?.data?.success) {
         setLoading(false);
+   
         setCallState(response?.data?.data);
       }
     } catch (err) {
@@ -170,6 +162,44 @@ const UsersTable = (props) => {
     e.target.parentNode.style.borderTop = "none";
     // e.target.parentNode.style.borderBottom = "none";
     console.log("drag leave", e);
+  };
+
+  const feedbackCheck = (history) => {
+    var is_admin = history.map((data) => {
+      if (data.field === "feedbacks") {
+        return data.user.is_admin;
+      }
+    });
+    if (is_admin.length > 0) return is_admin[0];
+    return 0;
+  };
+
+  const markRead = async () => {
+    const URL = adminApi() + "update_feedback";
+    setLoading(true);
+    setInnerLoading(true);
+    try {
+      const response = await axios.post(
+        URL,
+        { id: callId },
+        {
+          headers,
+        }
+      );
+
+      if (response?.data?.success) {
+        setLoading(false);
+        setInnerLoading(false);
+        setCallState(response?.data?.data);
+
+        setInfoModal(false);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+
+      setInnerLoading(false);
+    }
   };
 
   return (
@@ -238,23 +268,19 @@ const UsersTable = (props) => {
         <tbody>
           {users &&
             users.slice(0, rowCount).map((user, key) => {
-              let count = key + 1;
               let dark = " bg-white ";
 
               var is_admin = 0;
 
-              user.history &&
-                user.history.map((data, index) => {
-                  if (data.field == "feedbacks") {
-                    is_admin = data.user.is_admin;
+              if (user.history) {
+                var admin = feedbackCheck(user.history);
 
-                    //console.log(user.id + "=is_admin", is_admin);
-                  }
-                });
+                is_admin = admin ? admin : 0;
+              }
 
-              if (is_admin === 1) {
+              if (is_admin === 1 && user.feedbacks && user.feedbacks !== "") {
                 dark = " alert-warning-soft ";
-              } else if (is_admin == 2) {
+              } else if (is_admin === 2 && user.feedbacks  && user?.feedbacks !== "") {
                 dark = " alert-success-soft ";
               } else if (allCheck.includes(user.id)) {
                 dark = " alert-secondary ";
@@ -442,10 +468,17 @@ const UsersTable = (props) => {
                       <Tippy
                         tag="a"
                         href="#"
-                        className="tooltip"
+                        className="tooltip btn btn-secondary"
                         content={user?.feedbacks}
+                        //onClick={(e) => { setInfoModal(true); setFeedback(user?.feedbacks); }
+
+                        onClick={() => {
+                          setInfoModal(true);
+                          setFeedback(user?.feedbacks);
+                          setCallId(user?.id);
+                        }}
                       >
-                        {fText(user?.feedbacks)}
+                        View
                       </Tippy>
                     </div>
                   </td>
@@ -462,6 +495,52 @@ const UsersTable = (props) => {
       <button className="btn btn-default m-5" onClick={loadMore}>
         Load more ...
       </button>
+
+      <Modal
+        size="modal-lg"
+        show={infoModal}
+        onHidden={() => {
+          setInfoModal(false);
+        }}
+      >
+        <ModalHeader>
+          <h3>Feedback</h3>
+        </ModalHeader>
+
+        <ModalBody className="p-0">
+          <div className="p-5 text-center">
+            <div className="my-5 ">{feedback}</div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <div className=" text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setInfoModal(false);
+              }}
+              className="btn btn-outline-secondary w-24 mr-1"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={markRead}
+              type="button"
+              className="btn btn-warning text-white "
+            >
+              Mark as read
+              {innerLoading && (
+                <LoadingIcon
+                  icon="three-dots"
+                  color="white"
+                  className="w-4 h-4 ml-2"
+                />
+              )}
+            </button>
+          </div>
+        </ModalFooter>
+      </Modal>
     </div>
   );
 };

@@ -36,12 +36,12 @@ const EditCalls = (props) => {
     const resetSingleCall = useRecoilRefresher_UNSTABLE(singleCallState);
     //const resetcallIdState = useResetRecoilState(callIdState);
   useEffect(() => {
-    console.log("set state");
+    //console.log("set state");
     setCallId(id);
     return () => {
       resetSingleCall();
       //resetcallIdState();
-      console.log("cleaned up");
+      //console.log("cleaned up");
     };
   }, [id]);
 

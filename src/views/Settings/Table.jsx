@@ -82,11 +82,11 @@ const Table = (props) => {
   const cuSave = async (e) => {
     e.preventDefault();
 
-    console.log("save", tbl);
+   // console.log("save", tbl);
 
     var data = new FormData(e.target);
 
-    console.log("data", data);
+    //console.log("data", data);
     data.append("table", tbl);
     const URL = adminApi() + "settings";
 
