@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { getPreMadeReport } from "../service/admin";
+import { getPreMadeReport , getEmpReport} from "../service/admin";
 import { loginState } from "../state/login-atom";
 
 export const pStartDate = atom({
@@ -12,13 +12,13 @@ export const pEndDate = atom({
   default: "2028-01-01",
 });
 
-
 export const pUser = atom({
   key: "pUser",
   default: 0,
 });
 
 export const pType = atom({
+  // status
   key: "pType",
   default: 0,
 });
@@ -38,6 +38,15 @@ export const pOffset = atom({
   default: 0,
 });
 
+export const aResult = atom({
+  key: "aResult",
+  default: 0,
+});
+
+export const aCancel = atom({
+  key: "aCancel",
+  default: 0,
+});
 
 export const preMadeReportSelect = selector({
   key: "preMadeReportSelect",
@@ -53,9 +62,6 @@ export const preMadeReportSelect = selector({
         get(pLimit),
         "ASC"
       );
-
-      //console.log('canN_res',response);
-
       return response.data || [];
     } catch (error) {
       console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
@@ -67,4 +73,32 @@ export const preMadeReportSelect = selector({
 export const preMadeState = atom({
   key: "preMadeState",
   default: preMadeReportSelect,
+});
+
+export const empReportSelect = selector({
+  key: "empReportSelect",
+  get: async ({ get }) => {
+    try {
+      const response = await getEmpReport(
+        get(loginState),
+        get(pStartDate),
+        get(pEndDate),
+        get(pType), // status
+        get(aResult),
+        get(aCancel),
+        get(pOffset),
+        get(pLimit),
+        "ASC"
+      );
+      return response.data || [];
+    } catch (error) {
+      console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
+
+export const empReportState = atom({
+  key: "empReportState",
+  default: empReportSelect,
 });

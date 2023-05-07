@@ -5,6 +5,50 @@ import { adminApi, getBaseApi, handelError } from "../configuration";
 
 // const headers = { Authorization: `Bearer ${token}` };
 
+
+export async function getEmpReport(
+  loginstate,
+  startDate,
+  endDate,
+  Type,
+  result,
+  cancel,
+  offset,
+  pageLimit,
+  order
+) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
+
+  const userApiUrl =
+    adminApi() +
+    "emp_filter/" +
+    startDate +
+    "/" +
+    endDate +
+    "/" +
+    Type +
+    "/" +
+    result +
+    "/" +
+    cancel +
+    "/" +
+    offset +
+    "/" +
+    pageLimit +
+    "/" +
+    order;
+
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    handelError(error);
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
+
+
 export async function getPreMadeReport(
   loginstate,
   startDate,
@@ -29,8 +73,8 @@ export async function getPreMadeReport(
     "/" +
     Type +
     "/" +
-    offset+
-    "/"+
+    offset +
+    "/" +
     pageLimit +
     "/" +
     order;

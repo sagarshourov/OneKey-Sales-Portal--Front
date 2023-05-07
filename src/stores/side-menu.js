@@ -301,11 +301,11 @@ let empObj = {
         },
       ],
     },
-    // {
-    //   icon: "PhoneCall",
-    //   title: "Reports",
-    //   pathname: "/reports",
-    // },
+    {
+      icon: "FileText",
+      title: "Reports",
+      pathname: "/reports",
+    },
 
     {
       icon: "PhoneMissed",

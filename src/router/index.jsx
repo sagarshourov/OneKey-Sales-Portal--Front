@@ -37,6 +37,9 @@ const Profile = Loadable(lazy(() => import("../views/dashboard/Profile")));
 const EditCalls = Loadable(lazy(() => import("../views/Calls/EditCalls")));
 const AllReports = Loadable(lazy(() => import("../views/Reports/Main")));
 
+const EmpReports = Loadable(lazy(() => import("../views/Reports/EmpReports")));
+
+
 const CustomReports = Loadable(
   lazy(() => import("../views/Reports/CustomMain"))
 );
@@ -351,10 +354,10 @@ function Router() {
         //   element: <ImportCalls />,
         // },
 
-        // {
-        //   path: "/reports/",
-        //   element: <AllReports />,
-        // },
+        {
+          path: "/reports/",
+          element: <EmpReports />,
+        },
         // {
         //   path: "/reports/:id",
         //   element: <Report />,

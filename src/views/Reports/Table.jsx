@@ -42,7 +42,7 @@ function findByID(array, id) {
 const UsersTable = (props) => {
   const { users, setAllCheck, setAcheck, allCheck, emp } = props;
 
-  console.log("emp", emp);
+
 
   const [rowCount, setRowCount] = useState(10);
   const handelSingleCheck = (e) => {
