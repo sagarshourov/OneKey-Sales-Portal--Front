@@ -2,14 +2,8 @@ import { SlackUsersState } from "../../state/slack-state";
 import { useRecoilValue } from "recoil";
 import classnames from "classnames";
 import {
-  wasIMentioned,
-  decodeHtml,
-  postFile,
-  getNewMessages,
-  hasEmoji,
-  hasAttachment,
   isSystemMessage,
-  isAdmin,
+  isAdmin
 } from "./lib/chat-functions";
 
 const ChatContent = (props) => {

@@ -2,22 +2,15 @@ import {
   Lucide,
   Modal,
   LoadingIcon,
-  ModalBody,
-  AccordionPanel,
-  Accordion,
-  AccordionGroup,
-  AccordionItem,
+  ModalBody
 } from "@/base-components";
 
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 
 import { loginState } from "../../state/login-atom";
 import ConTable from "./ConTable";
 import { filter } from "lodash";
-import { helper } from "@/utils/helper";
 
 import { SlackConvrsionList } from "../../state/slack-state";
 import SlackB from "slack";

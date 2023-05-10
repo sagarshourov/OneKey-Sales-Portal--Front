@@ -10,7 +10,6 @@ import {
 
 import { helper } from "@/utils/helper";
 import axios from "axios";
-import { filter } from "lodash";
 import { useState } from "react";
 import { adminApi } from "../../configuration";
 import CopyEle from "./CopyEle";

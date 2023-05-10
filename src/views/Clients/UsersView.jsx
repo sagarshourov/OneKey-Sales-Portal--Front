@@ -7,7 +7,7 @@ import {
 
 import { useState } from "react";
 
-import { useRecoilState, useRecoilValue, useRecoilStateLoadable } from "recoil";
+import { useRecoilValue, useRecoilStateLoadable } from "recoil";
 import {
   adminUserListState,
   assignSelect,

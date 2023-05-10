@@ -1,19 +1,19 @@
-import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
+import { LoadingIcon, Lucide, Modal, ModalBody } from "@/base-components";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import {
   useRecoilStateLoadable,
-  useSetRecoilState,
   useRecoilValue,
+  useSetRecoilState,
 } from "recoil";
 import { clientListState, resultState } from "../../state/admin-atom";
 
-import { useParams, Link } from "react-router-dom";
-import UsersTable from "./UsersTable";
-import { settingState } from "../../state/setting-atom";
 import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 import { adminApi } from "../../configuration";
+import { settingState } from "../../state/setting-atom";
+import UsersTable from "./UsersTable";
 
 import { filter } from "lodash";
 
@@ -38,7 +38,7 @@ const headers = {
   ContentType: "application/json",
 };
 
-const ResultsMain = (props) => {
+const ResultsMain = () => {
   let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
   const [newUserModal, setNewUserModal] = useState(false);

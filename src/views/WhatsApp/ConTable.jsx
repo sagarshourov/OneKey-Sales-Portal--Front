@@ -1,5 +1,3 @@
-import { Tippy, Checkbox } from "@/base-components";
-import { Link } from "react-router-dom";
 
 const UsersTable = (props) => {
   const {

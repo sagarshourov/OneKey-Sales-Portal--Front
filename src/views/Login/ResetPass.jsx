@@ -1,6 +1,6 @@
 import logoUrl from "@/assets/images/logo.png";
 
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 

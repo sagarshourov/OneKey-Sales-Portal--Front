@@ -1,6 +1,4 @@
-import { Lucide, Litepicker, Input } from "@/base-components";
 
-import { useState } from "react";
 const SupposeSection = (props) => {
   const { data } =
     props;

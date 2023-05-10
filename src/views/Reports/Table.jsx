@@ -1,4 +1,4 @@
-import { Lucide, Tippy, LoadingIcon, Checkbox } from "@/base-components";
+import { Tippy, Checkbox } from "@/base-components";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import CopyEle from "../Calls/CopyEle";

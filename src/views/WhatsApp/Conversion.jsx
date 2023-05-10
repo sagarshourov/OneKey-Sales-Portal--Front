@@ -8,9 +8,8 @@ import {
   AccordionGroup,
   AccordionItem,
 } from "@/base-components";
-import dom from "@left4code/tw-starter/dist/js/dom";
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { callListState } from "../../state/admin-atom";

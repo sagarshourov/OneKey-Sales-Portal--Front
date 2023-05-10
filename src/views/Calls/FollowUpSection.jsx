@@ -1,6 +1,5 @@
-import { Lucide, Litepicker, Input } from "@/base-components";
+import { Lucide } from "@/base-components";
 
-import { useState } from "react";
 const FollowUpSection = (props) => {
   const { index, data, setting, deleteFollowUp, handelSelect, onChange } =
     props;

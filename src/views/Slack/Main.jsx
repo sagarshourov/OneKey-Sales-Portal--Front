@@ -1,29 +1,19 @@
 import {
-  Lucide,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownContent,
-  DropdownItem,
-  TabGroup,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
+  Lucide
 } from "@/base-components";
 import { filter } from "lodash";
 
 import classnames from "classnames";
 import { useState, useEffect } from "react";
 import SlackB from "slack";
-import { useRecoilStateLoadable, selectorFamily, useRecoilValue } from "recoil";
+import { useRecoilStateLoadable } from "recoil";
+import { SlackConvrsionList } from "../../state/slack-state";
+import ChatContent from "./ChatContent";
 function applySortFilters(array) {
   return filter(array, (_items) => {
     return _items.is_archived === false;
   });
 }
-import { SlackConvrsionList, conversionHistory } from "../../state/slack-state";
-import ChatContent from "./ChatContent";
 
 function Main() {
   var bot = new SlackB({ token: process.env.token });

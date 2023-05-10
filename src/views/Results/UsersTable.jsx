@@ -1,14 +1,11 @@
-import { Lucide, Tippy, LoadingIcon, Checkbox } from "@/base-components";
+import { Tippy, Checkbox } from "@/base-components";
 
-import { filter } from "lodash";
-import { useState } from "react";
 // function findById(array, id) {
 //   return filter(array, (_items) => {
 //     return _items.id === id;
 //   });
 // }
 
-import { Link } from "react-router-dom";
 
 import { helper } from "@/utils/helper";
 

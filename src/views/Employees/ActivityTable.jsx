@@ -1,12 +1,8 @@
-import { Lucide } from "@/base-components";
-import * as $_ from "lodash";
-import classnames from "classnames";
-import { Link } from "react-router-dom";
+import { helper } from "@/utils/helper";
 const formatDate = (dat) => {
   //const date = dat.split(" ");
   return dat.split("T")[0];
 };
-import { helper } from "@/utils/helper";
 const UsersTable = (props) => {
   const { users, rowCount, setSelected, setDeleteConfirmationModal } = props;
 

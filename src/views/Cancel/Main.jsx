@@ -5,8 +5,7 @@ import classnames from "classnames";
 import {
   useRecoilStateLoadable,
   useSetRecoilState,
-  useRecoilValue,
-  useRecoilRefresher_UNSTABLE,
+  useRecoilValue
 } from "recoil";
 import {
   cancelListState,
@@ -16,7 +15,7 @@ import {
   CancelOrder,
   CancelUser,
 } from "../../state/admin-atom";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { settingState } from "../../state/setting-atom";
 import axios from "axios";

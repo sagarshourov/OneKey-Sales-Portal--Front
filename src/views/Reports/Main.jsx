@@ -1,14 +1,12 @@
 import {
-  Alert,
-  Litepicker,
-  LoadingIcon,
+  Alert, LoadingIcon,
   Lucide,
   Modal,
   ModalBody,
   AccordionPanel,
   Accordion,
   AccordionGroup,
-  AccordionItem,
+  AccordionItem
 } from "@/base-components";
 import classnames from "classnames";
 import { Link } from "react-router-dom";

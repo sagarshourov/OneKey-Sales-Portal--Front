@@ -1,5 +1,3 @@
-import { SlackUsersState } from "../../state/slack-state";
-import { useRecoilValue } from "recoil";
 import classnames from "classnames";
 
 const ChatContent = (props) => {

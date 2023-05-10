@@ -2,26 +2,21 @@ import {
   Lucide,
   Modal,
   ModalBody,
-  LoadingIcon,
-  Litepicker,
+  LoadingIcon
 } from "@/base-components";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   useRecoilState,
-  useRecoilValue,
-  useResetRecoilState,
-  useRecoilStateLoadable,
+  useRecoilValue, useRecoilStateLoadable
 } from "recoil";
 import { filter } from "lodash";
 
 import {
   callListState,
   notiState,
-  allUserListState,
-  singleCallState,
-  callIdState,
+  allUserListState
 } from "../../state/admin-atom";
 
 import axios from "axios";

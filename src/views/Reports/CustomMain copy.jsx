@@ -7,7 +7,6 @@ import {
 } from "@/base-components";
 
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
 
 import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { callListState, allUserListState } from "../../state/admin-atom";

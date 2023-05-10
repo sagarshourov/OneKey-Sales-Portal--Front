@@ -1,46 +1,42 @@
 import {
-  Alert,
-  Litepicker,
-  LoadingIcon,
-  Lucide,
-  Modal,
-  ModalBody,
-  AccordionPanel,
   Accordion,
   AccordionGroup,
   AccordionItem,
+  AccordionPanel,
+  Alert, LoadingIcon,
+  Lucide,
+  Modal,
+  ModalBody
 } from "@/base-components";
+import { helper } from "@/utils/helper";
 import classnames from "classnames";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Select from "react-tailwindcss-select";
+import { Link } from "react-router-dom";
 import {
   useRecoilStateLoadable,
-  useSetRecoilState,
   useRecoilValue,
+  useSetRecoilState,
 } from "recoil";
 import { allUserListState } from "../../state/admin-atom";
-import {
-  empReportSelect,
-  pStartDate,
-  pEndDate,
-  pUser,
-  pType,
-  pOffset,
-  pLimit,
-  aResult,
-  aCancel,
-} from "../../state/report-atom";
 import { loginState } from "../../state/login-atom";
-import { helper } from "@/utils/helper";
+import {
+  aCancel,
+  aResult,
+  empReportSelect,
+  pEndDate,
+  pLimit,
+  pOffset,
+  pStartDate,
+  pType
+} from "../../state/report-atom";
 import Table from "./Table";
 
 import axios from "axios";
+import { filter } from "lodash";
 import { adminApi } from "../../configuration";
 import { settingState } from "../../state/setting-atom";
-import { filter } from "lodash";
-import SinglePicker from "./SinglePicker";
 import MultiPicker from "./MultiPicker";
+import SinglePicker from "./SinglePicker";
 
 //console.log("report", Date.parse("2022-12-21 10:31:12"));
 

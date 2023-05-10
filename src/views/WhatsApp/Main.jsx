@@ -1,10 +1,9 @@
 import { Lucide } from "@/base-components";
-import { filter } from "lodash";
 import axios from "axios";
 import classnames from "classnames";
 import { useState, useEffect } from "react";
 
-import { useRecoilStateLoadable, selectorFamily, useRecoilValue } from "recoil";
+import { useRecoilStateLoadable } from "recoil";
 
 import { WhatsAppChatList } from "../../state/whatsapp-state";
 import { chatHistory } from "../../service/whatsapp";

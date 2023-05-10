@@ -1,5 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useRecoilStateLoadable, useRecoilValueLoadable } from "recoil";
+import { useParams } from "react-router-dom";
+import { useRecoilValueLoadable } from "recoil";
 import { getBaseApi } from "../../configuration";
 import { CallRecordHistory } from "../../state/whatsapp-state";
 import { useEffect, Suspense } from "react";

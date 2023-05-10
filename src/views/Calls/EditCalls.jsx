@@ -1,19 +1,8 @@
-import {
-  Lucide,
-  Modal,
-  ModalBody,
-  LoadingIcon,
-  Litepicker,
-} from "@/base-components";
 
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue,useResetRecoilState, useRecoilRefresher_UNSTABLE, useSetRecoilState, useRecoilStateLoadable } from "recoil";
-import { filter } from "lodash";
+import { useParams } from "react-router-dom";
+import { useRecoilRefresher_UNSTABLE, useSetRecoilState, useRecoilStateLoadable } from "recoil";
 import {
-  callListState,
-  notiState,
-  allUserListState,
   singleCallState,
   callIdState
 } from "../../state/admin-atom";
