@@ -108,7 +108,9 @@ const Logout = (props) => {
           userId: response.data.data.user.id,
           view: false,
         });
-        window.location.reload();
+       // window.location.reload();
+
+        window.location.href = '/';
 
         // navigate("../", { replace: true });
       } else {

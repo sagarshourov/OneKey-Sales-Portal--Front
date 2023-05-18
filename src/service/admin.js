@@ -6,6 +6,81 @@ import { adminApi, getBaseApi, handelError } from "../configuration";
 // const headers = { Authorization: `Bearer ${token}` };
 
 
+export async function getEmpFollowReport(
+  loginstate,
+  startDate,
+  endDate,
+  result,
+  offset,
+  pageLimit,
+  order
+) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
+
+  const userApiUrl =
+    adminApi() +
+    "emp_follow_filter/" +
+    startDate +
+    "/" +
+    endDate +
+    "/" +
+    result +
+    "/" +
+    offset +
+    "/" +
+    pageLimit +
+    "/" +
+    order;
+
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    handelError(error);
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
+
+
+
+
+export async function getEmpFcReport(
+  loginstate,
+  startDate,
+  endDate,
+  result,
+  offset,
+  pageLimit,
+  order
+) {
+  let tokens = loginstate.token ? loginstate.token : "token";
+  let headers = { Authorization: `Bearer ` + tokens };
+
+  const userApiUrl =
+    adminApi() +
+    "emp_fc_filter/" +
+    startDate +
+    "/" +
+    endDate +
+    "/" +
+    result +
+    "/" +
+    offset +
+    "/" +
+    pageLimit +
+    "/" +
+    order;
+
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    handelError(error);
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
+
 export async function getEmpReport(
   loginstate,
   startDate,
@@ -47,7 +122,6 @@ export async function getEmpReport(
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
-
 
 export async function getPreMadeReport(
   loginstate,

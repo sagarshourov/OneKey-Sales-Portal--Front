@@ -134,9 +134,6 @@ const UsersTable = (props) => {
     const URL = adminApi() + "calls_sort";
     setLoading(true);
 
-
-
-
     try {
       const response = await axios.post(
         URL,
@@ -148,7 +145,7 @@ const UsersTable = (props) => {
 
       if (response?.data?.success) {
         setLoading(false);
-   
+
         setCallState(response?.data?.data);
       }
     } catch (err) {
@@ -279,7 +276,11 @@ const UsersTable = (props) => {
 
               if (is_admin === 1 && user.feedbacks && user.feedbacks !== "") {
                 dark = " alert-warning-soft ";
-              } else if (is_admin === 2 && user.feedbacks  && user?.feedbacks !== "") {
+              } else if (
+                is_admin === 2 &&
+                user.feedbacks &&
+                user?.feedbacks !== ""
+              ) {
                 dark = " alert-success-soft ";
               } else if (allCheck.includes(user.id)) {
                 dark = " alert-secondary ";

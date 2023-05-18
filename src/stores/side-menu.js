@@ -305,7 +305,26 @@ let empObj = {
       icon: "FileText",
       title: "Reports",
       pathname: "/reports",
+      subMenu: [
+        {
+          icon: "",
+          pathname: "/reports",
+          title: "Pre Made",
+        },
+        {
+          icon: "",
+          pathname: "/fcreport",
+          title: "First Call Report",
+        },
+
+        {
+          icon: "",
+          pathname: "/freport",
+          title: "Follow Up Report",
+        },
+      ],
     },
+
 
     {
       icon: "PhoneMissed",

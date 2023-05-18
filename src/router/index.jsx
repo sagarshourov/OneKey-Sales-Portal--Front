@@ -64,18 +64,32 @@ const Settings = Loadable(lazy(() => import("../views/Settings/Main")));
 
 import { loginState } from "../state/login-atom";
 import { useRecoilValue } from "recoil";
+
 //import HistoryView from "../views/WhatsApp/HistoryView";
 
 const HistoryView = Loadable(
-  lazy(() => import("../views/WhatsApp/HistoryView"))
+  lazy(() => import("../views/Reports/EmpFirstCallReport"))
 );
+
+
+
+const EmpFcReport = Loadable(
+  lazy(() => import("../views/Reports/EmpFirstCallReport"))
+);
+const EmpFollowReport = Loadable(
+  lazy(() => import("../views/Reports/EmpFollowReport"))
+);
+
+
+
+ 
 
 //import Calendar from "../views/calendar/Main";
 
 function Router() {
   const login = useRecoilValue(loginState);
 
-  //  console.log("loginStrore", login);
+  //  console.log("loginStore", login);
 
   let auth = login.token ? true : false;
 
@@ -357,6 +371,14 @@ function Router() {
         {
           path: "/reports/",
           element: <EmpReports />,
+        },
+        {
+          path: "/fcreport/",
+          element: <EmpFcReport />,
+        },
+        {
+          path: "/freport/",
+          element: <EmpFollowReport />,
         },
         // {
         //   path: "/reports/:id",

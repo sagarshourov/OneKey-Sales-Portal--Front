@@ -1,5 +1,10 @@
 import { atom, selector } from "recoil";
-import { getPreMadeReport , getEmpReport} from "../service/admin";
+import {
+  getPreMadeReport,
+  getEmpFcReport,
+  getEmpReport,
+  getEmpFollowReport
+} from "../service/admin";
 import { loginState } from "../state/login-atom";
 
 export const pStartDate = atom({
@@ -102,3 +107,47 @@ export const empReportState = atom({
   key: "empReportState",
   default: empReportSelect,
 });
+
+export const empFirstCallReportSelect = selector({
+  key: "empFirstCallReportSelect",
+  get: async ({ get }) => {
+    try {
+      const response = await getEmpFcReport(
+        get(loginState),
+        get(pStartDate),
+        get(pEndDate),
+        get(aResult),
+        get(pOffset),
+        get(pLimit),
+        "ASC"
+      );
+      return response.data || [];
+    } catch (error) {
+      console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
+
+
+export const empFollowUpReportSelect = selector({
+  key: "empFollowUpReportSelect",
+  get: async ({ get }) => {
+    try {
+      const response = await getEmpFollowReport(
+        get(loginState),
+        get(pStartDate),
+        get(pEndDate),
+        get(aResult),
+        get(pOffset),
+        get(pLimit),
+        "ASC"
+      );
+      return response.data || [];
+    } catch (error) {
+      console.error(`allUserState -> allUserSelect() ERROR: \n${error}`);
+      return [];
+    }
+  },
+});
+

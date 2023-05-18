@@ -6,7 +6,6 @@ import { Tippy, Checkbox } from "@/base-components";
 //   });
 // }
 
-
 import { helper } from "@/utils/helper";
 
 function extra_title(arr, group, index) {
@@ -183,7 +182,13 @@ const UsersTable = (props) => {
                     {user?.case_type == 2 && "F-1/F2"}
                   </td>
 
-                  <td className="text-center">{user?.first_contact}</td>
+                  <td className="text-center">
+                    {user?.first_contact &&
+                      helper.formatDate(
+                        user?.first_contact,
+                        "MMM D, YYYY"
+                      )}{" "}
+                  </td>
                   <td className="text-center">
                     <Tippy
                       tag="a"
