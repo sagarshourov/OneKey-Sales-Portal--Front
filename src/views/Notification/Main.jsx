@@ -89,8 +89,6 @@ const NotificationMain = (props) => {
   };
 
   const handelView = (e) => {
-
-
     setNotiFrom(e.user.first_name + " " + e.user.last_name);
 
     if (e.type === 1) {
@@ -294,16 +292,35 @@ const NotificationMain = (props) => {
                 </span>
               </div>
               <div className="flex  items-center">
-                Phone:
-                <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
-                  {call?.phone}
-                </span>
+                View Form :
+                <a
+                  href={"/calls/edit/" + call?.id}
+                  className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1"
+                >
+                  Go
+                </a>
               </div>
               <div className="flex  items-center">
                 Assigned To :
                 <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
                   {call?.user?.first_name} {call?.user?.last_name}
                 </span>
+              </div>
+              <div className="flex  items-center">
+                Approval Status :
+                <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
+                  Approved
+                </span>
+              </div>
+              <div className="flex  items-center">
+                Decision Date :
+                <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
+                  28-05-1993
+                </span>
+              </div>
+              <div className="flex  items-center col-span-2 mt-2">
+                Reason For Denial :
+                <textarea className="form-control"></textarea>
               </div>
             </div>
           </div>
