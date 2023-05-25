@@ -1,7 +1,5 @@
-import { Lucide, Tippy, LoadingIcon, Checkbox } from "@/base-components";
-
-import { filter } from "lodash";
-import { useState } from "react";
+import { Lucide } from "@/base-components";
+import { helper } from "@/utils/helper";
 // function findById(array, id) {
 //   return filter(array, (_items) => {
 //     return _items.id === id;
@@ -45,10 +43,10 @@ const UsersTable = (props) => {
           {users.slice(0, rowCount).map((user, key) => {
             let count = key + 1;
 
-            var row_color = "bg-white";
+            var row_color = " bg-white ";
 
             if (user.is_read == 0) {
-              row_color = "alert-success-soft ";
+              row_color = " alert-success-soft ";
             }else if(user.is_read ==2){
               row_color = " bg-red-400 text-danger ";
             }

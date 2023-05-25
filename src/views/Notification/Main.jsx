@@ -1,8 +1,8 @@
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
 import { useState } from "react";
-
-import { useRecoilStateLoadable } from "recoil";
+import { helper } from "@/utils/helper";
+import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { notiState, callListState } from "../../state/admin-atom";
 
 import UsersTable from "./UsersTable";
@@ -11,6 +11,7 @@ import axios from "axios";
 import { adminApi } from "../../configuration";
 
 import { filter } from "lodash";
+import { loginState } from "../../state/login-atom";
 
 function applySortFilters(array, searchValue) {
   return filter(array, (_items) => {
@@ -33,7 +34,7 @@ const NotificationMain = (props) => {
   const [callViewModal, setCallViewModal] = useState(false);
   const [notiData, setNotiState] = useRecoilStateLoadable(notiState);
   const [callData, setAllCallState] = useRecoilStateLoadable(callListState);
-
+  const loginData = useRecoilValue(loginState);
   const [rowCount, setRowCount] = useState(10);
 
   const [search, setSearch] = useState("");
@@ -41,12 +42,14 @@ const NotificationMain = (props) => {
   const [loading, setLoading] = useState(false);
 
   const [call, setCall] = useState([]);
+  const [notification, setNotification] = useState([]);
   const [notiFrom, setNotiFrom] = useState("");
-  //console.log("call", call);
 
   const [noti_id, setNotiId] = useState([]);
 
   const [message, setMessage] = useState(false);
+
+  const [note, setNote] = useState(null);
 
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
@@ -65,10 +68,19 @@ const NotificationMain = (props) => {
   const updateRead = async (read, id, type, call_id, user_id) => {
     const LOGIN_URL = adminApi() + "notifications/" + id;
 
+    //console.log("loginData", loginData);
+
     try {
       const response = await axios.put(
         LOGIN_URL,
-        { is_read: read, call_id: call_id, type: type, user_id: user_id },
+        {
+          is_read: read,
+          call_id: call_id,
+          type: type,
+          user_id: user_id,
+          note: note,
+          admin_id: loginData.userId,
+        },
         {
           headers,
         }
@@ -89,9 +101,20 @@ const NotificationMain = (props) => {
   };
 
   const handelView = (e) => {
-    setNotiFrom(e.user.first_name + " " + e.user.last_name);
 
-    if (e.type === 1) {
+
+    console.log('note',note);
+
+    // set notification data
+    setNotiFrom(e.user.first_name + " " + e.user.last_name);
+    setNotification(e);
+
+    e.note ? setNote(e.note) : setNote(null);
+
+    if (e.is_read === 2) {
+      updateRead(2, e.id, e.type, e.call_id, e.user_id);
+      setCallViewModal(true);
+    } else if (e.type === 1) {
       updateRead(1, e.id, e.type, e.call_id, e.user_id);
       setCallViewModal(true);
     }
@@ -125,7 +148,16 @@ const NotificationMain = (props) => {
     try {
       const response = await axios.put(
         LOGIN_URL,
-        { name: "deleted_at", value: null, user_id: user_id, type: 3 },
+        {
+          name: "deleted_at",
+          value: null,
+          user_id: user_id,
+          type: 3,
+          admin_id: loginData.userId,
+          note: note,
+          approve: 1,
+          noti_id: notification?.id,
+        },
         {
           headers,
         }
@@ -153,6 +185,12 @@ const NotificationMain = (props) => {
 
   const rejectUser = (call_id) => {
     updateRead(2, noti_id, 2, call_id, user_id);
+  };
+
+  const handelNote = (e) => {
+    setNote(e.target.value);
+
+    //console.log(e.target.value);
   };
 
   return (
@@ -267,6 +305,7 @@ const NotificationMain = (props) => {
         show={callViewModal}
         onHidden={() => {
           setCallViewModal(false);
+          setNote(null);
         }}
       >
         <ModalBody className="p-0">
@@ -306,21 +345,47 @@ const NotificationMain = (props) => {
                   {call?.user?.first_name} {call?.user?.last_name}
                 </span>
               </div>
+
               <div className="flex  items-center">
                 Approval Status :
-                <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
-                  Approved
-                </span>
+                {notification.approve === 1 ? (
+                  <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
+                    Approved
+                  </span>
+                ) : notification.approve === 0 ? (
+                  <span className="text-xs text-orange-700 bg-orange-700/20 border border-orange-700/20 rounded-md px-1.5 py-0.5 ml-1">
+                    Rejected
+                  </span>
+                ) : (
+                  <span className="text-xs text-orange-300 bg-orange-300/20 border border-orange-300/20 rounded-md px-1.5 py-0.5 ml-1">
+                    Pending
+                  </span>
+                )}
               </div>
               <div className="flex  items-center">
                 Decision Date :
                 <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
-                  28-05-1993
+                  {helper.formatDate(notification.updated_at, "MMM D, YYYY")}
                 </span>
               </div>
-              <div className="flex  items-center col-span-2 mt-2">
+
+              {notification.admin && (
+                <div className="flex  items-center">
+                  Decision By :
+                  <span className="text-xs text-success bg-success/20 border border-success/20 rounded-md px-1.5 py-0.5 ml-1">
+                    {notification?.admin?.first_name}{" "}
+                    {notification?.admin?.last_name}
+                  </span>
+                </div>
+              )}
+              <div className="flex  items-center  mt-2">
                 Reason For Denial :
-                <textarea className="form-control"></textarea>
+                <textarea
+                  className="form-control"
+                  onChange={(e) => handelNote(e)}
+                  value={note ? note : ''}
+                  placeholder=""
+                />
               </div>
             </div>
           </div>

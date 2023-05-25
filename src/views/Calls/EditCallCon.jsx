@@ -103,7 +103,7 @@ const EditCallCon = (props) => {
     calls.cancel_reason !== null ? true : false
   );
 
-  const [fCallResult, setfCallResult] = useState(false);
+  const [fCallResult, setFCallResult] = useState(false);
 
   const [followUpState, sectFollowUpSec] = useState(
     calls.extra
@@ -393,7 +393,7 @@ const EditCallCon = (props) => {
   const handelFollow = (e, index) => {
     onChange(e.target.value, index, 1);
 
-    setfCallResult(e.target.value);
+    setFCallResult(e.target.value);
 
     return;
   };
@@ -476,7 +476,7 @@ const EditCallCon = (props) => {
     : [];
 
   const markRead = async (id) => {
-    console.log("sagar");
+  
 
     const URL = adminApi() + "update_feedback";
     setLoading(true);
@@ -1050,7 +1050,7 @@ const EditCallCon = (props) => {
 
                 <select
                   name="f_results"
-                  onChange={() => setfCallResult(true)}
+                  onChange={() => setFCallResult(true)}
                   className="form-control"
                   defaultValue={calls?.f_results ? calls?.f_results : 3}
                 >

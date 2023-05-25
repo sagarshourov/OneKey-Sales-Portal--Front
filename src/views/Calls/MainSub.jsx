@@ -54,7 +54,7 @@ function findByValue(array, field) {
   });
 }
 
-const AdminUsers = (props) => {
+const MainSub = (props) => {
   let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
 
@@ -464,4 +464,4 @@ const AdminUsers = (props) => {
   );
 };
 
-export default AdminUsers;
+export default MainSub;

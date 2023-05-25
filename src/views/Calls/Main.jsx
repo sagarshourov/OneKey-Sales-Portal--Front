@@ -373,7 +373,7 @@ const AdminUsers = (props) => {
 
   //console.log('logindata',logindata);
 
-  const [histoyText, setHistoryText] = useState("");
+  const [historyText, setHistoryText] = useState("");
   const [row, setRow] = useState([]);
   const [rowId, setRowID] = useState(0);
   const [callSwitch, setCallSwitch] = useState(false);
@@ -547,7 +547,7 @@ const AdminUsers = (props) => {
   const saveHistory = async () => {
     //console.log('historyData',historyData);
 
-    if (histoyText == "") {
+    if (historyText == "") {
       alert("Text Required!");
     }
     setLoading(true);
@@ -557,7 +557,7 @@ const AdminUsers = (props) => {
         URL,
         {
           name: historyTitle,
-          value: histoyText,
+          value: historyText,
           type: 2,
           user_id: logindata.userId,
         },
@@ -570,7 +570,7 @@ const AdminUsers = (props) => {
         setCallState(response?.data?.data);
         setHistoryModal(false);
         setLoading(false);
-        histoyText("");
+        historyText("");
       } else {
         alert("Something is wrong please try again later!");
       }
@@ -1040,7 +1040,7 @@ const AdminUsers = (props) => {
             </div>
             <div className="col-12">
               <textarea
-                defaultValue={histoyText}
+                defaultValue={historyText}
                 className="form-control"
                 onChange={(e) => setHistoryText(e.target.value)}
               ></textarea>
