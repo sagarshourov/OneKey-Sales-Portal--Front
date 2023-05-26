@@ -1,24 +1,16 @@
-import {
-  Lucide,
-  Modal,
-  ModalBody,
-  LoadingIcon
-} from "@/base-components";
+import { Lucide, Modal, ModalBody, LoadingIcon } from "@/base-components";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useRecoilState,
-  useRecoilValue, useRecoilStateLoadable
-} from "recoil";
+import { useRecoilState, useRecoilValue, useRecoilStateLoadable } from "recoil";
 import { filter } from "lodash";
 
 import {
   callListState,
   notiState,
-  allUserListState
+  allUserListState,
 } from "../../state/admin-atom";
-
+import CallScheduleSection from "./CallScheduleSection";
 import axios from "axios";
 import { adminApi, getBaseApi } from "../../configuration";
 import { helper } from "@/utils/helper";
@@ -445,6 +437,51 @@ const EditCallCon = (props) => {
     setConfirmGpaState([...confirmGpaState, newObj]);
   };
 
+
+  
+
+  const [callScheduleState, setCallScheduleState] = useState(
+    filterExtra(calls.extra, "call_schedule").length > 0
+      ? filterExtra(calls.extra, "call_schedule")
+      : [
+          {
+            id: 0,
+            groups: "call_schedule",
+            values: [
+              {
+                value: "",
+              },
+              {
+                value: "",
+              },
+            ],
+          },
+        ]
+  );
+
+  const addCallSchedule = (e) => {
+    let newObj = {
+      id: callScheduleState[callScheduleState.length - 1].id + 1,
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    };
+
+    setCallScheduleState([...callScheduleState, newObj]);
+  };
+
+  const deleteCallSchedule = (e) => {
+    if (callScheduleState.length > 1) {
+      let newArr = removeArr(callScheduleState, e);
+      setCallScheduleState(newArr);
+    }
+  };
+
   const handelMargie = (e) => {
     // console.log("married", e.target.value);
 
@@ -476,8 +513,6 @@ const EditCallCon = (props) => {
     : [];
 
   const markRead = async (id) => {
-  
-
     const URL = adminApi() + "update_feedback";
     setLoading(true);
 
@@ -492,7 +527,7 @@ const EditCallCon = (props) => {
 
       if (response?.data?.success) {
         setLoading(false);
-         window.location.reload();
+        window.location.reload();
       }
     } catch (err) {
       console.log(err);
@@ -826,7 +861,7 @@ const EditCallCon = (props) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 mt-5  gap-4">
+              {/* <div className="grid grid-cols-1 lg:grid-cols-2 mt-5  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Call Schedule Date</label>
                   <input
@@ -850,6 +885,28 @@ const EditCallCon = (props) => {
                       calls?.call_schedule_time && calls?.call_schedule_time
                     }
                   />
+                </div>
+              </div> */}
+
+              <div className="intro-y bg-slate-100 pb-5">
+                {callScheduleState &&
+                  callScheduleState.length > 0 &&
+                  callScheduleState.map((val, index) => (
+                    <CallScheduleSection
+                      key={index}
+                      index={index}
+                      deleteCallSchedule={deleteCallSchedule}
+                      data={val}
+                    />
+                  ))}
+
+                <div className="col-span-2 mt-5 flex  justify-center">
+                  <a
+                    className=" btn btn-elevated-primary"
+                    onClick={addCallSchedule}
+                  >
+                    <Lucide icon="Plus" className="w-4 h-4" />
+                  </a>
                 </div>
               </div>
             </div>

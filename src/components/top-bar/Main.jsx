@@ -108,9 +108,9 @@ const Logout = (props) => {
           userId: response.data.data.user.id,
           view: false,
         });
-       // window.location.reload();
+        // window.location.reload();
 
-        window.location.href = '/';
+        window.location.href = "/";
 
         // navigate("../", { replace: true });
       } else {
@@ -193,8 +193,8 @@ const Logout = (props) => {
             />
           </div>
         </div>
-        {loginsta.view && loginsta.view !== "false" && (
-          <Alert className="alert-pending w-full xl:w-96  ml-1 xl:ml-32 2xl:ml-32 mt-3 flex items-center mb-2">
+        {loginsta.view && loginsta.view !== "false" ? (
+          <Alert className="alert-pending w-full w-96 mt-3 flex items-center mb-2 mx-auto">
             {loading ? (
               <h3>Loading...</h3>
             ) : (
@@ -212,10 +212,12 @@ const Logout = (props) => {
               </>
             )}
           </Alert>
+        ) : (
+          <div className="intro-x relative ml-auto sm:mx-auto"></div>
         )}
         {/* END: Mobile Menu */}
         {/* BEGIN: Search */}
-        <div className="intro-x relative ml-auto sm:mx-auto"></div>
+        {/* <div className="intro-x relative ml-auto sm:mx-auto"></div> */}
         {/* END: Search */}
         {/* BEGIN: Search Result */}
 

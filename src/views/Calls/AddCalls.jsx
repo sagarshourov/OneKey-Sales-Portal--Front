@@ -25,6 +25,8 @@ import { loginState } from "../../state/login-atom";
 import { settingState } from "../../state/setting-atom";
 import FollowUpSection from "./FollowUpSection";
 
+import CallScheduleSection from "./CallScheduleSection";
+
 import MySection from "./MySection";
 
 import ConfirmedGpa from "./ConfirmedGpa";
@@ -409,6 +411,43 @@ const AddCalls = (props) => {
     setConfirmGpaState([...confirmGpaState, newObj]);
   };
 
+  const [callScheduleState, setCallScheduleState] = useState([
+    {
+      id: 0,
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    },
+  ]);
+
+  const addCallSchedule = (e) => {
+    let newObj = {
+      id: callScheduleState[callScheduleState.length - 1].id + 1,
+      values: [
+        {
+          value: "",
+        },
+        {
+          value: "",
+        },
+      ],
+    };
+
+    setCallScheduleState([...callScheduleState, newObj]);
+  };
+
+  const deleteCallSchedule = (e) => {
+    if (callScheduleState.length > 1) {
+      let newArr = removeArr(callScheduleState, e);
+      setCallScheduleState(newArr);
+    }
+  };
+
   const handelMargie = (e) => {
     console.log("married", e.target.value);
 
@@ -658,7 +697,22 @@ const AddCalls = (props) => {
                   />
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mt-5  gap-4">
+
+              <div className="intro-y bg-slate-100 pb-5">
+
+                {callScheduleState.map((data, index) => (
+                  <CallScheduleSection key={index} index={index} deleteCallSchedule={deleteCallSchedule} data={data} />
+
+                ))}
+
+                <div className="col-span-2 mt-5 flex  justify-center">
+                  <a className=" btn btn-elevated-primary" onClick={addCallSchedule}>
+                    <Lucide icon="Plus" className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 mt-5  gap-4">
                 <div className="intro-y">
                   <label className="form-label">Call Schedule Date</label>
                   <input
@@ -677,7 +731,7 @@ const AddCalls = (props) => {
                     placeholder=""
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 

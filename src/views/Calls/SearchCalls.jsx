@@ -36,7 +36,6 @@ import { adminApi } from "../../configuration";
 
 import { filter } from "lodash";
 import { helper } from "@/utils/helper";
-import FollowUp from "./FollowUp";
 import { settingState } from "../../state/setting-atom";
 
 function todayFilters(array) {

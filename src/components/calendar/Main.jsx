@@ -1,13 +1,16 @@
 // import "@fullcalendar/core/vdom";
 import interactionPlugin from "@fullcalendar/interaction";
-import dayGridPlugin from "@fullcalendar/daygrid";
+// import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
-import dom from "@left4code/tw-starter/dist/js/dom";
-import { Lucide, FullCalendar, Modal, ModalBody } from "@/base-components";
+
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+
+import tippy from "tippy.js";
+import { Lucide, Modal, ModalBody } from "@/base-components";
 import { LoadingIcon } from "@/base-components";
 import { useState } from "react";
-
 
 const Main = (props) => {
   const {
@@ -17,42 +20,72 @@ const Main = (props) => {
     setEventId,
     deleteConfirmationModal,
     setDeleteConfirmationModal,
-    loading
+    loading,
   } = props;
 
   //(events.contents);
   const [modelTitle, setModelTitle] = useState("");
   const [modelDescription, setModelDescription] = useState("");
-  const options = {
-    plugins: [interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin],
-    droppable: false,
-    headerToolbar: {
-      left: "prev,next today",
-      center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-    },
-    aspectRatio: 1.5,
-    height : 'auto',
-    navLinks: true,
-    editable: true,
-    events: events,
-    eventClick: function (info) {
-      // alert("Event: " + info.event._def.extendedProps.description);
+  // const options = {
+  //   plugins: [interactionPlugin, dayGridPlugin, listPlugin],
+  //   droppable: false,
+  //   headerToolbar: {
+  //     left: "prev, next, today",
+  //     center: "title",
+  //     right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+  //   },
+  //   aspectRatio: 1.5,
+  //   height: "auto",
+  //   navLinks: false,
+  //   editable: true,
+  //   events: events,
+  //   eventClick: function (info) {
+  //     console.log("ev");
 
-      //setModelTitle()
-      setModelDescription(info.event._def.extendedProps.description);
-      setModelTitle(info.event.title);
-      setDeleteConfirmationModal(true);
-
-      setEventId(info.event._def.extendedProps.ev_id);
-      // change the border color just for fun
-      // info.el.style.borderColor = "red";
-    },
-  };
+  //     setModelDescription(info.event._def.extendedProps.description);
+  //     setModelTitle(info.event.title);
+  //     setDeleteConfirmationModal(true);
+  //     setEventId(info.event._def.extendedProps.ev_id);
+  //   },
+  //   eventDidMount: function (info) {
+  //     var tooltip = tippy(info.el, {
+  //       content: info.event.extendedProps.description,
+  //       placement: "right",
+  //       interactive: true,
+  //       theme: "light",
+  //     });
+  //   },
+  // };
 
   return (
     <>
-      <FullCalendar options={options} />
+      {/* <FullCalendar options={options} /> */}
+
+      <FullCalendar
+        plugins={[dayGridPlugin, listPlugin, timeGridPlugin]}
+        initialView="dayGridMonth"
+        weekends={true}
+        events={events}
+        headerToolbar={{
+          left: "prev, next, today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+        }}
+        eventDidMount={(info) => {
+          var tooltip = tippy(info.el, {
+            content: info.event.extendedProps.description,
+            placement: "right",
+            interactive: true,
+            theme: "light",
+          });
+        }}
+        eventClick={(info) => {
+          setModelDescription(info.event._def.extendedProps.description);
+          setModelTitle(info.event.title);
+          setDeleteConfirmationModal(true);
+          setEventId(info.event._def.extendedProps.ev_id);
+        }}
+      />
 
       <Modal
         show={deleteConfirmationModal}

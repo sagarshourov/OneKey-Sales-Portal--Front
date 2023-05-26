@@ -24,7 +24,7 @@ import { adminApi, getBaseApi } from "../../configuration";
 
 import { filter } from "lodash";
 import { helper } from "@/utils/helper";
-import FollowUp from "./FollowUp";
+import NextStepSection from "./NextStepSection";
 import CallSchedule from "./CallSchedule";
 import classnames from "classnames";
 import { settingState } from "../../state/setting-atom";
@@ -945,7 +945,7 @@ const AdminUsers = (props) => {
                   logindata.userId
                 )}
               /> */}
-              <FollowUp
+              <NextStepSection
                 title="Today's Next Step"
                 theme=" bg-success text-white"
                 handelGo={handelGo}
@@ -956,7 +956,7 @@ const AdminUsers = (props) => {
                 )}
               />
 
-              <FollowUp
+              <NextStepSection
                 title="Tomorrow’s Next Step"
                 theme=" table-light text-white"
                 handelGo={handelGo}

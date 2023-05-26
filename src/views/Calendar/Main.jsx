@@ -5,8 +5,9 @@ import {
   TabList,
   Tab,
   TabPanels,
-  TabPanel, Modal,
-  ModalBody
+  TabPanel,
+  Modal,
+  ModalBody,
 } from "@/base-components";
 import Calendar from "@/components/calendar/Main";
 import axios from "axios";
@@ -37,17 +38,12 @@ function applySortFilters(array, searchValue) {
 }
 
 function format_time(dat) {
-
-
-  
   if (dat.cst) {
-    console.log('cst',dat.cst);
+    // console.log('cst',dat.cst);
     return dat.call_schedule_date + "T" + dat.cst + ":00";
-  }else{
-    return dat.call_schedule_date ? dat.call_schedule_date : '' ;
+  } else {
+    return dat.call_schedule_date ? dat.call_schedule_date : "";
   }
-
- 
 }
 
 function event_format(data) {
@@ -62,19 +58,40 @@ function event_format(data) {
         start: format_time(dat),
         description: "Call Schedule Date",
         title: dat?.first_name + " " + dat?.last_name,
+        color: "#2d3c5a",
       });
     });
-  data.fud &&
-    data.fud.map((dat, index) => {
-      //  console.log("csd", dat);
+  // data.fud && // instructions on 25/5/23
+  //   data.fud.map((dat, index) => {
+  //     //console.log("csd", dat.follow_up_date);
+  //     obj.push({
+  //       id: dat.id,
+  //       ev_id: dat.id,
+  //       start: dat.follow_up_date,
+  //       description: "Follow Up Date",
+  //       title: dat?.first_name + " " + dat?.last_name,
+     
+        
+  //     });
+  //   });
+
+
+    data.next &&
+    data.next.map((dat, index) => {
+      //console.log("csd", dat.follow_up_date);
       obj.push({
         id: dat.id,
         ev_id: dat.id,
-        start: dat.follow_up_date,
-        description: "Follow Up Date",
+        start: dat?.steps?.next[0]?.value+ "T" +dat?.steps?.next[2]?.value,
+        description: "Next Step",
         title: dat?.first_name + " " + dat?.last_name,
+        color: "#40E0D0",
+        
       });
     });
+
+
+
   return obj;
 }
 
@@ -185,52 +202,47 @@ const Events = (props) => {
           </div>
           <TabPanels className="mt-5 intro-y">
             <TabPanel>
-              <FullCalendarDraggable
-                id="calendar-events"
-                className="h-[820px] overflow-y-auto scrollbar-hidden"
-              >
-                {eventDatas.state === "hasValue" &&
-                  filterData.map((event, key) => {
-                    return (
-                      <div
-                        key={key}
-                        className="event box p-5 cursor-pointer mt-5 first:mt-0"
-                      >
-                        <div className="flex items-center">
-                          <div className="w-2 h-2 bg-warning rounded-full mr-3"></div>
-                          <div className="event__title font-medium truncate">
-                            {event?.description}
-                          </div>
-                          {/* <Lucide
+              {eventDatas.state === "hasValue" &&
+                filterData.map((event, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className="event box p-5 cursor-pointer mt-5 first:mt-0"
+                    >
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-warning rounded-full mr-3"></div>
+                        <div className="event__title font-medium truncate">
+                          {event?.description}
+                        </div>
+                        {/* <Lucide
                               icon="Edit"
                               className="w-4 h-4 text-slate-500 ml-auto"
                             /> */}
+                      </div>
+                      <div className="border-b border-t border-slate-200/60 dark:border-darkmode-400 py-5 my-5">
+                        <div className="flex items-center">
+                          <Lucide
+                            icon="Calendar"
+                            className="w-4 h-4 text-slate-500 mr-2"
+                          />
+
+                          {helper.formatDate(
+                            event?.call_schedule_date,
+                            "MMM D, YYYY"
+                          )}
                         </div>
-                        <div className="border-b border-t border-slate-200/60 dark:border-darkmode-400 py-5 my-5">
-                          <div className="flex items-center">
-                            <Lucide
-                              icon="Calendar"
-                              className="w-4 h-4 text-slate-500 mr-2"
-                            />
 
-                            {helper.formatDate(
-                              event?.call_schedule_date,
-                              "MMM D, YYYY"
-                            )}
-                          </div>
-
-                          <div className="flex items-center mt-3">
-                            <Lucide
-                              icon="Map"
-                              className="w-4 h-4 text-slate-500 mr-2"
-                            />
-                            {event?.title}
-                          </div>
+                        <div className="flex items-center mt-3">
+                          <Lucide
+                            icon="Map"
+                            className="w-4 h-4 text-slate-500 mr-2"
+                          />
+                          {event?.title}
                         </div>
                       </div>
-                    );
-                  })}
-              </FullCalendarDraggable>
+                    </div>
+                  );
+                })}
             </TabPanel>
           </TabPanels>
         </TabGroup>
@@ -247,8 +259,8 @@ const Events = (props) => {
               />
             </div>
 
-            {eventDatas.state == "hasValue" && (
-              <Calendar 
+            {eventDatas.state == "hasValue" ? (
+              <Calendar
                 type="2"
                 deleteEvent={deleteEvent}
                 setEventId={setEventId}
@@ -257,7 +269,7 @@ const Events = (props) => {
                 deleteConfirmationModal={deleteConfirmationModal}
                 setDeleteConfirmationModal={setDeleteConfirmationModal}
               />
-            )}
+            ):<h3 className="p-5">Loading....</h3>}
           </div>
         </div>
         {/* END: Calendar Content */}

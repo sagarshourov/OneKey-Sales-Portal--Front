@@ -1,4 +1,4 @@
-const FollowUp = (props) => {
+const NextStepSection = (props) => {
   const { data, theme, title, handelGo } = props;
 
 
@@ -45,4 +45,4 @@ const FollowUp = (props) => {
   );
 };
 
-export default FollowUp;
+export default NextStepSection;
