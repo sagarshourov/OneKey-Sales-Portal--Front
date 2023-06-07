@@ -352,7 +352,7 @@ const AdminUsers = (props) => {
     try {
       const response = await axios.post(
         URL,
-        { ids: allCheck },
+        { ids: allCheck , result : 'all'},
         {
           headers,
         }
@@ -376,12 +376,12 @@ const AdminUsers = (props) => {
               Add New Call
             </Link>
 
-            <button
+            {/* <button
               className="btn btn-elevated-secondary shadow-md mr-2 py-2"
               onClick={exportCsv}
             >
               Export Excel
-            </button>
+            </button> */}
 
             {allCheck.length == 1 && (
               <Link

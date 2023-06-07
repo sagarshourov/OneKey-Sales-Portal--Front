@@ -385,7 +385,8 @@ const UsersTable = (props) => {
                   </td>
 
                   <td>
-                    <select
+                    {user?.package?.title}
+                    {/* <select
                       onChange={(e) => handelChange(e, user.id, "n")}
                       name="package"
                       className="form-select form-select-sm mt-2 w-20"
@@ -399,7 +400,7 @@ const UsersTable = (props) => {
                             {val?.title}
                           </option>
                         ))}
-                    </select>
+                    </select> */}
                   </td>
 
                   <td className="text-center">

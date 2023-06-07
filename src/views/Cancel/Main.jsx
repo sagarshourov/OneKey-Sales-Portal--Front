@@ -5,7 +5,7 @@ import classnames from "classnames";
 import {
   useRecoilStateLoadable,
   useSetRecoilState,
-  useRecoilValue
+  useRecoilValue,
 } from "recoil";
 import {
   cancelListState,
@@ -19,7 +19,7 @@ import { Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
 import { settingState } from "../../state/setting-atom";
 import axios from "axios";
-import { adminApi } from "../../configuration";
+import { adminApi, getBaseApi } from "../../configuration";
 import { loginState } from "../../state/login-atom";
 import { filter } from "lodash";
 
@@ -68,8 +68,6 @@ const CancelMain = (props) => {
     if (loginData.role === 2) {
       setCallSwitch(true);
       canUser(loginData.userId);
-
-    
     }
     return () => {
       console.log("releasing Cancel....");
@@ -178,6 +176,13 @@ const CancelMain = (props) => {
     }
   };
 
+  const exportCsv = async () => {
+    window.open(
+      getBaseApi() + "single_export/1/Cancel/" + loginData.userId,
+      "_blank"
+    );
+  };
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">Canceled Call List</h2>
@@ -221,6 +226,12 @@ const CancelMain = (props) => {
             >
               Add New Call
             </Link>
+            <button
+              className="btn btn-elevated-secondary shadow-md mr-2 py-2"
+              onClick={exportCsv}
+            >
+              Export Excel
+            </button>
 
             {allCheck.length > 0 && (
               <>
