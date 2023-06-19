@@ -591,7 +591,7 @@ const EditCallCon = (props) => {
                             <small className="w-100 mb-5">
                               (
                               {helper.formatDate(
-                                data?.assigned_date,
+                                data?.created_at,
                                 "ddd, MMMM D, YYYY"
                               )}
                               )
