@@ -190,6 +190,8 @@ const EditCallCon = (props) => {
     setMyNextStep([...myStep, newObj]);
   };
 
+  console.log(logindata);
+
   const headers = {
     Authorization: `Bearer ${logindata?.token}`,
     ContentType: "application/json",
@@ -437,9 +439,6 @@ const EditCallCon = (props) => {
     setConfirmGpaState([...confirmGpaState, newObj]);
   };
 
-
-  
-
   const [callScheduleState, setCallScheduleState] = useState(
     filterExtra(calls.extra, "call_schedule").length > 0
       ? filterExtra(calls.extra, "call_schedule")
@@ -572,33 +571,35 @@ const EditCallCon = (props) => {
                         selected = " btn btn-primary";
                       }
 
-                      return (
-                        <div
-                          key={index}
-                          className="intro-x lg:text-center flex items-center lg:block flex-1 z-10"
-                        >
-                          <button
-                            type="button"
-                            className={"w-50 h-10 rounded-full " + selected}
+                      if (data.user) {
+                        return (
+                          <div
+                            key={index}
+                            className="intro-x lg:text-center flex items-center lg:block flex-1 z-10"
                           >
-                            Assigned
-                          </button>
-                          <div className="lg:w-32 font-medium text-base lg:mt-1 ml-3 lg:mx-auto">
-                            {data?.user?.first_name}
-                          </div>
+                            <button
+                              type="button"
+                              className={"w-50 h-10 rounded-full " + selected}
+                            >
+                              Assigned
+                            </button>
+                            <div className="lg:w-32 font-medium text-base lg:mt-1 ml-3 lg:mx-auto">
+                              {data?.user?.first_name}
+                            </div>
 
-                          <div className="lg:w-32  ml-3 lg:mx-auto">
-                            <small className="w-100 mb-5">
-                              (
-                              {helper.formatDate(
-                                data?.created_at,
-                                "ddd, MMMM D, YYYY"
-                              )}
-                              )
-                            </small>
+                            <div className="lg:w-32  ml-3 lg:mx-auto">
+                              <small className="w-100 mb-5">
+                                (
+                                {helper.formatDate(
+                                  data?.created_at,
+                                  "MMMM D, YYYY h:mm A"
+                                )}
+                                )
+                              </small>
+                            </div>
                           </div>
-                        </div>
-                      );
+                        );
+                      }
                     })}
 
                     <div className="intro-x lg:text-center flex items-center mt-5 lg:mt-0 lg:block flex-1 z-10">
@@ -617,7 +618,7 @@ const EditCallCon = (props) => {
                           (
                           {helper.formatDate(
                             calls?.created_at,
-                            "ddd, MMMM D, YYYY"
+                            "MMMM D, YYYY h:mm A"
                           )}
                           )
                         </small>
@@ -825,24 +826,27 @@ const EditCallCon = (props) => {
                     ))}
                 </select>
               </div>
-              <div className="intro-x ">
-                <label className="form-label">Assigned to</label>
-                {userData.state == "hasValue" && (
-                  <select
-                    name="assigned_to"
-                    defaultValue={calls?.assigned_to && calls?.assigned_to.id}
-                    className="form-control"
-                  >
-                    <option value="3">Select...</option>
 
-                    {users.map((val, index) => (
-                      <option value={val.id} key={index}>
-                        {val.first_name}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
+              {logindata.role !== 3 && (
+                <div className="intro-x ">
+                  <label className="form-label">Assigned to</label>
+                  {userData.state == "hasValue" && (
+                    <select
+                      name="assigned_to"
+                      defaultValue={calls?.assigned_to && calls?.assigned_to.id}
+                      className="form-control"
+                    >
+                      <option value="3">Select...</option>
+
+                      {users.map((val, index) => (
+                        <option value={val.id} key={index}>
+                          {val.first_name}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              )}
             </div>
 
             {suppose && (
