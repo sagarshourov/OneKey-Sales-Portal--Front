@@ -9,20 +9,20 @@ import {
   callListState,
   notiState,
   allUserListState,
-} from "../../state/admin-atom";
-import CallScheduleSection from "./CallScheduleSection";
+} from "../../../state/admin-atom";
+import CallScheduleSection from "../CallScheduleSection";
 import axios from "axios";
-import { adminApi, getBaseApi } from "../../configuration";
+import { adminApi, getBaseApi } from "../../../configuration";
 import { helper } from "@/utils/helper";
-import { loginState } from "../../state/login-atom";
-import { settingState } from "../../state/setting-atom";
-import FollowUpSection from "./FollowUpSection";
+import { loginState } from "../../../state/login-atom";
 
-import MySection from "./MySection";
+import FollowUpSection from "../FollowUpSection";
 
-import ConfirmedGpa from "./ConfirmedGpa";
+import MySection from "../MySection";
 
-import SupposeSection from "./SupposeSection";
+import ConfirmedGpa from "../ConfirmedGpa";
+
+import SupposeSection from "../SupposeSection";
 
 // calls.extra
 
@@ -57,7 +57,7 @@ function removeArr(array, index) {
 }
 
 const EditCallCon = (props) => {
-  const { calls, setCallId, setSingleCallState } = props;
+  const { calls, setCallId,setting , setSingleCallState } = props;
   const [err, setErr] = useState([]);
   const [emailErr, setEmailErr] = useState([]);
 
@@ -85,7 +85,7 @@ const EditCallCon = (props) => {
   const [call, setCall] = useState([]);
 
   const [show, setShow] = useState(false);
-  const setting = useRecoilValue(settingState);
+ 
 
   const [suppose, setSuppose] = useState(
     calls.marital_status && calls.marital_status.id == 2 ? true : false
@@ -190,7 +190,7 @@ const EditCallCon = (props) => {
     setMyNextStep([...myStep, newObj]);
   };
 
-  console.log(logindata);
+
 
   const headers = {
     Authorization: `Bearer ${logindata?.token}`,
@@ -745,7 +745,7 @@ const EditCallCon = (props) => {
                   defaultValue={calls?.degree && calls?.degree}
                   className="form-control"
                 >
-                  <option>Select..</option>
+                  <option value="0">Select..</option>
                   {setting.applying_for &&
                     setting.applying_for.map((val, indx) => (
                       <option key={indx} value={val?.id}>
