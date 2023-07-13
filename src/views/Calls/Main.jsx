@@ -58,63 +58,7 @@ function sectionFind(array, id) {
   return re;
 }
 
-function todayFollowFilters(array, callSwitch, user_id) {
-  // var today = "";
-  if (array.length == 0) return;
-  var today = new Date();
 
-  var today = helper.formatDate(today, "YYYY-MM-DD");
-
-  if (callSwitch) {
-    return filter(array, (_items) => {
-      //return Date.parse(_items.follow_up_date) === Date.parse(today)
-      return (
-        get_single(_items, "follow_up") === Date.parse(today) &&
-        _items?.assigned_to?.id === user_id
-      );
-    });
-  } else {
-    return filter(array, (_items) => {
-      //return Date.parse(_items.follow_up_date) === Date.parse(today)
-      return get_single(_items, "follow_up") === Date.parse(today);
-    });
-  }
-}
-
-//todayFollowFilters
-function towFilters(array, callSwitch, user_id) {
-  var tomorrow = new Date();
-
-  tomorrow =
-    tomorrow.getFullYear() +
-    "-" +
-    (tomorrow.getMonth() + 1) +
-    "-" +
-    (tomorrow.getDate() + 1);
-
-  tomorrow = helper.formatDate(tomorrow, "YYYY-MM-DD");
-
-  // return filter(array, (_items) => {
-  //   // return Date.parse(_items.follow_up_date) === Date.parse(tomorrow);
-
-  //   return get_single(_items, "follow_up") === Date.parse(tomorrow);
-  // });
-
-  if (callSwitch) {
-    return filter(array, (_items) => {
-      //return Date.parse(_items.follow_up_date) === Date.parse(today)
-      return (
-        get_single(_items, "follow_up") === Date.parse(tomorrow) &&
-        _items?.assigned_to?.id === user_id
-      );
-    });
-  } else {
-    return filter(array, (_items) => {
-      //return Date.parse(_items.follow_up_date) === Date.parse(today)
-      return get_single(_items, "follow_up") === Date.parse(tomorrow);
-    });
-  }
-}
 
 function todayNextFilters(array, callSwitch, user_id) {
   if (array.length == 0) return;
@@ -380,8 +324,13 @@ const AdminUsers = (props) => {
 
   const [showCallVew, setCallView] = useState(false);
 
+
+  const [sections, setSection] = useState(0);
+
+
+
   const handelCallModel = (show) => {
-    console.log("handel call view");
+   
 
     setCallView(show);
   };
@@ -460,12 +409,25 @@ const AdminUsers = (props) => {
   const tableDragOver = (e, section) => {
     e.preventDefault();
 
-    updateFunc(rowId, "sections", section);
+    console.log('tableDragOver',section);
+
+    console.log('sec',sections);
+
+    if(section !== sections){
+      updateFunc(rowId, "sections", section);
+    }
+
+   
   };
 
   const AllTableDrop = (e) => {
     e.preventDefault();
-    updateFunc(rowId, "sections", null);
+    console.log('AllTableDrop',sections);
+
+    if(sections !== 0){
+      updateFunc(rowId, "sections", null);
+    }
+    
   };
 
   const allowDrop = (ev) => {
@@ -806,6 +768,7 @@ const AdminUsers = (props) => {
                           dragover={dragover}
                           tableDragOver={tableDragOver}
                           section={0}
+                          setSection={setSection}
                           setting={setting}
                           setLoading={setLoading}
                           headers={headers}
@@ -871,6 +834,7 @@ const AdminUsers = (props) => {
                                 dragover={dragover}
                                 tableDragOver={tableDragOver}
                                 section={val?.id}
+                                setSection={setSection}
                                 setting={setting}
                                 setLoading={setLoading}
                                 headers={headers}

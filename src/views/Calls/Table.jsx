@@ -59,6 +59,8 @@ const UsersTable = (props) => {
     setting,
     setLoading,
     headers,
+    section,
+    setSection
   } = props;
 
   const [rowCount, setRowCount] = useState(10);
@@ -108,7 +110,7 @@ const UsersTable = (props) => {
   };
 
   const allOver = (e) => {
-    //  console.log(e.target.parentNode.id);
+      console.log('target',e.target.parentNode.id);
     e.target.parentNode.style.borderTop = "14px  solid green";
     // let children = Array.from(e.target.parentNode.parentNode.children);
     // if (children.indexOf(e.target.parentNode) > children.indexOf(targetRow)) {
@@ -125,8 +127,8 @@ const UsersTable = (props) => {
   const DragEnd = async () => {
     targetRow.borderTop = "none";
 
-    // console.log("DragEnd", e);
-
+     console.log("startRow", startRow.id);
+     console.log("targetRow", targetRow.id);
     // console.log("target end", targetRow.id);
     // console.log("start row", startRow.target.id);
 
@@ -157,7 +159,7 @@ const UsersTable = (props) => {
   const DragLeave = (e) => {
     e.target.parentNode.style.borderTop = "none";
     // e.target.parentNode.style.borderBottom = "none";
-    console.log("drag leave", e);
+    //console.log("drag leave", e);
   };
 
   const feedbackCheck = (history) => {
@@ -191,7 +193,7 @@ const UsersTable = (props) => {
         setInfoModal(false);
       }
     } catch (err) {
-      console.log(err);
+    //  console.log(err);
       setLoading(false);
 
       setInnerLoading(false);
@@ -313,8 +315,11 @@ const UsersTable = (props) => {
                   className={"border-t pt-2" + dark}
                   draggable={true}
                   onDragStart={(e) => {
-                    dragStart(e, user.id);
                     setStartRow(e);
+                    console.log('dragstart',e);
+                    dragStart(e, user.id);
+                  
+                    setSection(section);
                   }}
                   id={user.sort}
                   onDragOver={(e) => allOver(e)}
