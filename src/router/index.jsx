@@ -17,6 +17,9 @@ const AdminDashBoard = Loadable(
 );
 
 const Admins = Loadable(lazy(() => import("../views/Admins/Main")));
+const Supervisor = Loadable(lazy(() => import("../views/Supervisor/Main")));
+
+
 
 const Employees = Loadable(lazy(() => import("../views/Employees/Main")));
 const EmpActivity = Loadable(lazy(() => import("../views/Employees/Activity")));
@@ -109,6 +112,10 @@ function Router() {
         {
           path: "/admins",
           element: <Admins />,
+        },
+        {
+          path: "/Supervisor",
+          element: <Supervisor />,
         },
         {
           path: "/employees",
@@ -418,11 +425,108 @@ function Router() {
     },
   ];
 
+  const jrAdminRoutes = [
+    {
+      path: "/",
+      element: auth ? <MainLayout /> : <Navigate to="/login" />,
+      children: [
+        {
+          path: "/",
+          element: <Calls />,
+        },
+
+        {
+          path: "/profile",
+          element: <AdminDashBoard />,
+        },
+
+        {
+          path: "/employees",
+          element: <Employees />,
+        },
+        {
+          path: "/profile/:id",
+          element: <Profile />,
+        },
+        {
+          path: "/calls/:id",
+          element: <Calls />,
+        },
+        {
+          path: "/calls/add",
+          element: <AddCalls />,
+        },
+        {
+          path: "/calls/edit/:id",
+          element: <EditCalls />,
+        },
+        {
+          path: "/calls/import",
+          element: <ImportCalls />,
+        },
+
+        {
+          path: "/reports/",
+          element: <AllReports />,
+        },
+        {
+          path: "/creport/",
+          element: <CustomReports />,
+        },
+        {
+          path: "/reports/:id",
+          element: <Report />,
+        },
+
+        {
+          path: "/cancel",
+          element: <Cancel />,
+        },
+        {
+          path: "/calendar",
+          element: <Calendars />,
+        },
+        {
+          path: "/clients",
+          element: <Clients />,
+        },
+        {
+          path: "/results/:id",
+          element: <Results />,
+        },
+        {
+          path: "/notifications",
+          element: <Notification />,
+        },
+      ],
+    },
+
+    {
+      path: "/login",
+      element: auth ? <Navigate to="/" /> : <Login />,
+    },
+    {
+      path: "/forgot",
+      element: auth ? <Navigate to="/" /> : <Forgot />,
+    },
+
+    {
+      path: "/password/:token/:id",
+      element: auth ? <Navigate to="/" /> : <ResetPass />,
+    },
+    {
+      path: "*",
+      element: <ErrorPage />,
+    },
+  ];
+
   if (login.role == 1) {
     return useRoutes(superAdminRoutes);
   } else if (login.role == 2) {
     return useRoutes(adminRoutes);
-  } else {
+  } else if (login.role == 4) {
+    return useRoutes(jrAdminRoutes);
+  }else {
     return useRoutes(employeeRoutes);
   }
 }

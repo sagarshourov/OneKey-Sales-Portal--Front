@@ -8,11 +8,15 @@ let supAdminObj = {
       title: "Super Admin Profile",
       pathname: "/profile",
     },
-
     {
       icon: "UserCheck",
       title: "Admins",
       pathname: "/admins",
+    },
+    {
+      icon: "UserCheck",
+      title: "Supervisor",
+      pathname: "/supervisor",
     },
 
     {
@@ -324,7 +328,6 @@ let empObj = {
         },
       ],
     },
-
 
     {
       icon: "PhoneMissed",
