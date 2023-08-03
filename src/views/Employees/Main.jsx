@@ -1,6 +1,6 @@
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useRecoilStateLoadable, useRecoilState } from "recoil";
@@ -25,7 +25,8 @@ function applySortFilters(array, searchValue) {
   });
 }
 import { authHeader } from "../../service/auth-header";
-
+import { Table } from "./Table/Table";
+import styled from "styled-components";
 const AdminUsers = (props) => {
   let navigate = useNavigate();
   const [loginstaste, setLoginState] = useRecoilState(loginState);
@@ -57,11 +58,15 @@ const AdminUsers = (props) => {
 
   let filterData = applySortFilters(usersData.contents, search);
 
+  const setData = (data) => {
+    setUserState(data);
+  };
+
   const confirmAdmin = async (e) => {
     e.preventDefault();
     const URL = adminApi() + "users/" + user_id;
 
-    console.log("confirm admin");
+  //  console.log("confirm admin");
 
     setLoading(true);
 
@@ -253,6 +258,38 @@ const AdminUsers = (props) => {
       setLoading(false);
     }
   };
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: "No",
+        accessor: "id",
+      },
+      {
+        Header: "First Name",
+        accessor: "first_name",
+      },
+      {
+        Header: "Last Name",
+        accessor: "last_name",
+      },
+
+      {
+        Header: "Email",
+        accessor: "email",
+      },
+      {
+        Header: "Team",
+        accessor: "team",
+      },
+      {
+        Header: "",
+        accessor: "created_at",
+      },
+    ],
+    []
+  );
+  
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">List Of Employees</h2>
@@ -296,16 +333,18 @@ const AdminUsers = (props) => {
         </div>
         {/* BEGIN: Data List */}
 
-        <div className="intro-y col-span-12 overflow-auto lg:overflow-visible">
+        <div className="col-span-12  lg:overflow-visible">
           {usersData.state === "hasValue" && (
-            <UsersTable
-              rowCount={rowCount}
-              setDeleteConfirmationModal={setDeleteConfirmationModal}
-              users={filterData}
-              setUserId={setUserId}
-              viewAsEmployee={viewAsEmployee}
-              setAdminConfirmationModal={setAdminConfirmationModal}
-            />
+            // <UsersTable
+            //   rowCount={rowCount}
+            //   setDeleteConfirmationModal={setDeleteConfirmationModal}
+            //   users={filterData}
+            //   setUserId={setUserId}
+            //   viewAsEmployee={viewAsEmployee}
+            //   setAdminConfirmationModal={setAdminConfirmationModal}
+            // />
+
+            <Table headers={headers} columns={columns} setAdminConfirmationModal={setAdminConfirmationModal} setDeleteConfirmationModal={setDeleteConfirmationModal} setUserId={setUserId} viewAsEmployee={viewAsEmployee} data={filterData} setData={setData} />
           )}
         </div>
         {/* END: Data List */}
@@ -317,9 +356,11 @@ const AdminUsers = (props) => {
         </div> */}
 
         {rowCount < filterData.length && (
-          <button className="btn btn-default m-5" onClick={handelLoad}>
-            Load more ...
+          <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
+          <button onClick={handelLoad} className="btn">
+            Load more..
           </button>
+        </div>
         )}
 
         {/* END: Pagination */}
