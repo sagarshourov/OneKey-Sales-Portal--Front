@@ -27,7 +27,7 @@ const UsersView = (props) => {
 
   const [activity, SetActivity] = useRecoilStateLoadable(activitySelect(id));
   const [userData, setUserData] = useRecoilStateLoadable(allUserListState);
-  console.log(userData);
+  //console.log(userData);
 
 
 

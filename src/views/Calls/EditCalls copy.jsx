@@ -76,7 +76,7 @@ const AddCalls = (props) => {
     call = getSingleCalls(callData, parseInt(id));
   } else {
     call = [];
-    console.log("cal no");
+    //console.log("cal no");
   }
   const [followUp, setfollowUp] = useState(
     call[0].follow_up_date ? call[0].follow_up_date : ""
@@ -118,7 +118,7 @@ const AddCalls = (props) => {
       const response = await axios.post(URL, data, {
         headers,
       });
-      console.log(response);
+     // console.log(response);
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
@@ -130,7 +130,7 @@ const AddCalls = (props) => {
   };
   const checkEmail = async (e) => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(e.target.value)) {
-      console.log("Invalid Email");
+      //console.log("Invalid Email");
       setEmailErr(["Email is not valid !"]);
       return false;
     } else {
@@ -145,7 +145,7 @@ const AddCalls = (props) => {
         headers,
       });
     } catch (err) {
-      console.log(err?.response?.data.message);
+     // console.log(err?.response?.data.message);
 
       if (err?.response?.data?.message?.email) {
         setEmailErr(err?.response?.data?.message?.email);

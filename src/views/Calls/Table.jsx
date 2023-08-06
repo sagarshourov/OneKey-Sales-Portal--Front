@@ -110,7 +110,7 @@ const UsersTable = (props) => {
   };
 
   const allOver = (e) => {
-      console.log('target',e.target.parentNode.id);
+     // console.log('target',e.target.parentNode.id);
     e.target.parentNode.style.borderTop = "14px  solid green";
     // let children = Array.from(e.target.parentNode.parentNode.children);
     // if (children.indexOf(e.target.parentNode) > children.indexOf(targetRow)) {
@@ -127,8 +127,8 @@ const UsersTable = (props) => {
   const DragEnd = async () => {
     targetRow.borderTop = "none";
 
-     console.log("startRow", startRow.id);
-     console.log("targetRow", targetRow.id);
+    // console.log("startRow", startRow.id);
+   //  console.log("targetRow", targetRow.id);
     // console.log("target end", targetRow.id);
     // console.log("start row", startRow.target.id);
 
@@ -151,7 +151,7 @@ const UsersTable = (props) => {
         setCallState(response?.data?.data);
       }
     } catch (err) {
-      console.log(err);
+     // console.log(err);
       setLoading(false);
     }
   };
@@ -316,7 +316,7 @@ const UsersTable = (props) => {
                   draggable={true}
                   onDragStart={(e) => {
                     setStartRow(e);
-                    console.log('dragstart',e);
+                   // console.log('dragstart',e);
                     dragStart(e, user.id);
                   
                     setSection(section);

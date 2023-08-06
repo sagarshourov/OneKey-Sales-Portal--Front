@@ -24,7 +24,7 @@ const UserMain = () => {
   const handelSave = async (e) => {
     e.preventDefault();
 
-    console.log(headers);
+    //console.log(headers);
 
     if (val.password !== val.rpassword) {
       alert("Password and retype password not matching !");

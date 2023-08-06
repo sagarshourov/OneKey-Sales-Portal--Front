@@ -137,13 +137,13 @@ const Events = (props) => {
   };
 
   const handelSearch = (e) => {
-    console.log("search");
+   // console.log("search");
     setSearch(e.target.value);
   };
 
   let filterData = applySortFilters(event_format(eventDatas.contents), search);
 
-   console.log("filter data", filterData);
+   //console.log("filter data", filterData);
 
   return (
     <>

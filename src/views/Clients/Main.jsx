@@ -89,7 +89,7 @@ const ClientMain = (props) => {
     }
     setResultID(2);
     return () => {
-      console.log("releasing Clients....");
+      //console.log("releasing Clients....");
       setPageOffset(0);
       searchQuery(0);
       limitQuery(20);
@@ -136,7 +136,7 @@ const ClientMain = (props) => {
     setSearch("");
   };
 
-  console.log("searching", search);
+  //console.log("searching", search);
 
   const deleteAdmin = async () => {
     setLoading(true);
@@ -148,7 +148,7 @@ const ClientMain = (props) => {
       });
 
       if (response?.data?.success) {
-        console.log("success", response.data.data);
+       // console.log("success", response.data.data);
 
         //setUserState(response?.data?.data);
         window.location.reload();

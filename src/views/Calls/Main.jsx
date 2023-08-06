@@ -341,7 +341,7 @@ const AdminUsers = (props) => {
   // console.log("logindata", logindata.role);
 
   const backToTop = () => {
-    console.log("loginData");
+    //console.log("loginData");
     window.scroll({ top: 0, behavior: "smooth" });
   };
 
@@ -352,7 +352,7 @@ const AdminUsers = (props) => {
   };
 
   const handelGo = (section, call) => {
-    console.log("handel go", call);
+    //console.log("handel go", call);
     setSingleCall(call);
     handelCallModel(true);
 
@@ -409,9 +409,9 @@ const AdminUsers = (props) => {
   const tableDragOver = (e, section) => {
     e.preventDefault();
 
-    console.log('tableDragOver',section);
+    //console.log('tableDragOver',section);
 
-    console.log('sec',sections);
+    //console.log('sec',sections);
 
     if(section !== sections){
       updateFunc(rowId, "sections", section);
@@ -422,7 +422,7 @@ const AdminUsers = (props) => {
 
   const AllTableDrop = (e) => {
     e.preventDefault();
-    console.log('AllTableDrop',sections);
+   // console.log('AllTableDrop',sections);
 
     if(sections !== 0){
       updateFunc(rowId, "sections", null);

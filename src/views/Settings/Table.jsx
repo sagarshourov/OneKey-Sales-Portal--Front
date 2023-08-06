@@ -58,7 +58,7 @@ const Table = (props) => {
   };
 
   const delRow = async () => {
-    console.log(row.id);
+    //console.log(row.id);
     setLoading(true);
     const URL = adminApi() + "settings/" + tbl + "/" + row.id;
 
@@ -96,7 +96,7 @@ const Table = (props) => {
       const response = await axios.post(URL, data, {
         headers,
       });
-      console.log(response);
+      //console.log(response);
       if (response?.data?.success) {
         setLoading(false);
 

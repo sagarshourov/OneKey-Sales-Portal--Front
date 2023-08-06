@@ -33,11 +33,11 @@ const UsersTable = (props) => {
       e.target.parentNode.style.borderTop = "none";
       e.target.parentNode.style.borderBottom = "14px  solid green";
 
-      console.log("going down ");
+      //console.log("going down ");
     } else {
       e.target.parentNode.style.borderTop = "14px  solid green";
       e.target.parentNode.style.borderBottom = "none";
-      console.log("going upper ");
+     // console.log("going upper ");
     }
 
     setTargetRow(e.target.parentNode);
@@ -45,8 +45,8 @@ const UsersTable = (props) => {
   const dragEnd = async (e) => {
     // targetRow.borderTop = "none";
     // targetRow.borderBottom = "none";
-    console.log("startRow", startRow.id);
-    console.log("targetRow", targetRow.id);
+    //console.log("startRow", startRow.id);
+   // console.log("targetRow", targetRow.id);
 
     const URL = adminApi() + "calls_sort";
     // setLoading(true);
@@ -66,7 +66,7 @@ const UsersTable = (props) => {
         setCallState(response?.data?.data);
       }
     } catch (err) {
-      console.log(err);
+     // console.log(err);
       setLoading(false);
     }
   };

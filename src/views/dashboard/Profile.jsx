@@ -44,7 +44,7 @@ const UserMain = () => {
       });
       setLoading(false);
       setEdit(true);
-      console.log(response);
+    //  console.log(response);
      // setValue();
       //window.location.reload();
     } catch (err) {

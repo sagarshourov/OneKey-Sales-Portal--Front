@@ -186,7 +186,7 @@ const AdminUsers = (props) => {
   };
 
   const viewAsEmployee = async (userId) => {
-    console.log("View Employee");
+    //console.log("View Employee");
 
     setLoading(true);
     const URL = adminApi() + "token/" + userId;
@@ -254,7 +254,7 @@ const AdminUsers = (props) => {
         alert("Something is wrong please try again later!");
       }
     } catch (err) {
-      console.log(err);
+    //  console.log(err);
       setLoading(false);
     }
   };

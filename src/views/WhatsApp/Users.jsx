@@ -87,7 +87,7 @@ const AdminUsers = (props) => {
 
     var id = Object.fromEntries(data).id;
 
-    console.log(id, email);
+    //console.log(id, email);
     const response = await bot.conversations.invite({
       channel: id,
       users: email,
@@ -98,7 +98,7 @@ const AdminUsers = (props) => {
         channel: id,
         users: email,
       });
-      console.log(response);
+     // console.log(response);
     } catch (err) {
       setLoading(false);
     }

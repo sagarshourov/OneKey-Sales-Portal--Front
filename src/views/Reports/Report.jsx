@@ -23,7 +23,7 @@ import { filter } from "lodash";
 
 
 function applySortFilters(array, searchValue, sec) {
-  console.log(sec);
+  //console.log(sec);
   if (sec == "all") {
     return filter(array, (_items) => {
       return _items.email
@@ -78,7 +78,7 @@ const AdminUsers = (props) => {
           headers,
         }
       );
-      console.log(response);
+     // console.log(response);
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);

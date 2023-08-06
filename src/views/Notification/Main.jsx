@@ -95,7 +95,7 @@ const NotificationMain = (props) => {
 
       //window.location.reload();
     } catch (err) {
-      console.log("err", err);
+     // console.log("err", err);
       setLoading(false);
     }
   };
@@ -103,7 +103,7 @@ const NotificationMain = (props) => {
   const handelView = (e) => {
 
 
-    console.log('note',note);
+    //console.log('note',note);
 
     // set notification data
     setNotiFrom(e.user.first_name + " " + e.user.last_name);
@@ -178,7 +178,7 @@ const NotificationMain = (props) => {
       //  setCallViewModal(false);
       //window.location.reload();
     } catch (err) {
-      console.log("err", err);
+     // console.log("err", err);
       setLoading(false);
     }
   };

@@ -68,7 +68,7 @@ const HistoryViewModal = (props) => {
               if (key == "assigned_to") {
                 var vals = filterById(setting[key], parseInt(val));
                 val = vals[0]?.first_name + " " + vals[0]?.last_name;
-                console.log('assigned_to ',val);
+               // console.log('assigned_to ',val);
               } else if (setting.hasOwnProperty(key)) {
                 var vals = filterById(setting[key], parseInt(val));
                 val = vals[0].title;

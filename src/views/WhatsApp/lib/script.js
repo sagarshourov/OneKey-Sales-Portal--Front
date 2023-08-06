@@ -44,9 +44,9 @@ const recorders = {
       ...this.mergeAudioStreams(desktopStream, voiceStream),
     ];
 
-    console.log("Tracks to add to stream", tracks);
+   // console.log("Tracks to add to stream", tracks);
     stream = new MediaStream(tracks);
-    console.log("Stream", stream);
+    //console.log("Stream", stream);
 
     blobs = [];
 
@@ -56,7 +56,7 @@ const recorders = {
     rec.ondataavailable = (e) => blobs.push(e.data);
 
     rec.onstop = async () => {
-      console.log("on Stop");
+      //console.log("on Stop");
       //blobs.push(MediaRecorder.requestData());
       blob = new Blob(blobs, { type: "audio/wav" });
   
@@ -79,12 +79,12 @@ const recorders = {
         s.stop();
       });
       rec.stop();
-      console.log("Stop video track");
+     // console.log("Stop video track");
       stream = null;
     };
   },
   stop() {
-    console.log("clicked stop");
+    //console.log("clicked stop");
     rec.stop();
     stream.getTracks().forEach((s) => {
       s.stop();

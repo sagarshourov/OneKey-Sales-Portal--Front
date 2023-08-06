@@ -183,7 +183,7 @@ const AddCalls = (props) => {
       }
     } catch (err) {
       if (!err?.response?.data?.success) {
-        console.log("Err", err?.response?.data?.message.email[0]);
+        //console.log("Err", err?.response?.data?.message.email[0]);
 
         if (
           err?.response?.data?.message.email &&
@@ -239,7 +239,7 @@ const AddCalls = (props) => {
 
   const checkEmail = async (e) => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(e.target.value)) {
-      console.log("Invalid Email");
+    //  console.log("Invalid Email");
       setEmailErr(["Email is not valid !"]);
       return false;
     } else {
@@ -254,7 +254,7 @@ const AddCalls = (props) => {
         headers,
       });
     } catch (err) {
-      console.log(err?.response?.data.message);
+      //console.log(err?.response?.data.message);
 
       if (err?.response?.data?.message?.email) {
         setEmailErr(err?.response?.data?.message?.email);
@@ -449,7 +449,7 @@ const AddCalls = (props) => {
   };
 
   const handelMargie = (e) => {
-    console.log("married", e.target.value);
+    //console.log("married", e.target.value);
 
     if (e.target.value == 2) {
       setSuppose(true);
@@ -459,7 +459,7 @@ const AddCalls = (props) => {
   };
 
   const handelEngTest = (e) => {
-    console.log("handelEngTest", e.target.value);
+   // console.log("handelEngTest", e.target.value);
 
     if (parseInt(e.target.value) !== 0) {
       setScore(true);

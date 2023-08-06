@@ -37,11 +37,11 @@ function Main() {
   };
 
   useEffect(() => {
-    console.log("loading...");
+  //  console.log("loading...");
 
     if (conId !== "") {
       const interval = setInterval(async () => {
-        console.log("call to server");
+       // console.log("call to server");
 
         var con = await get_history(conId);
 

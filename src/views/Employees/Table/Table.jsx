@@ -66,7 +66,7 @@ export function Table({
         //  setCallState(response?.data?.data);
       }
     } catch (err) {
-      console.log(err);
+     // console.log(err);
     }
   };
 
@@ -84,15 +84,15 @@ export function Table({
         imp.push(da.id);
       });
 
-      console.log(imp);
+      //console.log(imp);
 
       update_sort(imp);
     }
 
     setActiveId(null);
 
-    console.log("active.id", active.id);
-    console.log("over.id", over.id);
+    // console.log("active.id", active.id);
+    // console.log("over.id", over.id);
   }
 
   function handleDragCancel() {

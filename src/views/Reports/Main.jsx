@@ -189,7 +189,7 @@ const AdminUsers = (props) => {
   // );
 
   const handelRange = (date) => {
-    console.log("date", date);
+   // console.log("date", date);
 
     setDaterange(date);
 
@@ -241,7 +241,7 @@ const AdminUsers = (props) => {
   };
 
   const handelStatus = (e) => {
-    console.log("status", e.target.value);
+  //  console.log("status", e.target.value);
     setStatus(e.target.value);
     setType(e.target.value);
   };

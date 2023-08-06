@@ -164,7 +164,7 @@ const AdminUsers = (props) => {
     setRowID(id);
   };
   const dragover = (e) => {
-    console.log("over");
+   // console.log("over");
     e.preventDefault();
     let children = Array.from(e.target.parentNode.parentNode.children);
     // console.log("children", children);
@@ -314,7 +314,7 @@ const AdminUsers = (props) => {
     var data = findByValue(data, field);
     setHistoryTitle(field);
     setHistoryData(data);
-    console.log(data);
+   // console.log(data);
     setHistoryModal(true);
   };
 

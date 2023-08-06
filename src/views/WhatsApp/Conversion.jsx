@@ -264,7 +264,7 @@ const AdminUsers = (props) => {
     var data = findByValue(data, field);
     setHistoryTitle(field);
     setHistoryData(data);
-    console.log(data);
+   // console.log(data);
     setHistoryModal(true);
   };
 

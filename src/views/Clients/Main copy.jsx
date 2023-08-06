@@ -61,10 +61,10 @@ const ClientsMain = (props) => {
   // }, []);
 
   useEffect(() => {
-    console.log("set state");
+    //console.log("set state");
     setResultID(2);
     return () => {
-      console.log("cleaned up");
+    //  console.log("cleaned up");
     };
   }, []);
 
@@ -94,7 +94,7 @@ const ClientsMain = (props) => {
       });
 
       if (response?.data?.success) {
-        console.log("success", response.data.data);
+       // console.log("success", response.data.data);
 
         //setUserState(response?.data?.data);
         window.location.reload();

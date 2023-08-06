@@ -57,7 +57,7 @@ const AdminUsers = (props) => {
   const createChannel = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(e);
+   // console.log(e);
     var data = new FormData(e.target);
     var name = Object.fromEntries(data).channel_name;
 
@@ -65,7 +65,7 @@ const AdminUsers = (props) => {
       const response = await bot.conversations.create({
         name: name,
       });
-      console.log(response);
+    //  console.log(response);
 
       if (response.ok) {
         setData({ ...slackConList.contents, ...response });
@@ -77,7 +77,7 @@ const AdminUsers = (props) => {
         setNewConModal(false);
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setLoading(false);
     }
 
@@ -85,13 +85,13 @@ const AdminUsers = (props) => {
   };
 
   const deleteCon = async () => {
-    console.log("Con ID", conId);
+  //  console.log("Con ID", conId);
 
     try {
       const response = await bot.conversations.archive({
         channel: conId,
       });
-      console.log(response);
+    //  console.log(response);
 
       if (response.ok) {
         // console.log('slack',slackConList.contents);
@@ -102,7 +102,7 @@ const AdminUsers = (props) => {
         window.location.reload();
       }
     } catch (err) {
-      console.log(err);
+     // console.log(err);
       setLoading(false);
     }
   };

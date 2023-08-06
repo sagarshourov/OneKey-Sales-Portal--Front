@@ -226,7 +226,7 @@ const EditCallCon = (props) => {
       const response = await axios.post(URL, data, {
         headers,
       });
-      console.log(response);
+      //console.log(response);
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
@@ -291,7 +291,7 @@ const EditCallCon = (props) => {
 
   const checkEmail = async (e) => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(e.target.value)) {
-      console.log("Invalid Email");
+     // console.log("Invalid Email");
       setEmailErr(["Email is not valid !"]);
       return false;
     } else {
@@ -529,7 +529,7 @@ const EditCallCon = (props) => {
         window.location.reload();
       }
     } catch (err) {
-      console.log(err);
+     // console.log(err);
       setLoading(false);
     }
   };

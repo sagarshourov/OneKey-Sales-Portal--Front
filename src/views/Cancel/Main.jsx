@@ -70,7 +70,7 @@ const CancelMain = (props) => {
       canUser(loginData.userId);
     }
     return () => {
-      console.log("releasing Cancel....");
+     // console.log("releasing Cancel....");
       setPageOffset(0);
       searchQuery(0);
       limitQuery(20);
@@ -127,7 +127,7 @@ const CancelMain = (props) => {
       });
 
       if (response?.data?.success) {
-        console.log("success", response.data.data);
+       // console.log("success", response.data.data);
 
         //setUserState(response?.data?.data);
         window.location.reload();
@@ -162,7 +162,7 @@ const CancelMain = (props) => {
   };
 
   const handelOrder = (e) => {
-    console.log("order", e.target.value);
+    //console.log("order", e.target.value);
     cancelOrder(e.target.value);
   };
 

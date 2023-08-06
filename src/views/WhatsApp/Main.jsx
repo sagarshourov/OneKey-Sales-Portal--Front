@@ -22,7 +22,7 @@ function Main() {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      console.log("call to server");
+     // console.log("call to server");
       var con = await chatHistory();
       //  console.log(con.data);
       con.success && setData(con.data);
@@ -51,7 +51,7 @@ function Main() {
     //   : chatMessages.scrollTop;
   };
   const postMessage = async () => {
-    console.log("post message", chatCon[0].from);
+    //("post message", chatCon[0].from);
     if (message !== "") {
       let data = {
         text: message,
@@ -70,9 +70,9 @@ function Main() {
           data,
           headers: { "Content-Type": "application/json" },
         });
-        console.log("response", response);
+       // console.log("response", response);
       } catch (err) {
-        console.log("error", err);
+       // console.log("error", err);
       }
 
       setMessage("");

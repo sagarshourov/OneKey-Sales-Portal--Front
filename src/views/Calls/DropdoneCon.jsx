@@ -6,7 +6,7 @@ import { useRef } from "react";
 const token = localStorage.token && localStorage.getItem("token");
 const DropZoneCon = (props) => {
   const dropzoneSingleRef = useRef();
-  console.log('props', props.user_id);
+ // console.log('props', props.user_id);
   const getUserId = () => {
     var user = document.getElementById("user");
     return user.value;
@@ -28,7 +28,7 @@ const DropZoneCon = (props) => {
           }),
             this.on("success", function (file, res) {
               props.setFile(res.data);
-              console.log(res);
+             // console.log(res);
               setTimeout(function () {
                 //  window.location.reload();
               }, 500);

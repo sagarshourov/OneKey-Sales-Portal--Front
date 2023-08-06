@@ -20,7 +20,7 @@ const HistoryView = () => {
 
   useEffect(() => {
     let data = getHistory(id);
-    console.log("get history", data);
+   // console.log("get history", data);
   }, []);
 
   //

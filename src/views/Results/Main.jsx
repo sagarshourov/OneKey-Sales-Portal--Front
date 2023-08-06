@@ -55,11 +55,11 @@ const ResultsMain = () => {
   const setResultID = useSetRecoilState(resultState);
 
   useEffect(() => {
-    console.log("set state don not contact",id);
+   // console.log("set state don not contact",id);
     setResultID(id);
     return () => {
       //setResultID(0);
-      console.log("cleaned up");
+     // console.log("cleaned up");
     };
   }, [id]);
 
@@ -89,7 +89,7 @@ const ResultsMain = () => {
       });
 
       if (response?.data?.success) {
-        console.log("success", response.data.data);
+       // console.log("success", response.data.data);
 
         //setUserState(response?.data?.data);
         window.location.reload();

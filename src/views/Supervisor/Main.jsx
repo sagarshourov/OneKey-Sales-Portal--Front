@@ -142,7 +142,7 @@ const AdminUsers = (props) => {
     e.preventDefault();
     const URL = adminApi() + "users/" + user_id;
 
-    console.log("confirm admin");
+    //console.log("confirm admin");
 
     setLoading(true);
 
@@ -177,7 +177,7 @@ const AdminUsers = (props) => {
 
 
   const viewAsAdmin = async (userId) => {
-    console.log("View viewAsAdmin");
+   // console.log("View viewAsAdmin");
 
     setLoading(true);
     const URL = adminApi() + "token/" + userId;
@@ -245,7 +245,7 @@ const AdminUsers = (props) => {
         alert("Something is wrong please try again later!");
       }
     } catch (err) {
-      console.log(err);
+     // console.log(err);
       setLoading(false);
     }
   };

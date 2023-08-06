@@ -28,7 +28,7 @@ const remove_style_tr = () => {
 
     ele.style.borderTop = "none";
     // check for the particulr class
-    console.log(ele);
+   // console.log(ele);
   
   });
 
@@ -99,7 +99,7 @@ const UsersTable = (props) => {
 
     updateFunc(id, name, checked);
 
-    console.log(checked);
+   // console.log(checked);
   };
   const loadMore = () => {
     let count = rowCount + 20;
@@ -139,14 +139,14 @@ const UsersTable = (props) => {
         setCallState(response?.data?.data);
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setLoading(false);
     }
   };
 
   const DragLeave = (e) => {
     e.target.parentNode.style.borderTop = "none";
-    console.log("drag leave", e);
+    //console.log("drag leave", e);
   };
 
   return (

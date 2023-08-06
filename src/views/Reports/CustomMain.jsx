@@ -1,15 +1,23 @@
 import {
-  Litepicker, LoadingIcon, Lucide,
-  Modal, ModalBody
+  Litepicker,
+  LoadingIcon,
+  Lucide,
+  Modal,
+  ModalBody,
 } from "@/base-components";
 import { useState } from "react";
 import Select from "react-tailwindcss-select";
 
 import {
-  useRecoilStateLoadable, useRecoilValue, useSetRecoilState
+  useRecoilStateLoadable,
+  useRecoilValue,
+  useSetRecoilState,
 } from "recoil";
 import {
-  allUserListState, reportCount, reportListState, reportUser
+  allUserListState,
+  reportCount,
+  reportListState,
+  reportUser,
 } from "../../state/admin-atom";
 
 import { loginState } from "../../state/login-atom";
@@ -59,7 +67,6 @@ const CustomMain = (props) => {
 
   const setReportCount = useSetRecoilState(reportCount);
   const setReportUser = useSetRecoilState(reportUser);
-  
 
   const [dateRange, setDateRange] = useState("");
 
@@ -73,8 +80,6 @@ const CustomMain = (props) => {
 
   const [allCheck, setAllCheck] = useState([]);
 
-
-
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -83,7 +88,7 @@ const CustomMain = (props) => {
   const [cols, setCol] = useState(null);
 
   const handleChange = (value) => {
-    console.log('col',value);
+   // console.log("col", value);
     setCol(value);
   };
 
@@ -166,45 +171,37 @@ const CustomMain = (props) => {
     parseInt(user_id)
   );
 
-  const options = () => { 
+  const options = () => {
+    // No, Client, Call Schedule Date, Case Type, Age, First Call Date, First Call Note, Package, Agreement Sent, Agreement Signed, Status, Next Step Date, Next Step Note,
 
-   // No, Client, Call Schedule Date, Case Type, Age, First Call Date, First Call Note, Package, Agreement Sent, Agreement Signed, Status, Next Step Date, Next Step Note, 
-   
-   
-   //Follow Up Date, Follow Up Note,Cancel Reason, Cancel Date, 
+    //Follow Up Date, Follow Up Note,Cancel Reason, Cancel Date,
 
     let data = [
-      
       // {value : 'id' , label : 'ID'},
-    {value : 'first_name' , label : 'First Name'},
-    {value : 'last_name' , label : 'Last Name'},
-    {value : 'email' , label : 'E-mail'},
-    {value : 'call_schedule_date' , label : 'Call Schedule Date'},
-    {value : 'case_type' , label : 'Case Type'},
-    {value : 'age' , label : 'Age'},
-    {value : 'first_contact' , label : 'First Call Date'},
-    {value : 'first_call_notes' , label : 'First Call Note'},
-    {value : 'package' , label : 'Package'},
-    {value : 'ag' , label : 'Agreement Sent'},
-    {value : 'agreed_to_signed' , label : 'Agreement Signed'},
-    {value : 'statu' , label : 'Status'},
+      { value: "first_name", label: "First Name" },
+      { value: "last_name", label: "Last Name" },
+      { value: "email", label: "E-mail" },
+      { value: "call_schedule_date", label: "Call Schedule Date" },
+      { value: "case_type", label: "Case Type" },
+      { value: "age", label: "Age" },
+      { value: "first_contact", label: "First Call Date" },
+      { value: "first_call_notes", label: "First Call Note" },
+      { value: "package", label: "Package" },
+      { value: "ag", label: "Agreement Sent" },
+      { value: "agreed_to_signed", label: "Agreement Signed" },
+      { value: "statu", label: "Status" },
 
+      { value: "next_step_date", label: "Next Step Date" },
+      { value: "follow_up_date", label: "Follow Up Date" },
+      { value: "follow_up_note", label: "Follow Up Note" },
 
-    {value : 'next_step_date' , label : 'Next Step Date'},
-    {value : 'follow_up_date' , label : 'Follow Up Date'},
-    {value : 'follow_up_note' , label : 'Follow Up Note'},
-
-
-    {value : 'cancel_reason' , label : 'Cancel Reason'},
-    {value : 'cancel_date' , label : 'Cancel Date'},
-    {value : 'assigned_to' , label : 'Assigned To'},
-    
-  
-  ];
-
+      { value: "cancel_reason", label: "Cancel Reason" },
+      { value: "cancel_date", label: "Cancel Date" },
+      { value: "assigned_to", label: "Assigned To" },
+    ];
 
     return data;
-  }
+  };
 
   // const options = () => {
   //   let data = [];
@@ -335,7 +332,7 @@ const CustomMain = (props) => {
               onClick={() => handelLoad(rowCount - 20)}
               className="btn"
               disabled={rowCount < 21 ? true : false}
-            > 
+            >
               Prev
             </button>
             <button
@@ -368,8 +365,6 @@ const CustomMain = (props) => {
             </div>
           </div>
 
-
-          
           <div className="px-5 pb-8 text-center">
             <button
               type="button"

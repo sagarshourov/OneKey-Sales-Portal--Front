@@ -92,7 +92,7 @@ const CustomMain = (props) => {
           headers,
         }
       );
-      console.log(response);
+      //console.log(response);
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
@@ -116,7 +116,7 @@ const CustomMain = (props) => {
     } else if (e.target.name == "value") {
       setValue(e.target.value);
     }
-    console.log("name", e.target.name);
+    //console.log("name", e.target.name);
   };
 
   const deleteAdmin = async () => {
@@ -146,7 +146,7 @@ const CustomMain = (props) => {
     e.preventDefault();
     var data = new FormData(e.target);
 
-    console.log(Object.fromEntries(data));
+    //console.log(Object.fromEntries(data));
   };
 
   let filterData = applyFilters(callData.contents, field, compere, value);

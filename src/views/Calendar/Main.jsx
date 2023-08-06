@@ -176,7 +176,7 @@ const Events = (props) => {
   };
 
   const handelSearch = (e) => {
-    console.log("search");
+    //console.log("search");
     setSearch(e.target.value);
   };
 

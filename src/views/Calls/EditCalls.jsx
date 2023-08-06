@@ -48,7 +48,7 @@ const EditCalls = (props) => {
   //console.log('singleCall', singleCall);
 
   const showHistoryFunc = () => {
-    console.log("show history");
+    //console.log("show history");
     setShowHistory(true);
   };
   const showContent = (data) => {

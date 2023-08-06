@@ -27,7 +27,7 @@ import { helper } from "@/utils/helper";
 import FollowUp from "./FollowUp";
 
 function applySortFilters(array, searchValue, sec) {
-  console.log(sec);
+  //console.log(sec);
   if (sec == "all") {
     return filter(array, (_items) => {
       return _items.email
@@ -93,7 +93,7 @@ const MainSub = (props) => {
           headers,
         }
       );
-      console.log(response);
+     // console.log(response);
       if (response?.data?.success) {
         setLoading(false);
         setCallState(response?.data?.data);
@@ -171,7 +171,7 @@ const MainSub = (props) => {
     var data = findByValue(data, field);
     setHistoryTitle(field);
     setHistoryData(data);
-    console.log(data);
+    //console.log(data);
     setHistoryModal(true);
   };
 
