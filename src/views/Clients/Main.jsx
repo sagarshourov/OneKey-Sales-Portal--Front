@@ -14,6 +14,7 @@ import {
   pageLimit,
   searchAtom,
   clientUser,
+  resultState
 } from "../../state/admin-atom";
 import { useParams, Link } from "react-router-dom";
 import UsersTable from "./UsersTable";
@@ -23,20 +24,32 @@ import { adminApi } from "../../configuration";
 import { loginState } from "../../state/login-atom";
 import { filter } from "lodash";
 
-function applySortFilters(array, searchValue) {
-  return filter(array, (_items) => {
-    return (
-      (_items.email &&
-        _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) ||
-      (_items.first_name &&
-        _items.first_name.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-          -1) ||
-      (_items.phone_number &&
-        _items.phone_number.toLowerCase().indexOf(searchValue.toLowerCase()) !==
-          -1)
-    );
-  });
+// function applySortFilters(array, searchValue) {
+//   return filter(array, (_items) => {
+//     return (
+//       (_items.email &&
+//         _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) ||
+//       (_items.first_name &&
+//         _items.first_name.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+//           -1) ||
+//       (_items.phone_number &&
+//         _items.phone_number.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+//           -1)
+//     );
+//   });
+// }
+
+function applyAllFilters(array, user_id, callSwitch) {
+  if (array.length == 0) return;
+  if (callSwitch) {
+    return filter(array, (_items) => _items?.assigned_to?.id === user_id);
+  } else {
+    return array;
+  }
 }
+
+
+
 const token = localStorage.getItem("token");
 
 const headers = {
@@ -66,12 +79,15 @@ const ClientMain = (props) => {
   const [callSwitch, setCallSwitch] = useState(false);
   const refreshCall = useRecoilRefresher_UNSTABLE(clientListState);
 
+  const setResultID = useSetRecoilState(resultState);
+
   //const resetcallIdState = useResetRecoilState(callIdState);
   useEffect(() => {
     if (loginData.role === 2) {
       setCallSwitch(true);
       cliUser(loginData.userId);
     }
+    setResultID(2);
     return () => {
       console.log("releasing Clients....");
       setPageOffset(0);
@@ -79,6 +95,7 @@ const ClientMain = (props) => {
       limitQuery(20);
       refreshCall();
       cliUser(0);
+      //setResultID(0);
     };
   }, []);
 
@@ -318,7 +335,7 @@ const ClientMain = (props) => {
             <UsersTable
               rowCount={rowCount}
               setDeleteConfirmationModal={setDeleteConfirmationModal}
-              users={usersData.contents}
+              users={applyAllFilters(usersData.contents,loginData.userId, callSwitch)}
               setUserId={setUserId}
               allCheck={allCheck}
               setAllCheck={setAllCheck}

@@ -655,12 +655,15 @@ const AdminUsers = (props) => {
                   Import Excel
                 </Link>
 
+                {logindata.role === 1 && (
+
                 <button
                   onClick={exportExcel}
                   className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
                 >
                   Export Excel
                 </button>
+                )}
               </>
               //)
             )}

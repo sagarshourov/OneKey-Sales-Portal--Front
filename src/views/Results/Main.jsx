@@ -55,9 +55,10 @@ const ResultsMain = () => {
   const setResultID = useSetRecoilState(resultState);
 
   useEffect(() => {
-    console.log("set state");
+    console.log("set state don not contact",id);
     setResultID(id);
     return () => {
+      //setResultID(0);
       console.log("cleaned up");
     };
   }, [id]);

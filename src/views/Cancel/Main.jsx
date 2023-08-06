@@ -30,9 +30,9 @@ const headers = {
   ContentType: "application/json",
 };
 
-function applyAllFilters(array, user_id) {
+function applyAllFilters(array, user_id, callSwitch) {
   if (array.length == 0) return;
-  if (user_id !== 0) {
+  if (callSwitch) {
     return filter(array, (_items) => _items?.assigned_to?.id === user_id);
   } else {
     return array;
@@ -71,7 +71,7 @@ const CancelMain = (props) => {
     }
     return () => {
       console.log("releasing Cancel....");
-      setPageOffset(1);
+      setPageOffset(0);
       searchQuery(0);
       limitQuery(20);
       cancelOrder("DESC");
@@ -336,7 +336,11 @@ const CancelMain = (props) => {
             <UsersTable
               rowCount={rowCount}
               setDeleteConfirmationModal={setDeleteConfirmationModal}
-              users={usersData.contents}
+              users={applyAllFilters(
+                usersData.contents,
+                loginData.userId,
+                callSwitch
+              )}
               setUserId={setUserId}
               allCheck={allCheck}
               setAllCheck={setAllCheck}

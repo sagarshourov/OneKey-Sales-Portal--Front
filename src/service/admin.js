@@ -4,7 +4,19 @@ import { adminApi, getBaseApi, handelError } from "../configuration";
 // const token = localStorage.getItem("token");
 
 // const headers = { Authorization: `Bearer ${token}` };
+export async function getAssignUEmployee(loginstate,id) {
+  const userApiUrl = adminApi() + "assign_employee/" + id;
+  // ("userApiUrl", userApiUrl);
+  let tokens = loginstate.token ? loginstate.token : "token";
 
+  let headers = { Authorization: `Bearer ` + tokens };
+  try {
+    const response = await axios.get(userApiUrl, { headers });
+    return response.data || [];
+  } catch (error) {
+    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+  }
+}
 
 export async function getEmpFollowReport(
   loginstate,
@@ -41,6 +53,7 @@ export async function getEmpFollowReport(
     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
   }
 }
+
 
 
 

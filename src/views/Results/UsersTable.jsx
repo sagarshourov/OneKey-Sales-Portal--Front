@@ -6,7 +6,6 @@ import { Tippy, Checkbox } from "@/base-components";
 //   });
 // }
 
-
 import { helper } from "@/utils/helper";
 
 function extra_title(arr, group, index) {
@@ -184,8 +183,17 @@ const UsersTable = (props) => {
                   </td>
 
                   <td className="text-center">{user?.first_contact}</td>
-                  <td className="text-center">{user?.first_call_notes}</td>
-                  
+                  <td className="text-center">
+                    <Tippy
+                      tag="a"
+                      href="#"
+                      className="tooltip"
+                      content={user?.first_call_notes}
+                    >
+                      {fText(user?.first_call_notes)}
+                    </Tippy>
+                  </td>
+
                   <td>{user?.package?.title}</td>
 
                   <td className="text-center">
@@ -194,12 +202,7 @@ const UsersTable = (props) => {
 
                   <td> {user.agreed_to_signed === 0 ? "No" : "Yes"}</td>
 
-                  <td>
-
-                    {user?.statu?.title}
-
-
-                  </td>
+                  <td>{user?.statu?.title}</td>
                   <td>{extra_title(user, "my_step", 0)}</td>
                   <td>
                     <div className="text-center">

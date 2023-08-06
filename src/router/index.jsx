@@ -19,7 +19,9 @@ const AdminDashBoard = Loadable(
 const Admins = Loadable(lazy(() => import("../views/Admins/Main")));
 const Supervisor = Loadable(lazy(() => import("../views/Supervisor/Main")));
 
-
+const AssignEmployee = Loadable(
+  lazy(() => import("../views/Supervisor/AssignEmployee"))
+);
 
 const Employees = Loadable(lazy(() => import("../views/Employees/Main")));
 const EmpActivity = Loadable(lazy(() => import("../views/Employees/Activity")));
@@ -41,7 +43,6 @@ const EditCalls = Loadable(lazy(() => import("../views/Calls/EditCalls")));
 const AllReports = Loadable(lazy(() => import("../views/Reports/Main")));
 
 const EmpReports = Loadable(lazy(() => import("../views/Reports/EmpReports")));
-
 
 const CustomReports = Loadable(
   lazy(() => import("../views/Reports/CustomMain"))
@@ -74,18 +75,12 @@ const HistoryView = Loadable(
   lazy(() => import("../views/Reports/EmpFirstCallReport"))
 );
 
-
-
 const EmpFcReport = Loadable(
   lazy(() => import("../views/Reports/EmpFirstCallReport"))
 );
 const EmpFollowReport = Loadable(
   lazy(() => import("../views/Reports/EmpFollowReport"))
 );
-
-
-
- 
 
 //import Calendar from "../views/calendar/Main";
 
@@ -117,6 +112,12 @@ function Router() {
           path: "/Supervisor",
           element: <Supervisor />,
         },
+
+        {
+          path: "/assign_employee/:id",
+          element: <AssignEmployee />,
+        },
+
         {
           path: "/employees",
           element: <Employees />,
@@ -425,28 +426,18 @@ function Router() {
     },
   ];
 
-  const jrAdminRoutes = [
+  const supervisorRoute = [
     {
       path: "/",
       element: auth ? <MainLayout /> : <Navigate to="/login" />,
       children: [
         {
-          path: "/",
-          element: <Calls />,
-        },
-
-        {
           path: "/profile",
           element: <AdminDashBoard />,
         },
-
         {
-          path: "/employees",
-          element: <Employees />,
-        },
-        {
-          path: "/profile/:id",
-          element: <Profile />,
+          path: "/",
+          element: <Calls />,
         },
         {
           path: "/calls/:id",
@@ -457,46 +448,51 @@ function Router() {
           element: <AddCalls />,
         },
         {
-          path: "/calls/edit/:id",
-          element: <EditCalls />,
-        },
-        {
           path: "/calls/import",
           element: <ImportCalls />,
         },
 
         {
+          path: "/calls/edit/:id",
+          element: <EditCalls />,
+        },
+        {
+          path: "/results/:id",
+          element: <Results />,
+        },
+        // {
+        //   path: "/calls/import",
+        //   element: <ImportCalls />,
+        // },
+
+        {
           path: "/reports/",
-          element: <AllReports />,
+          element: <EmpReports />,
         },
         {
-          path: "/creport/",
-          element: <CustomReports />,
+          path: "/fcreport/",
+          element: <EmpFcReport />,
         },
         {
-          path: "/reports/:id",
-          element: <Report />,
+          path: "/freport/",
+          element: <EmpFollowReport />,
         },
+        // {
+        //   path: "/reports/:id",
+        //   element: <Report />,
+        // },
 
         {
           path: "/cancel",
           element: <Cancel />,
         },
         {
-          path: "/calendar",
-          element: <Calendars />,
-        },
-        {
           path: "/clients",
           element: <Clients />,
         },
         {
-          path: "/results/:id",
-          element: <Results />,
-        },
-        {
-          path: "/notifications",
-          element: <Notification />,
+          path: "/calendar",
+          element: <Calendars />,
         },
       ],
     },
@@ -509,7 +505,6 @@ function Router() {
       path: "/forgot",
       element: auth ? <Navigate to="/" /> : <Forgot />,
     },
-
     {
       path: "/password/:token/:id",
       element: auth ? <Navigate to="/" /> : <ResetPass />,
@@ -525,8 +520,8 @@ function Router() {
   } else if (login.role == 2) {
     return useRoutes(adminRoutes);
   } else if (login.role == 4) {
-    return useRoutes(jrAdminRoutes);
-  }else {
+    return useRoutes(supervisorRoute);
+  } else {
     return useRoutes(employeeRoutes);
   }
 }

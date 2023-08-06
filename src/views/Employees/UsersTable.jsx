@@ -157,7 +157,18 @@ const UsersTable = (props) => {
                     }}
                   >
                     <Lucide icon="UserPlus" className="w-4 h-4 mr-1 ml-1" />{" "}
-                    Make Admin
+                    Promoted to Supervisor
+                  </a>
+                  <a
+                    className="flex items-center text-purple"
+                    href="#"
+                    onClick={() => {
+                      setAdminConfirmationModal(true);
+                      setUserId(user.id);
+                    }}
+                  >
+                    <Lucide icon="UserPlus" className="w-4 h-4 mr-1 ml-1" />{" "}
+                    Promoted to Admin
                   </a>
                 </div>
               </td>

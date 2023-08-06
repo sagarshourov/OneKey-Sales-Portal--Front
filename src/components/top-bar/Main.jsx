@@ -200,7 +200,12 @@ const Logout = (props) => {
             ) : (
               <>
                 <Lucide icon="AlertCircle" className="w-6 h-6 mr-2" /> Logged in
-                as {loginsta.role === 2 ? "Admin" : "Employee"}
+                as{" "}
+                {loginsta.role === 2
+                  ? "Admin"
+                  : loginsta.role === 4
+                  ? "Supervisor"
+                  : "Employee"}
                 <button
                   type="button"
                   className="btn-close text-white"
@@ -313,6 +318,8 @@ const Logout = (props) => {
                   ? "Super Admin"
                   : loginsta.role == 2
                   ? "Admin"
+                  : loginsta.role == 4
+                  ? "Supervisor"
                   : "Employee"}
               </div>
             </div>

@@ -47,10 +47,9 @@ const UsersTable = (props) => {
                 <div className="flex justify-center items-center">
                   <Link
                     className="flex items-center text-info mr-3"
-                    to={"/profile/" + user.id}
+                    to={"/assign_employee/" + user.id}
                   >
-                    <Lucide icon="Trash2" className="w-4 h-4 mr-1 " /> View
-                    Users
+                    <Lucide icon="Plus" className="w-4 h-4 mr-1 " /> Assign Employee
                   </Link>
 
                   <a
@@ -69,7 +68,7 @@ const UsersTable = (props) => {
                     onClick={() => viewAsAdmin(user.id)}
                   >
                     <Lucide icon="EyeOff" className="w-4 h-4 mr-1 " />
-                    View as Admin
+                    View as Supervisor
                   </button>
 
                   <a

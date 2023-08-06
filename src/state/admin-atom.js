@@ -5,12 +5,28 @@ import {
   getSingleCall,
   getAllReports,
   getAllNoti,
-  getCallsPagination
+  getCallsPagination,
+  getAssignUEmployee,
 } from "../service/admin";
 import { loginState } from "../state/login-atom";
 /**
  * Populate the default selector return value with a service call.
  */
+
+export const assignSelect = selectorFamily({
+  key: "assignSelect",
+  get:
+    (id) =>
+    async ({ get }) => {
+      try {
+        const response = await getAssignUEmployee(get(loginState), id);
+        return response.data || [];
+      } catch (error) {
+        console.error(`getAssignUEmployee -> getUsers() ERROR: \n${error}`);
+        return [];
+      }
+    },
+});
 
 export const allUserSelect = selector({
   key: "allUserSelect",
@@ -85,8 +101,6 @@ export const CancelUser = atom({
   default: 0,
 });
 
-
-
 export const cancelSelect = selector({
   key: "cancelSelect",
   get: async ({ get }) => {
@@ -99,8 +113,7 @@ export const cancelSelect = selector({
         get(pagOffset),
         get(pageLimit),
         get(searchAtom),
-        get(CancelOrder),
-      
+        get(CancelOrder)
       );
 
       //console.log('canN_res',response);
@@ -115,7 +128,7 @@ export const cancelSelect = selector({
 
 export const resultState = atom({
   key: "resultState",
-  default: 1,
+  default: 0,
 });
 
 export const clientUser = atom({
@@ -131,11 +144,11 @@ export const clientSelect = selector({
         get(loginState),
         get(clientUser),
         "results",
-        2,
+        get(resultState),
         get(pagOffset),
         get(pageLimit),
         get(searchAtom),
-        'ASC'
+        "ASC"
       );
 
       return response.data || [];
@@ -148,14 +161,14 @@ export const clientSelect = selector({
 
 export const callIdState = atom({
   key: "callIdState",
-  default: 1,
+  default: 0,
 });
 
 export const singleCallselect = selector({
   key: "singleCallselect",
   get: async ({ get }) => {
     try {
-      const response = await getSingleCall(get(loginState),get(callIdState));
+      const response = await getSingleCall(get(loginState), get(callIdState));
       return response.data || [];
     } catch (error) {
       console.error(`getSingleCall -> getSingleCall() ERROR: \n${error}`);
@@ -177,7 +190,11 @@ export const reportSelect = selector({
   key: "reportSelect",
   get: async ({ get }) => {
     try {
-      const response = await getAllReports(get(loginState),get(reportUser), get(reportCount));
+      const response = await getAllReports(
+        get(loginState),
+        get(reportUser),
+        get(reportCount)
+      );
       return response.data || [];
     } catch (error) {
       console.error(`reportSelect -> reportSelect() ERROR: \n${error}`);
@@ -195,7 +212,6 @@ export const searchUser = atom({
   default: 0,
 });
 
-
 export const searchListSelect = selector({
   key: "searchListSelect",
   get: async ({ get }) => {
@@ -204,7 +220,7 @@ export const searchListSelect = selector({
         get(loginState),
 
         get(searchUser),
-        
+
         get(columnState),
         get(valueState),
         get(pagOffset),
@@ -257,9 +273,3 @@ export const singleCallState = atom({
   key: "singleCallState",
   default: singleCallselect,
 });
-
-
-
-
-
-

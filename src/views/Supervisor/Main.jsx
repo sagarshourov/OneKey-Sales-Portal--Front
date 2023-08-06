@@ -15,7 +15,7 @@ import { filter } from "lodash";
 function applySortFilters(array, searchValue) {
   return filter(array, (_items) => {
     return (
-      _items.is_admin == 2 &&
+      _items.is_admin == 4 &&
       (_items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1 ||
         _items.first_name.toLowerCase().indexOf(searchValue.toLowerCase()) !==
           -1)
@@ -62,7 +62,7 @@ const AdminUsers = (props) => {
 
     var data = new FormData(e.target);
 
-    data.append("is_admin", 2);
+    data.append("is_admin", 4);
 
     const URL = adminApi() + "users";
     if (data.password !== formdata.cpassword) {
@@ -149,7 +149,7 @@ const AdminUsers = (props) => {
     try {
       const response = await axios.put(
         URL,
-        { id: user_id, is_admin: 3 },
+        { id: user_id, is_admin: 4 },
         {
           headers,
         }
