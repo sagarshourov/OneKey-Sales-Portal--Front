@@ -41,10 +41,8 @@ const headers = {
 const ResultsMain = () => {
   let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
-  const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(clientListState);
   const [rowCount, setRowCount] = useState(10);
-  const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");
   const [user_id, setUserId] = useState(0);
   const [loading, setLoading] = useState(false);

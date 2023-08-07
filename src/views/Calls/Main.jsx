@@ -58,8 +58,6 @@ function sectionFind(array, id) {
   return re;
 }
 
-
-
 function todayNextFilters(array, callSwitch, user_id) {
   if (array.length == 0) return;
   var today = new Date();
@@ -324,14 +322,9 @@ const AdminUsers = (props) => {
 
   const [showCallVew, setCallView] = useState(false);
 
-
   const [sections, setSection] = useState(0);
 
-
-
   const handelCallModel = (show) => {
-   
-
     setCallView(show);
   };
   const [singleCall, setSingleCall] = useState([]);
@@ -413,21 +406,18 @@ const AdminUsers = (props) => {
 
     //console.log('sec',sections);
 
-    if(section !== sections){
+    if (section !== sections) {
       updateFunc(rowId, "sections", section);
     }
-
-   
   };
 
   const AllTableDrop = (e) => {
     e.preventDefault();
-   // console.log('AllTableDrop',sections);
+    // console.log('AllTableDrop',sections);
 
-    if(sections !== 0){
+    if (sections !== 0) {
       updateFunc(rowId, "sections", null);
     }
-    
   };
 
   const allowDrop = (ev) => {
@@ -656,13 +646,12 @@ const AdminUsers = (props) => {
                 </Link>
 
                 {logindata.role === 1 && (
-
-                <button
-                  onClick={exportExcel}
-                  className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
-                >
-                  Export Excel
-                </button>
+                  <button
+                    onClick={exportExcel}
+                    className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
+                  >
+                    Export Excel
+                  </button>
                 )}
               </>
               //)
@@ -726,7 +715,7 @@ const AdminUsers = (props) => {
           {/* BEGIN: Data List */}
 
           <div className="intro-y mt-5 col-span-12 ">
-            {callData.state === "hasValue" && (
+            {callData.state === "hasValue" ? (
               <>
                 {loading && (
                   <div className="h-full w-full bg-gray-50/75 grid  absolute z-[100]">
@@ -849,6 +838,16 @@ const AdminUsers = (props) => {
                     );
                   })}
               </>
+            ) : (
+              <div className="h-full w-full bg-gray-50/75 grid  absolute z-[100]">
+                <div className="w-24 h-24 place-self-center">
+                  <LoadingIcon
+                    icon="three-dots"
+                    color="gray"
+                    className="w-4 h-4 ml-2"
+                  />
+                </div>
+              </div>
             )}
           </div>
 

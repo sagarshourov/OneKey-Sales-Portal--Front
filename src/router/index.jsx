@@ -259,6 +259,11 @@ function Router() {
         },
 
         {
+          path: "/Supervisor",
+          element: <Supervisor />,
+        },
+
+        {
           path: "/employees",
           element: <Employees />,
         },

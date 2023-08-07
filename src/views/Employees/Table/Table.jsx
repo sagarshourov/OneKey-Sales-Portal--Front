@@ -30,6 +30,7 @@ export function Table({
   data,
   setData,
   headers,
+  setRole
 }) {
   const [activeId, setActiveId] = useState();
   const items = useMemo(() => data?.map(({ id }) => id), [data]);
@@ -140,6 +141,7 @@ export function Table({
                   viewAsEmployee={viewAsEmployee}
                   key={row.original.id}
                   row={row}
+                  setRole={setRole}
                 />
               );
             })}

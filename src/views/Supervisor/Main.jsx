@@ -2,7 +2,7 @@ import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
 import { useState } from "react";
 
-import { useRecoilStateLoadable , useRecoilState} from "recoil";
+import { useRecoilStateLoadable, useRecoilState } from "recoil";
 import { allUserListState } from "../../state/admin-atom";
 
 import UsersTable from "./UsersTable";
@@ -30,7 +30,7 @@ const AdminUsers = (props) => {
   const [employeeConfirmationModal, setEmployeeConfirmationModal] =
     useState(false);
 
-    const [loginstaste, setLoginState] = useRecoilState(loginState);
+  const [loginstaste, setLoginState] = useRecoilState(loginState);
 
   const [newUserModal, setNewUserModal] = useState(false);
   const [usersData, setUserState] = useRecoilStateLoadable(allUserListState);
@@ -149,7 +149,7 @@ const AdminUsers = (props) => {
     try {
       const response = await axios.put(
         URL,
-        { id: user_id, is_admin: 4 },
+        { id: user_id, is_admin: 3 },
         {
           headers,
         }
@@ -175,9 +175,8 @@ const AdminUsers = (props) => {
     }
   };
 
-
   const viewAsAdmin = async (userId) => {
-   // console.log("View viewAsAdmin");
+    // console.log("View viewAsAdmin");
 
     setLoading(true);
     const URL = adminApi() + "token/" + userId;
@@ -245,7 +244,7 @@ const AdminUsers = (props) => {
         alert("Something is wrong please try again later!");
       }
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
       setLoading(false);
     }
   };

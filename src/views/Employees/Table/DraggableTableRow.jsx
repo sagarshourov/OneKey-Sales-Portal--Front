@@ -22,6 +22,7 @@ export const DraggableTableRow = ({
   setAdminConfirmationModal,
   viewAsEmployee,
   row,
+  setRole,
 }) => {
   const {
     attributes,
@@ -45,7 +46,7 @@ export const DraggableTableRow = ({
         row.cells.map((cell, i) => {
           if (i === 0) {
             return (
-              <TableData  {...cell.getCellProps()}>
+              <TableData {...cell.getCellProps()}>
                 <DragHandle {...attributes} {...listeners} />
                 <span>{cell.render("Cell")}</span>
               </TableData>
@@ -63,6 +64,7 @@ export const DraggableTableRow = ({
           if (i === 5) {
             return (
               <TableData {...cell.getCellProps()}>
+               
                 <div className="flex justify-center items-center">
                   <Link
                     className="flex items-center text-info mr-3"
@@ -91,7 +93,7 @@ export const DraggableTableRow = ({
                     href="#"
                     onClick={() => {
                       setDeleteConfirmationModal(true);
-                      setUserId(user.id);
+                      setUserId(row.cells[0].value);
                     }}
                   >
                     <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Delete
@@ -102,11 +104,24 @@ export const DraggableTableRow = ({
                     href="#"
                     onClick={() => {
                       setAdminConfirmationModal(true);
-                      setUserId(user.id);
+                      setUserId(row.cells[0].value);
+                      setRole(2);
                     }}
                   >
                     <Lucide icon="UserPlus" className="w-4 h-4 mr-1 ml-1" />{" "}
-                    Make Admin
+                    Promoted To Admin
+                  </a>
+                  <a
+                    className="flex items-center text-"
+                    href="#"
+                    onClick={() => {
+                      setAdminConfirmationModal(true);
+                      setUserId(row.cells[0].value);
+                      setRole(4);
+                    }}
+                  >
+                    <Lucide icon="UserPlus" className="w-4 h-4 mr-1 ml-1" />{" "}
+                    Promoted To Supervisor
                   </a>
                 </div>
               </TableData>

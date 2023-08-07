@@ -173,6 +173,11 @@ let adminObj = {
       title: "Admin Profile",
       pathname: "/profile",
     },
+    {
+      icon: "UserCheck",
+      title: "Supervisor",
+      pathname: "/supervisor",
+    },
 
     {
       icon: "Users",

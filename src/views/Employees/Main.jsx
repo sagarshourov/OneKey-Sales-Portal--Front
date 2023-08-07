@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilStateLoadable, useRecoilState } from "recoil";
 import { allUserListState } from "../../state/admin-atom";
 
-import UsersTable from "./UsersTable";
-
 import axios from "axios";
 import { adminApi } from "../../configuration";
 
@@ -42,6 +40,9 @@ const AdminUsers = (props) => {
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState([]);
   const [headers, setToken] = useState(authHeader());
+
+  const [role, setRole] = useState(2);
+
   const handelPageCount = (e) => {
     setRowCount(parseInt(e.target.value));
   };
@@ -66,14 +67,14 @@ const AdminUsers = (props) => {
     e.preventDefault();
     const URL = adminApi() + "users/" + user_id;
 
-  //  console.log("confirm admin");
+    //  console.log("confirm admin");
 
     setLoading(true);
 
     try {
       const response = await axios.put(
         URL,
-        { id: user_id, is_admin: 2 },
+        { id: user_id, is_admin: role },
         {
           headers,
         }
@@ -254,7 +255,7 @@ const AdminUsers = (props) => {
         alert("Something is wrong please try again later!");
       }
     } catch (err) {
-    //  console.log(err);
+      //  console.log(err);
       setLoading(false);
     }
   };
@@ -289,7 +290,7 @@ const AdminUsers = (props) => {
     ],
     []
   );
-  
+
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10 ">List Of Employees</h2>
@@ -334,17 +335,22 @@ const AdminUsers = (props) => {
         {/* BEGIN: Data List */}
 
         <div className="col-span-12  lg:overflow-visible">
-          {usersData.state === "hasValue" && (
-            // <UsersTable
-            //   rowCount={rowCount}
-            //   setDeleteConfirmationModal={setDeleteConfirmationModal}
-            //   users={filterData}
-            //   setUserId={setUserId}
-            //   viewAsEmployee={viewAsEmployee}
-            //   setAdminConfirmationModal={setAdminConfirmationModal}
-            // />
+          {usersData.state === "hasValue" ? (
+          
 
-            <Table headers={headers} columns={columns} setAdminConfirmationModal={setAdminConfirmationModal} setDeleteConfirmationModal={setDeleteConfirmationModal} setUserId={setUserId} viewAsEmployee={viewAsEmployee} data={filterData} setData={setData} />
+            <Table
+              setRole={setRole}
+              headers={headers}
+              columns={columns}
+              setAdminConfirmationModal={setAdminConfirmationModal}
+              setDeleteConfirmationModal={setDeleteConfirmationModal}
+              setUserId={setUserId}
+              viewAsEmployee={viewAsEmployee}
+              data={filterData}
+              setData={setData}
+            />
+          ) : (
+            <p className="p-10">Loading ...</p>
           )}
         </div>
         {/* END: Data List */}
@@ -357,10 +363,10 @@ const AdminUsers = (props) => {
 
         {rowCount < filterData.length && (
           <div className="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">
-          <button onClick={handelLoad} className="btn">
-            Load more..
-          </button>
-        </div>
+            <button onClick={handelLoad} className="btn">
+              Load more..
+            </button>
+          </div>
         )}
 
         {/* END: Pagination */}
@@ -381,7 +387,8 @@ const AdminUsers = (props) => {
             />
             <div className="text-3xl mt-5">Are you sure?</div>
             <div className="text-slate-500 mt-2">
-              Do you really want to upgrade as admin ?
+              Do you really want to Promoted To{" "}
+              {role == 2 ? "Admin" : "Supervisor"}
             </div>
           </div>
           <div className="px-5 pb-8 text-center">
