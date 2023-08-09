@@ -279,6 +279,11 @@ function Router() {
           path: "/calls/add",
           element: <AddCalls />,
         },
+
+        {
+          path: "/calls/search",
+          element: <SearchCalls />,
+        },
         {
           path: "/calls/edit/:id",
           element: <EditCalls />,
@@ -439,6 +444,10 @@ function Router() {
         {
           path: "/profile",
           element: <AdminDashBoard />,
+        },
+        {
+          path: "/employees",
+          element: <Employees />,
         },
         {
           path: "/",

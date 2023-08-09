@@ -5,6 +5,8 @@ import { useCallbackState, helper as $h } from "@/utils";
 import { supAdminMenu as superAdminMenuStore } from "@/stores/side-menu";
 import { adminMenu as adminMenuStore } from "@/stores/side-menu";
 import { empMenu as empMenuStore } from "@/stores/side-menu";
+
+import { supervisorMenu as supervisorMenuStore } from "@/stores/side-menu";
 import { useRecoilValue } from "recoil";
 import { linkTo, nestedMenu, enter, leave } from "./index";
 import { Lucide } from "@/base-components";
@@ -22,18 +24,20 @@ function Main() {
   const navigate = useNavigate();
   const location = useLocation();
   const [formattedMenu, setFormattedMenu] = useState([]);
-  const loginStrore = useRecoilValue(loginState);
+  const loginStore = useRecoilValue(loginState);
   const superAdminMenu = useRecoilValue(superAdminMenuStore);
   const adminMenu = useRecoilValue(adminMenuStore);
   const empMenu = useRecoilValue(empMenuStore);
-
+  const supervisoMenu = useRecoilValue(supervisorMenuStore);
   //const userSideMenuStore = useRecoilValue(useUserSideMenuStore);
 
   const sideMenu = () => {
-    if (loginStrore.role == 1) {
+    if (loginStore.role == 1) {
       return nestedMenu($h.toRaw(superAdminMenu.menu), location);
-    } else if (loginStrore.role == 2) {
+    } else if (loginStore.role == 2) {
       return nestedMenu($h.toRaw(adminMenu.menu), location);
+    } else if (loginStore.role == 4) {
+      return nestedMenu($h.toRaw(supervisoMenu.menu), location);
     } else {
       return nestedMenu($h.toRaw(empMenu.menu), location);
     }

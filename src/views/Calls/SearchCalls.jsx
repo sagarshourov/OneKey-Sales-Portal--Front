@@ -238,11 +238,16 @@ const AdminUsers = (props) => {
   };
 
   const searchCall = () => {
+    console.log('serach click');
     // valueQuery(null);
     if (search == "") {
       searchQuery(0);
       setSearch("");
     } else {
+      searchQuery(0);
+      setSearch("");
+      limitQuery(500);
+      setRowCount(500);
       searchQuery(search);
     }
     setSecTitle("Search Result ");
@@ -441,7 +446,7 @@ const AdminUsers = (props) => {
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
 
-          <div className="lg:basis-4/12   grid  grid-cols-1 lg:grid-cols-5 gap-3">
+          <div className="lg:basis-4/12   grid  grid-cols-1 lg:grid-cols-4 gap-3">
             <select
               onChange={(e) => handelSection(e)}
               className="w-full  form-select box mt-3 sm:mt-0"
@@ -454,7 +459,7 @@ const AdminUsers = (props) => {
                   </option>
                 ))}
             </select>
-            <select
+            {/* <select
               onChange={handelPageCount.bind(this)}
               className="w-full  form-select box mt-3 sm:mt-0"
             >
@@ -463,7 +468,7 @@ const AdminUsers = (props) => {
               <option value="35">35</option>
               <option value="50">50</option>
               <option value="100">100</option>
-            </select>
+            </select> */}
 
             <div className="w-full">
               <div className=" text-slate-500">

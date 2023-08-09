@@ -368,6 +368,111 @@ let empObj = {
   ],
 };
 
+let superVisorObj = {
+  menu: [
+    "START MENU",
+    {
+      icon: "Home",
+      title: "Supervisor Profile",
+      pathname: "/profile",
+    },
+    {
+      icon: "Users",
+      title: "Employee",
+      pathname: "/employees",
+    },
+
+    {
+      icon: "PhoneCall",
+      title: "Calls",
+      subMenu: [
+        {
+          icon: "",
+          pathname: "/",
+          title: "Open Calls",
+        },
+        // {
+        //   icon: "",
+        //   pathname: "/calls/1",
+        //   title: "Installment",
+        // },
+        // {
+        //   icon: "",
+        //   pathname: "/calls/2",
+        //   title: "Agreement ",
+        // },
+
+        // {
+        //   icon: "",
+        //   pathname: "/calls/3",
+        //   title: " Did Not Answer",
+        // },
+
+        {
+          icon: "",
+          pathname: "/calls/add",
+          title: "Add",
+        },
+      ],
+    },
+    {
+      icon: "FileText",
+      title: "Reports",
+      pathname: "/reports",
+      subMenu: [
+        {
+          icon: "",
+          pathname: "/reports",
+          title: "Pre Made",
+        },
+        {
+          icon: "",
+          pathname: "/fcreport",
+          title: "First Call Report",
+        },
+
+        {
+          icon: "",
+          pathname: "/freport",
+          title: "Follow Up Report",
+        },
+      ],
+    },
+
+    {
+      icon: "PhoneMissed",
+      pathname: "/cancel",
+      title: "Cancel",
+    },
+    {
+      icon: "User",
+      pathname: "/clients",
+      title: "Clients",
+    },
+    {
+      icon: "User",
+      pathname: "/results/5",
+      title: "Do Not Contact",
+    },
+    {
+      icon: "Calendar",
+      pathname: "/calendar",
+      title: "Calendar",
+    },
+
+    // {
+    //   icon: "Calendar",
+    //   pathname: "/notes",
+    //   title: "Notes",
+    // },
+    // {
+    //   icon: "Calendar",
+    //   pathname: "/feedback",
+    //   title: "Feedback",
+    // },
+  ],
+};
+
 let supAdminMenu = atom({
   key: "supAdminMenu",
   default: supAdminObj,
@@ -385,4 +490,10 @@ let empMenu = atom({
   default: empObj,
 });
 
-export { supAdminMenu, adminMenu, empMenu };
+let supervisorMenu = atom({
+  key: "supervisorMenu",
+
+  default: superVisorObj,
+});
+
+export {supervisorMenu, supAdminMenu, adminMenu, empMenu };
