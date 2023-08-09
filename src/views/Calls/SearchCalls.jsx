@@ -257,6 +257,7 @@ const AdminUsers = (props) => {
     searchQuery(0);
     valueQuery(null);
     setSearch("");
+    limitQuery(20);
   };
 
   const handelSection = (e) => {
