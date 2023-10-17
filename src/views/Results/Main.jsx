@@ -38,6 +38,8 @@ const headers = {
   ContentType: "application/json",
 };
 
+import { loginState } from "../../state/login-atom";
+
 const ResultsMain = () => {
   let { id } = useParams();
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState(false);
@@ -51,7 +53,7 @@ const ResultsMain = () => {
   const setting = useRecoilValue(settingState);
 
   const setResultID = useSetRecoilState(resultState);
-
+  const loginData = useRecoilValue(loginState);
   useEffect(() => {
    // console.log("set state don not contact",id);
     setResultID(id);
@@ -164,6 +166,28 @@ const ResultsMain = () => {
             >
               Add New Call
             </Link>
+
+            {loginData.role === 1 && (
+                <>
+                  <Link
+                    className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                    to={"/import/"+id}
+                  >
+                    Import Excel
+                  </Link>
+
+                  {/* <button
+               
+                    className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
+                  >
+                    Export Excel
+                  </button> */}
+                </>
+              )}
+
+
+
+
 
             {allCheck.length > 0 && (
               <>

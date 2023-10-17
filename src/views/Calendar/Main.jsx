@@ -1,6 +1,5 @@
 import {
   Lucide,
-  FullCalendarDraggable,
   TabGroup,
   TabList,
   Tab,
@@ -14,9 +13,10 @@ import axios from "axios";
 import { adminApi } from "../../configuration";
 import { useState } from "react";
 import { helper } from "@/utils/helper";
-
-import { useRecoilStateLoadable } from "recoil";
+import { loginState } from "../../state/login-atom";
+import { useRecoilStateLoadable, useRecoilValue } from "recoil";
 import { eventListState } from "../../state/events-atom";
+import classnames from "classnames";
 const token = localStorage.getItem("token");
 const headers = {
   Authorization: `Bearer ${token}`,
@@ -25,16 +25,25 @@ const headers = {
 
 import { filter } from "lodash";
 
-function applySortFilters(array, searchValue) {
+function applySortFilters(array, searchValue, user_id, callSwitch) {
   // console.log(array);
-
-  return filter(array, (_items) => {
-    if (_items !== null) {
-      return _items?.title
-        ? _items?.title.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
-        : true;
-    }
-  });
+  if (callSwitch) {
+    return filter(array, (_items) => {
+      if (_items !== null) {
+        console.log('assign ',_items);
+        return _items?.ass_id === user_id;
+      }
+    });
+  } else {
+    return filter(array, (_items) => {
+      if (_items !== null) {
+        return _items?.title
+          ? _items?.title.toLowerCase().indexOf(searchValue.toLowerCase()) !==
+              -1
+          : true;
+      }
+    });
+  }
 }
 
 function format_time(dat) {
@@ -59,6 +68,7 @@ function event_format(data) {
         description: "Call Schedule Date",
         title: dat?.first_name + " " + dat?.last_name,
         color: "#2d3c5a",
+        ass_id: dat.assigned_to,
       });
     });
   // data.fud && // instructions on 25/5/23
@@ -70,27 +80,23 @@ function event_format(data) {
   //       start: dat.follow_up_date,
   //       description: "Follow Up Date",
   //       title: dat?.first_name + " " + dat?.last_name,
-     
-        
+
   //     });
   //   });
 
-
-    data.next &&
+  data.next &&
     data.next.map((dat, index) => {
       //console.log("csd", dat.follow_up_date);
       obj.push({
         id: dat.id,
         ev_id: dat.id,
-        start: dat?.steps?.next[0]?.value+ "T" +dat?.steps?.next[2]?.value,
+        start: dat?.steps?.next[0]?.value + "T" + dat?.steps?.next[2]?.value,
         description: "Next Step",
         title: dat?.first_name + " " + dat?.last_name,
         color: "#40E0D0",
-        
+        ass_id: dat.assigned_to,
       });
     });
-
-
 
   return obj;
 }
@@ -108,6 +114,9 @@ const Events = (props) => {
 
   const [success, setSuccess] = useState(false);
   const [event_id, setEventId] = useState(false);
+  const [callSwitch, setCallSwitch] = useState(false);
+
+  const loginData = useRecoilValue(loginState);
 
   const [search, setSearch] = useState("");
   const deleteEvent = async () => {
@@ -180,7 +189,16 @@ const Events = (props) => {
     setSearch(e.target.value);
   };
 
-  let filterData = applySortFilters(event_format(eventDatas.contents), search);
+  const CallSwitch = () => {
+    setCallSwitch(() => !callSwitch);
+  };
+
+  let filterData = applySortFilters(
+    event_format(eventDatas.contents),
+    search,
+    loginData.userId,
+    callSwitch
+  );
 
   // console.log("filter data", eventDatas.contents);
 
@@ -188,7 +206,6 @@ const Events = (props) => {
     <>
       <div className="intro-y flex flex-col sm:flex-row items-center mt-8">
         <h2 className="text-lg font-medium mr-auto">Users Events List</h2>
-        <div className="w-full sm:w-auto flex mt-4 sm:mt-0"></div>
       </div>
       <div className="grid grid-cols-12 gap-5 mt-5">
         {/* BEGIN: Calendar Side Menu */}
@@ -249,8 +266,30 @@ const Events = (props) => {
         {/* END: Calendar Side Menu */}
         {/* BEGIN: Calendar Content */}
         <div className="col-span-12 xl:col-span-8 2xl:col-span-9">
+          <div className=" p-5">
+            <div className="flex justify-center">
+              {loginData.role !== 3 && (
+                <div className="relative">
+                  <div
+                    onClick={CallSwitch}
+                    className="dark-mode-switcher cursor-pointer shadow-md absolute bottom-0 left-0 box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
+                  >
+                    <div className="mr-4 text-slate-600 dark:text-slate-200">
+                      Switch Calls
+                    </div>
+                    <div
+                      className={classnames({
+                        "dark-mode-switcher__toggle border": true,
+                        "dark-mode-switcher__toggle--active": callSwitch,
+                      })}
+                    ></div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
           <div className="box p-5">
-            <div className="flex justify-center ...">
+            <div className="flex justify-center">
               <input
                 type="text"
                 className="form-control mb-5 w-96"
@@ -269,7 +308,9 @@ const Events = (props) => {
                 deleteConfirmationModal={deleteConfirmationModal}
                 setDeleteConfirmationModal={setDeleteConfirmationModal}
               />
-            ):<h3 className="p-5">Loading....</h3>}
+            ) : (
+              <h3 className="p-5">Loading....</h3>
+            )}
           </div>
         </div>
         {/* END: Calendar Content */}

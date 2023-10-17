@@ -71,13 +71,13 @@ const HistoryViewModal = (props) => {
                // console.log('assigned_to ',val);
               } else if (setting.hasOwnProperty(key)) {
                 var vals = filterById(setting[key], parseInt(val));
-                val = vals[0].title;
+                val = vals[0]?.title;
               } else if (key == "degree") {
                 var vals = filterById(setting["applying_for"], parseInt(val));
-                val = vals[0].title;
+                val = vals[0]?.title;
               } else if (key == "package") {
                 var vals = filterById(setting["packages"], parseInt(val));
-                val = vals[0].title;
+                val = vals[0]?.title;
               }
 
               return (

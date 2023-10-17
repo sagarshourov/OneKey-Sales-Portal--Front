@@ -82,6 +82,10 @@ const EmpFollowReport = Loadable(
   lazy(() => import("../views/Reports/EmpFollowReport"))
 );
 
+const Import = Loadable(
+  lazy(() => import("../views/Import/Main"))
+);
+
 //import Calendar from "../views/calendar/Main";
 
 function Router() {
@@ -177,7 +181,10 @@ function Router() {
           path: "/calls/import",
           element: <ImportCalls />,
         },
-
+        {
+          path: "/import/:type",
+          element: <Import />,
+        },
         {
           path: "/calls/search",
           element: <SearchCalls />,

@@ -70,7 +70,7 @@ const CancelMain = (props) => {
       canUser(loginData.userId);
     }
     return () => {
-     // console.log("releasing Cancel....");
+      // console.log("releasing Cancel....");
       setPageOffset(0);
       searchQuery(0);
       limitQuery(20);
@@ -127,7 +127,7 @@ const CancelMain = (props) => {
       });
 
       if (response?.data?.success) {
-       // console.log("success", response.data.data);
+        // console.log("success", response.data.data);
 
         //setUserState(response?.data?.data);
         window.location.reload();
@@ -226,12 +226,24 @@ const CancelMain = (props) => {
             >
               Add New Call
             </Link>
-            <button
-              className="btn btn-elevated-secondary shadow-md mr-2 py-2"
-              onClick={exportCsv}
-            >
-              Export Excel
-            </button>
+
+            {loginData.role === 1 && (
+              <>
+                <Link
+                  className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                  to={"/import/1"}
+                >
+                  Import Excel
+                </Link>
+
+                <button
+                  className="btn btn-elevated-secondary shadow-md mr-2 py-2"
+                  onClick={exportCsv}
+                >
+                  Export Excel
+                </button>
+              </>
+            )}
 
             {allCheck.length > 0 && (
               <>

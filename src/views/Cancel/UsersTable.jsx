@@ -129,7 +129,7 @@ const UsersTable = (props) => {
               user.history &&
                 user.history.map((data, index) => {
                   if (data.field == "feedbacks") {
-                    is_admin = data.user.is_admin;
+                    is_admin = data?.user?.is_admin;
 
                     //console.log(user.id + "=is_admin", is_admin);
                   }

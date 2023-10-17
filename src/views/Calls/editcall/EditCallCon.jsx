@@ -57,7 +57,8 @@ function removeArr(array, index) {
 }
 
 const EditCallCon = (props) => {
-  const { calls, setCallId,setting , setSingleCallState } = props;
+  const { calls, setCallId, setting, setSingleCallState } = props;
+
   const [err, setErr] = useState([]);
   const [emailErr, setEmailErr] = useState([]);
 
@@ -85,7 +86,6 @@ const EditCallCon = (props) => {
   const [call, setCall] = useState([]);
 
   const [show, setShow] = useState(false);
- 
 
   const [suppose, setSuppose] = useState(
     calls.marital_status && calls.marital_status.id == 2 ? true : false
@@ -190,8 +190,6 @@ const EditCallCon = (props) => {
     setMyNextStep([...myStep, newObj]);
   };
 
-
-
   const headers = {
     Authorization: `Bearer ${logindata?.token}`,
     ContentType: "application/json",
@@ -291,7 +289,7 @@ const EditCallCon = (props) => {
 
   const checkEmail = async (e) => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(e.target.value)) {
-     // console.log("Invalid Email");
+      // console.log("Invalid Email");
       setEmailErr(["Email is not valid !"]);
       return false;
     } else {
@@ -529,14 +527,16 @@ const EditCallCon = (props) => {
         window.location.reload();
       }
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
       setLoading(false);
     }
   };
 
-  return (
+
+ 
+
+  return Object.keys(calls).length > 0 ? (
     <>
-      {" "}
       <form onSubmit={(e) => handleSubmit(e)}>
         <input type="hidden" name="id" defaultValue={calls?.id} />
         <input type="hidden" name="sections" defaultValue={calls?.sections} />
@@ -827,7 +827,7 @@ const EditCallCon = (props) => {
                 </select>
               </div>
 
-              {logindata.role !== 3 && (
+              {/* {logindata.role !== 3 &&  ( */}
                 <div className="intro-x ">
                   <label className="form-label">Assigned to</label>
                   {userData.state == "hasValue" && (
@@ -846,7 +846,7 @@ const EditCallCon = (props) => {
                     </select>
                   )}
                 </div>
-              )}
+          
             </div>
 
             {suppose && (
@@ -1351,6 +1351,15 @@ const EditCallCon = (props) => {
                         color = "bg-info text-white";
                       }
 
+                      if (
+                        data?.user?.is_admin === 4 &&
+                        index === 0 &&
+                        calls.feedbacks &&
+                        calls.feedbacks !== ""
+                      ) {
+                        color = "bg-amber-200 ";
+                      }
+
                       return (
                         <div
                           key={index}
@@ -1462,6 +1471,7 @@ const EditCallCon = (props) => {
           </div>
         </div>
       </form>
+
       <Modal
         size="modal-lg"
         show={validationModal}
@@ -1540,6 +1550,8 @@ const EditCallCon = (props) => {
         </ModalBody>
       </Modal>
     </>
+  ) : (
+    <h3>You are Not allowed To edit this record !</h3>
   );
 };
 

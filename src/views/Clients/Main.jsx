@@ -233,6 +233,24 @@ const ClientMain = (props) => {
             >
               Add New Call
             </Link>
+            {loginData.role === 1 && (
+                <>
+                  <Link
+                    className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                    to={"/import/2"}
+                  >
+                    Import Excel
+                  </Link>
+
+                  {/* <button
+               
+                    className="btn btn-elevated-warning text-white shadow-md mr-2 py-2"
+                  >
+                    Export Excel
+                  </button> */}
+                </>
+              )}
+
 
             {allCheck.length > 0 && (
               <>

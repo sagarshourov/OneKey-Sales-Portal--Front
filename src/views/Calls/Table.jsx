@@ -284,7 +284,13 @@ const UsersTable = (props) => {
                 user?.feedbacks !== ""
               ) {
                 dark = " alert-success-soft ";
-              } else if (allCheck.includes(user.id)) {
+              }else if (
+                is_admin === 4 &&
+                user.feedbacks &&
+                user?.feedbacks !== ""
+              ) {
+                dark = " bg-amber-200 ";
+              }  else if (allCheck.includes(user.id)) {
                 dark = " alert-secondary ";
               }
 
