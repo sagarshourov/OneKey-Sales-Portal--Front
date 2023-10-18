@@ -1075,7 +1075,6 @@ const EditCallCon = (props) => {
                       </option>
                     ))}
                 </select>
-
                 <input
                   type="text"
                   id="package"

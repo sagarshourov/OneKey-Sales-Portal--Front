@@ -1,6 +1,5 @@
-import { Lucide, Litepicker, Input } from "@/base-components";
+import { Lucide } from "@/base-components";
 
-import { useState } from "react";
 
 const CallScheduleSection = (props) => {
   const {index, deleteCallSchedule, data } = props;

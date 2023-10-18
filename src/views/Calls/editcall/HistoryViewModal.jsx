@@ -1,13 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 
 import {
-  Lucide,
   Modal,
   ModalFooter,
-  ModalHeader,
-  LoadingIcon,
-  ModalBody,
+  ModalHeader, ModalBody
 } from "@/base-components";
 import { filter } from "lodash";
 import { helper } from "@/utils/helper";

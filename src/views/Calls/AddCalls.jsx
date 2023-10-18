@@ -2,12 +2,11 @@ import {
   Lucide,
   Modal,
   ModalBody,
-  LoadingIcon,
-  Litepicker,
+  LoadingIcon
 } from "@/base-components";
 
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useRecoilStateLoadable } from "recoil";
 import { filter } from "lodash";
 import {
@@ -20,7 +19,6 @@ import {
 
 import axios from "axios";
 import { adminApi } from "../../configuration";
-import { helper } from "@/utils/helper";
 import { loginState } from "../../state/login-atom";
 import { settingState } from "../../state/setting-atom";
 import FollowUpSection from "./FollowUpSection";

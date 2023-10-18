@@ -87,7 +87,6 @@ const CallViewModal = (props) => {
             </div>
             <div className="intro-x ">
               <label className="form-label text-base">Assigned to</label>
-
               <input
                 className=" form-control"
                 type="text"
