@@ -571,8 +571,8 @@ const AdminUsers = (props) => {
         }
       >
         <div className="intro-y   col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className="bg-info bg-danger bg-success bg-warning bg-yellow-400 bg-secondary bg-purple-600 z-10 z-50"></div>
-          <div className="  lg:basis-9/12 grid grid-cols-4 lg:grid-cols-6 gap-2 ">
+          {/* <div className="bg-info bg-danger bg-success bg-warning bg-yellow-400 bg-secondary bg-purple-600 z-10 z-50"></div> */}
+          <div className=" lg:basis-9/12 grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8 gap-2 ">
             <Link
               className="btn btn-elevated-primary shadow-md mr-2 py-2"
               to="/calls/add"
@@ -634,6 +634,21 @@ const AdminUsers = (props) => {
                       </option>
                     ))}
                 </select>
+
+                <select
+                  name="p_sort"
+                  onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
+                  className="form-select"
+                >
+                  <option value="0">Select Priority..</option>
+
+                  {setting.priorities &&
+                    setting.priorities.map((val, indx) => (
+                      <option key={indx} value={val?.id}>
+                        {val?.title}
+                      </option>
+                    ))}
+                </select>
               </>
             ) : (
               logindata.role === 1 && (
@@ -656,10 +671,10 @@ const AdminUsers = (props) => {
             )}
 
             {logindata.role !== 3 && (
-              <div className="relative">
+              <div className="">
                 <div
                   onClick={CallSwitch}
-                  className="dark-mode-switcher cursor-pointer shadow-md absolute bottom-0 left-0 box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
+                  className="dark-mode-switcher cursor-pointer shadow-md  bottom-0 left-0 box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
                 >
                   <div className="mr-4 text-slate-600 dark:text-slate-200">
                     Switch Calls
@@ -679,10 +694,10 @@ const AdminUsers = (props) => {
               {callData.state === "hasValue" && callData.contents["length"]}
             </div> */}
 
-          <div className="lg:basis-2/12   grid  grid-cols-2">
+          <div className="lg:basis-3/12 mt-3 lg:mt-0  grid grid-cols-2  md:grid-cols-7 gap-2">
             <select
               onChange={handelPageCount.bind(this)}
-              className="w-full lg:w-20 form-select box mt-3 sm:mt-0"
+              className="form-select box lg:col-span-2"
             >
               <option value="10">10</option>
               <option value="25">25</option>
@@ -691,19 +706,13 @@ const AdminUsers = (props) => {
               <option value="100">100</option>
             </select>
 
-            <div className="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-              <div className="relative md:w-36 lg:w-52 text-slate-500">
-                <input
-                  onChange={handelSearch.bind(this)}
-                  type="text"
-                  className="form-control md:w-36 lg:w-52 box"
-                  placeholder="Search..."
-                />
-                <Lucide
-                  icon="Search"
-                  className="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0"
-                />
-              </div>
+            <div className="lg:col-span-5 ">
+              <input
+                onChange={handelSearch.bind(this)}
+                type="text"
+                className="form-control  box"
+                placeholder="Search..."
+              />
             </div>
           </div>
         </div>

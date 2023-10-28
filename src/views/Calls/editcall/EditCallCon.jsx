@@ -532,9 +532,6 @@ const EditCallCon = (props) => {
     }
   };
 
-
- 
-
   return Object.keys(calls).length > 0 ? (
     <>
       <form onSubmit={(e) => handleSubmit(e)}>
@@ -714,29 +711,31 @@ const EditCallCon = (props) => {
                   defaultValue={calls?.gpa && calls?.gpa}
                 />
               </div>
-              <div className="intro-x ">
+              <div className="intro-x  bg-slate-100 p-3">
                 <label className="form-label">Priority</label>
 
-                <input
-                  type="text"
-                  name="priority"
-                  className=" form-control"
-                  placeholder=""
-                  defaultValue={calls?.priority}
-                />
-                {/* <select
-                  name="priority"
-                  defaultValue={calls?.priority && calls?.priority.id}
-                  className="form-control"
-                >
-                  <option value="0">Select..</option>
-                  {setting.priorities &&
-                    setting.priorities.map((val, indx) => (
-                      <option key={indx} value={val?.id}>
-                        {val?.title}
-                      </option>
-                    ))}
-                </select> */}
+                <div className="grid  grid-cols-2  gap-2">
+                  <input
+                    type="text"
+                    name="priority"
+                    className=" form-control"
+                    placeholder=""
+                    defaultValue={calls?.priority}
+                  />
+                  <select
+                    name="p_sort"
+                    defaultValue={calls?.priority && calls?.priority.id}
+                    className="form-control"
+                  >
+                    <option value="0">Select Sort ..</option>
+                    {setting.priorities &&
+                      setting.priorities.map((val, indx) => (
+                        <option key={indx} value={val?.id}>
+                          {val?.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
               <div className="intro-x ">
                 <label className="form-label">Education level </label>
@@ -828,25 +827,24 @@ const EditCallCon = (props) => {
               </div>
 
               {/* {logindata.role !== 3 &&  ( */}
-                <div className="intro-x ">
-                  <label className="form-label">Assigned to</label>
-                  {userData.state == "hasValue" && (
-                    <select
-                      name="assigned_to"
-                      defaultValue={calls?.assigned_to && calls?.assigned_to.id}
-                      className="form-control"
-                    >
-                      <option value="3">Select...</option>
+              <div className="intro-x ">
+                <label className="form-label">Assigned to</label>
+                {userData.state == "hasValue" && (
+                  <select
+                    name="assigned_to"
+                    defaultValue={calls?.assigned_to && calls?.assigned_to.id}
+                    className="form-control"
+                  >
+                    <option value="3">Select...</option>
 
-                      {users.map((val, index) => (
-                        <option value={val.id} key={index}>
-                          {val.first_name}
-                        </option>
-                      ))}
-                    </select>
-                  )}
-                </div>
-          
+                    {users.map((val, index) => (
+                      <option value={val.id} key={index}>
+                        {val.first_name}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
             </div>
 
             {suppose && (

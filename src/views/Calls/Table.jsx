@@ -60,7 +60,7 @@ const UsersTable = (props) => {
     setLoading,
     headers,
     section,
-    setSection
+    setSection,
   } = props;
 
   const [rowCount, setRowCount] = useState(10);
@@ -87,7 +87,15 @@ const UsersTable = (props) => {
     const { checked } = e.target;
 
     if (checked) {
-      setAllCheck(users.map((li) => li.id));
+      setAllCheck(
+        users.map((li,index) => {
+
+          if(index <= rowCount){
+            return li.id;
+          }
+         
+        })
+      );
       setAcheck(true);
     } else {
       setAllCheck([]);
@@ -110,7 +118,7 @@ const UsersTable = (props) => {
   };
 
   const allOver = (e) => {
-     // console.log('target',e.target.parentNode.id);
+    // console.log('target',e.target.parentNode.id);
     e.target.parentNode.style.borderTop = "14px  solid green";
     // let children = Array.from(e.target.parentNode.parentNode.children);
     // if (children.indexOf(e.target.parentNode) > children.indexOf(targetRow)) {
@@ -127,33 +135,30 @@ const UsersTable = (props) => {
   const DragEnd = async () => {
     targetRow.borderTop = "none";
 
-    // console.log("startRow", startRow.id);
-   //  console.log("targetRow", targetRow.id);
-    // console.log("target end", targetRow.id);
-    // console.log("start row", startRow.target.id);
-
     remove_style_tr();
     const URL = adminApi() + "calls_sort";
-    setLoading(true);
+    // setLoading(true);
 
-    try {
-      const response = await axios.post(
-        URL,
-        { start: parseInt(startRow.target.id), end: parseInt(targetRow.id) },
-        {
-          headers,
-        }
-      );
+    // instructions on 26.10.2023 // change sort by Priority
 
-      if (response?.data?.success) {
-        setLoading(false);
+    // try {
+    //   const response = await axios.post(
+    //     URL,
+    //     { start: parseInt(startRow.target.id), end: parseInt(targetRow.id) },
+    //     {
+    //       headers,
+    //     }
+    //   );
 
-        setCallState(response?.data?.data);
-      }
-    } catch (err) {
-     // console.log(err);
-      setLoading(false);
-    }
+    //   if (response?.data?.success) {
+    //     setLoading(false);
+
+    //     setCallState(response?.data?.data);
+    //   }
+    // } catch (err) {
+    //  // console.log(err);
+    //   setLoading(false);
+    // }
   };
 
   const DragLeave = (e) => {
@@ -193,10 +198,23 @@ const UsersTable = (props) => {
         setInfoModal(false);
       }
     } catch (err) {
-    //  console.log(err);
+      //  console.log(err);
       setLoading(false);
 
       setInnerLoading(false);
+    }
+  };
+  const get_color = (sort) => {
+    // colors of sort
+
+    if (sort.id === 4) {
+      return "text-danger";
+    } else if (sort.id === 3) {
+      return "text-warning";
+    } else if (sort.id === 2) {
+      return "text-fuchsia-400";
+    } else {
+      return "text-primary";
     }
   };
 
@@ -284,13 +302,13 @@ const UsersTable = (props) => {
                 user?.feedbacks !== ""
               ) {
                 dark = " alert-success-soft ";
-              }else if (
+              } else if (
                 is_admin === 4 &&
                 user.feedbacks &&
                 user?.feedbacks !== ""
               ) {
                 dark = " bg-amber-200 ";
-              }  else if (allCheck.includes(user.id)) {
+              } else if (allCheck.includes(user.id)) {
                 dark = " alert-secondary ";
               }
 
@@ -322,9 +340,9 @@ const UsersTable = (props) => {
                   draggable={true}
                   onDragStart={(e) => {
                     setStartRow(e);
-                   // console.log('dragstart',e);
+                    // console.log('dragstart',e);
                     dragStart(e, user.id);
-                  
+
                     setSection(section);
                   }}
                   id={user.sort}
@@ -361,7 +379,15 @@ const UsersTable = (props) => {
                     </div>
                   </td>
 
-                  <td>{user?.priority}</td>
+                  <td>
+                    {user?.priority}
+                    {user?.p_sort && (
+                      <small className={get_color(user?.p_sort)}>
+                        {" "}
+                        {user?.p_sort?.title}{" "}
+                      </small>
+                    )}
+                  </td>
                   <td>{user?.whatsapp}</td>
 
                   <td className="text-center">{user?.age}</td>
