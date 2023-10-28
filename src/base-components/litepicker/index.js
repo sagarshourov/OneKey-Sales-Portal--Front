@@ -32,6 +32,11 @@ const init = (el, props) => {
             : "";
         props.onChange(date);
       });
+      picker.on('button:cancel', () => {
+        // some action
+        props.onCancel();
+    
+      });
     },
   });
 };

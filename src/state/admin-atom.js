@@ -87,6 +87,17 @@ export const valueState = atom({
   default: null,
 });
 
+// cancel  start
+export const cStartDate = atom({
+  key: "cStartDate",
+  default: "2022-01-01",
+});
+
+export const cEndDate = atom({
+  key: "cEndDate",
+  default: "2028-01-01",
+});
+
 export const searchAtom = atom({
   key: "searchAtom",
   default: "0",
@@ -110,6 +121,8 @@ export const cancelSelect = selector({
         get(CancelUser),
         "results",
         1,
+        get(cStartDate),
+        get(cEndDate),
         get(pagOffset),
         get(pageLimit),
         get(searchAtom),
@@ -125,7 +138,7 @@ export const cancelSelect = selector({
     }
   },
 });
-
+//cancel end
 export const resultState = atom({
   key: "resultState",
   default: 0,
@@ -145,6 +158,8 @@ export const clientSelect = selector({
         get(clientUser),
         "results",
         get(resultState),
+        get(cStartDate),
+        get(cEndDate),
         get(pagOffset),
         get(pageLimit),
         get(searchAtom),
@@ -223,6 +238,8 @@ export const searchListSelect = selector({
 
         get(columnState),
         get(valueState),
+        get(cStartDate),
+        get(cEndDate),
         get(pagOffset),
         get(pageLimit),
         get(searchAtom),

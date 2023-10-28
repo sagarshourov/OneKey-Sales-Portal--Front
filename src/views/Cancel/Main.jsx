@@ -1,3 +1,5 @@
+// Cancel
+
 import { Lucide, Modal, LoadingIcon, ModalBody } from "@/base-components";
 
 import { useState, useEffect } from "react";
@@ -10,6 +12,8 @@ import {
 import {
   cancelListState,
   pagOffset,
+  cStartDate,
+  cEndDate,
   pageLimit,
   searchAtom,
   CancelOrder,
@@ -22,6 +26,8 @@ import axios from "axios";
 import { adminApi, getBaseApi } from "../../configuration";
 import { loginState } from "../../state/login-atom";
 import { filter } from "lodash";
+import { helper } from "@/utils/helper";
+import MultiPicker from "./MultiPicker";
 
 const token = localStorage.getItem("token");
 
@@ -45,6 +51,14 @@ const CancelMain = (props) => {
   const [usersData, setUserState] = useRecoilStateLoadable(cancelListState);
   const loginData = useRecoilValue(loginState);
 
+  const [dateRange, setDateRange] = useState("");
+
+  const [dateMode, setDateMode] = useState(false);
+
+  const CancelStartDate = useSetRecoilState(cStartDate);
+
+  const CancelEndDate = useSetRecoilState(cEndDate);
+
   const [callSwitch, setCallSwitch] = useState(false);
 
   const setPageOffset = useSetRecoilState(pagOffset);
@@ -56,8 +70,9 @@ const CancelMain = (props) => {
   const canUser = useSetRecoilState(CancelUser);
 
   const [rowCount, setRowCount] = useState(200);
-  const [formdata, setFormdata] = useState([]);
+  // const [formdata, setFormdata] = useState([]);
   const [search, setSearch] = useState("");
+
   const [user_id, setUserId] = useState(0);
   const [loading, setLoading] = useState(false);
   const [allCheck, setAllCheck] = useState([]);
@@ -76,6 +91,9 @@ const CancelMain = (props) => {
       limitQuery(20);
       cancelOrder("DESC");
       canUser(0);
+
+      CancelStartDate("2022-01-01");
+      CancelEndDate("2028-01-01");
     };
   }, []);
 
@@ -84,6 +102,38 @@ const CancelMain = (props) => {
 
     limitQuery(parseInt(e.target.value));
   };
+
+  const handelRange = (date) => {
+    var spilt = date.split("-");
+    var startDate = Date.parse(spilt[0]);
+    var endDate = Date.parse(spilt[1]);
+
+    setDateRange(date);
+
+    CancelStartDate(helper.formatDate(startDate, "YYYY-MM-DD"));
+    CancelEndDate(helper.formatDate(endDate, "YYYY-MM-DD"));
+    // if (dateMode) {
+    //   sStartDate(helper.formatDate(date, "YYYY-MM-DD"));
+    //   sEndDate(helper.formatDate(date, "YYYY-MM-DD"));
+    // } else {
+    //   var spilt = date.split("-");
+    //   var startDate = Date.parse(spilt[0]);
+    //   var endDate = Date.parse(spilt[1]);
+    //   sStartDate(helper.formatDate(startDate, "YYYY-MM-DD"));
+    //   sEndDate(helper.formatDate(endDate, "YYYY-MM-DD"));
+    // }
+  };
+
+  const onCancel =()=>{
+   // console.log('Cancel Test');
+
+    setDateRange('');
+
+    CancelStartDate("2022-01-01");
+    CancelEndDate("2028-01-01");
+
+
+  }
 
   // const handelLoad = () => {
   //   let count = rowCount + 20;
@@ -100,22 +150,35 @@ const CancelMain = (props) => {
   };
 
   const handelSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const searchCall = () => {
-    if (search == "") {
-      searchQuery(0);
-      setSearch("");
+    // handel search
+    //setSearch(e.target.value);
+    setLoading(true);
+    if (e.target.value == "") {
+      setTimeout(() => {
+        searchQuery(0);
+        setLoading(false);
+      }, 1000);
     } else {
-      searchQuery(search);
+      setTimeout(() => {
+        searchQuery(e.target.value);
+        setLoading(false);
+      }, 1000);
     }
   };
 
-  const resetCall = () => {
-    searchQuery(0);
-    setSearch("");
-  };
+  // const searchCall = () => {
+  //   if (search == "") {
+  //     searchQuery(0);
+  //     setSearch("");
+  //   } else {
+  //     searchQuery(search);
+  //   }
+  // };
+
+  // const resetCall = () => {
+  //   searchQuery(0);
+  //   setSearch("");
+  // };
 
   const deleteAdmin = async () => {
     setLoading(true);
@@ -161,10 +224,10 @@ const CancelMain = (props) => {
     }
   };
 
-  const handelOrder = (e) => {
-    //console.log("order", e.target.value);
-    cancelOrder(e.target.value);
-  };
+  // const handelOrder = (e) => {
+  //   //console.log("order", e.target.value);
+  //   cancelOrder(e.target.value);
+  // };
 
   const CallSwitch = () => {
     setCallSwitch(() => !callSwitch);
@@ -219,23 +282,9 @@ const CancelMain = (props) => {
         </div> */}
 
         <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-          <div className=" lg:basis-5/12 grid grid-cols-1 lg:grid-cols-5 gap-2">
-            <Link
-              className="btn btn-elevated-primary shadow-md mr-2 py-2"
-              to="/calls/add"
-            >
-              Add New Call
-            </Link>
-
+          <div className="basis-full lg:basis-5/12 grid grid-cols-1 lg:grid-cols-4 gap-2">
             {loginData.role === 1 && (
               <>
-                <Link
-                  className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
-                  to={"/import/1"}
-                >
-                  Import Excel
-                </Link>
-
                 <button
                   className="btn btn-elevated-secondary shadow-md mr-2 py-2"
                   onClick={exportCsv}
@@ -245,7 +294,7 @@ const CancelMain = (props) => {
               </>
             )}
 
-            {allCheck.length > 0 && (
+            {allCheck.length > 0 ? (
               <>
                 <button
                   onClick={() => setDeleteConfirmationModal(true)}
@@ -280,9 +329,24 @@ const CancelMain = (props) => {
                   Edit Call
                 </Link>
               </>
+            ) : (
+              <>
+                <Link
+                  className="btn btn-elevated-primary shadow-md mr-2 py-2"
+                  to="/calls/add"
+                >
+                  Add New Call
+                </Link>
+                <Link
+                  className="btn btn-elevated-success text-white shadow-md mr-2 py-2"
+                  to={"/import/1"}
+                >
+                  Import Excel
+                </Link>
+              </>
             )}
           </div>
-          <div className="lg:basis-2/12   grid  grid-cols-1 lg:grid-cols-1 gap-3">
+          <div className="basis-full lg:basis-2/12 py-5 lg:py-0  grid  grid-cols-1 lg:grid-cols-1 gap-3">
             {loginData.role !== 3 && (
               <div
                 onClick={CallSwitch}
@@ -301,17 +365,25 @@ const CancelMain = (props) => {
             )}
           </div>
 
-          <div className="lg:basis-5/12   grid  grid-cols-1 lg:grid-cols-6 gap-3">
-            <select
+          <div className="basis-full lg:basis-5/12 grid  grid-cols-1 lg:grid-cols-12 gap-2">
+            <div className="col-span-5">
+              <MultiPicker
+                dateRange={dateRange}
+                handelRange={handelRange}
+                handelCancel={onCancel}
+                dateMode={dateMode}
+              />
+            </div>
+            {/* <select
               onChange={(e) => handelOrder(e)}
               className="w-full  form-select box mt-3 sm:mt-0"
             >
               <option value="DESC">Descending</option>
               <option value="ASC">Ascending</option>
-            </select>
+            </select> */}
             <select
               onChange={handelPageCount.bind(this)}
-              className="w-full  form-select box mt-3 sm:mt-0"
+              className="col-span-2  form-select box mt-3 sm:mt-0"
             >
               <option value="20">20</option>
               <option value="25">25</option>
@@ -320,7 +392,7 @@ const CancelMain = (props) => {
               <option value="100">100</option>
             </select>
 
-            <div className="w-full">
+            <div className="col-span-5">
               <div className=" text-slate-500">
                 <input
                   onChange={handelSearch.bind(this)}
@@ -331,20 +403,23 @@ const CancelMain = (props) => {
               </div>
             </div>
 
-            <button onClick={searchCall} className="btn-primary">
+            {/* <button onClick={searchCall} className="btn-primary lg:col-span-2">
               Search{" "}
             </button>
 
-            <button onClick={resetCall} className="btn-danger text-white">
+            <button
+              onClick={resetCall}
+              className="btn-danger  lg:col-span-2 text-white"
+            >
               Reset Search{" "}
-            </button>
+            </button> */}
           </div>
         </div>
 
         {/* BEGIN: Data List */}
 
         <div className="intro-y col-span-12  overflow-auto ">
-          {usersData.state === "hasValue" ? (
+          {usersData.state === "hasValue" && loading === false ? (
             <UsersTable
               rowCount={rowCount}
               setDeleteConfirmationModal={setDeleteConfirmationModal}

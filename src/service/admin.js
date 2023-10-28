@@ -180,6 +180,8 @@ export async function getCallsPagination(
   user_id,
   column,
   value,
+  startDate,
+  endDate,
   offset,
   limit,
   search,
@@ -196,6 +198,10 @@ export async function getCallsPagination(
     column +
     "/" +
     value +
+    "/" +
+    startDate +
+    "/" +
+    endDate +
     "/" +
     offset +
     "/" +
@@ -257,19 +263,19 @@ export async function getAllReports(loginstate, user_id, count) {
   }
 }
 
-export async function getCallsFilter(loginstate, results) {
-  let tokens = loginstate.token ? loginstate.token : "token";
-  let headers = { Authorization: `Bearer ` + tokens };
-  const userApiUrl = adminApi() + "call_filter/results/" + results;
+// export async function getCallsFilter(loginstate, results) {
+//   let tokens = loginstate.token ? loginstate.token : "token";
+//   let headers = { Authorization: `Bearer ` + tokens };
+//   const userApiUrl = adminApi() + "call_filter/results/" + results;
 
-  try {
-    const response = await axios.get(userApiUrl, { headers });
-    return response.data || [];
-  } catch (error) {
-    handelError(error);
-    throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
-  }
-}
+//   try {
+//     const response = await axios.get(userApiUrl, { headers });
+//     return response.data || [];
+//   } catch (error) {
+//     handelError(error);
+//     throw new Error(`Error in 'axiosGetJsonData(${userApiUrl})': 'Err`);
+//   }
+// }
 
 export async function getAllNoti(loginstate) {
   let tokens = loginstate.token ? loginstate.token : "token";

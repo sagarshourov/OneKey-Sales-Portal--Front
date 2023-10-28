@@ -24,7 +24,8 @@ function Litepicker(props) {
     tempValue.current = props.value;
   }, [props.value]);
 
-  const { options, value, onChange, getRef, ...computedProps } = props;
+  const { options, value, onChange, onCancel, getRef, ...computedProps } =
+    props;
   return createElement(
     "input",
     {
@@ -33,6 +34,7 @@ function Litepicker(props) {
       type: "text",
       value: props.value,
       onChange: props.onChange,
+      onCancel: props.onCancel,
     },
     props.children
   );
@@ -42,6 +44,7 @@ Litepicker.propTypes = {
   options: PropTypes.object,
   value: PropTypes.string,
   onChange: PropTypes.func,
+  onCancel: PropTypes.func,
   getRef: PropTypes.func,
 };
 
@@ -49,6 +52,7 @@ Litepicker.defaultProps = {
   options: {},
   value: "",
   onChange: () => {},
+  onCancel: () => {},
   getRef: () => {},
 };
 

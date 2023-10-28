@@ -6,7 +6,6 @@ import { Tippy, Checkbox } from "@/base-components";
 //   });
 // }
 
-
 import { helper } from "@/utils/helper";
 
 function extra_title(arr, group, index) {
@@ -79,6 +78,8 @@ const UsersTable = (props) => {
             <th className="whitespace-nowrap">Client</th>
             <th className="whitespace-nowrap">E-mail</th>
             {/* <th className="text-center whitespace-nowrap">Phone</th> */}
+            <th className="text-center  whitespace-nowrap ">Cancel Date</th>
+            <th className="text-center whitespace-nowrap">Reason</th>
 
             <th className="text-center whitespace-nowrap">Assigned To</th>
             <th className="text-center whitespace-nowrap">Priority</th>
@@ -120,6 +121,7 @@ const UsersTable = (props) => {
         </thead>
         <tbody>
           {users &&
+            users.length > 0 &&
             users.slice(0, rowCount).map((user, key) => {
               let count = key + 1;
               let dark = " bg-white ";
@@ -161,7 +163,11 @@ const UsersTable = (props) => {
                     {user.first_name} {user.last_name}
                   </td>
                   <td>{user?.email}</td>
-
+                  <td>
+                    {user?.cancel_date &&
+                      helper.formatDate(user?.cancel_date, "MMM D, YYYY")}
+                  </td>
+                  <td>{user?.cancel_reason?.title}</td>
                   <td>
                     {user?.assigned_to?.first_name}{" "}
                     {user?.assigned_to?.last_name}

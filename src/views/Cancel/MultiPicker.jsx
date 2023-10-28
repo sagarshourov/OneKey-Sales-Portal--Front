@@ -1,18 +1,19 @@
 import { Litepicker } from "@/base-components";
 
 const MultiPicker = (props) => {
-  const { daterange, handelRange, dateMode } = props;
+  const { dateRange, handelCancel, handelRange, dateMode } = props;
 
   return (
     <Litepicker
-      value={daterange}
-      onChange={handelRange}
+      value={dateRange}
       placeholder = "Pick a Date Range"
+      onChange={handelRange}
+      onCancel={handelCancel}
       options={{
         // format: "YYYY-MM-DD",
         autoApply: false,
         singleMode: false,
-        numberOfColumns:  2,
+        numberOfColumns: 2,
         numberOfMonths: 2,
         showWeekNumbers: true,
         dropdowns: {
