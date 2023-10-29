@@ -185,11 +185,22 @@ function tomorrowScheduleFilters(array, callSwitch, user_id) {
   }
 }
 
-function applyAllFilters(array, searchValue, sections, user_id) {
-  //  console.log(sections);
+function applyAllFilters(array, searchValue, sections, user_id, priority) {
+  console.log("priority", priority);
   if (array.length == 0) return;
   if (user_id !== 0) {
     return filter(array, (_items) => {
+      if (
+        _items.sections !== sectionFind(sections, _items.sections) &&
+        _items.p_sort &&
+        _items.p_sort.id == priority &&
+        _items?.assigned_to?.id === user_id
+      ) {
+        return true;
+      } else if (parseInt(priority) !== 0) {
+        return false;
+      }
+
       return (
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items?.assigned_to?.id === user_id &&
@@ -210,6 +221,15 @@ function applyAllFilters(array, searchValue, sections, user_id) {
     });
   } else {
     return filter(array, (_items) => {
+      if (
+        _items.sections !== sectionFind(sections, _items.sections) &&
+        _items.p_sort &&
+        _items.p_sort.id == priority
+      ) {
+        return true;
+      } else if (parseInt(priority) !== 0) {
+        return false;
+      }
       return (
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items.results &&
@@ -230,7 +250,7 @@ function applyAllFilters(array, searchValue, sections, user_id) {
   }
 }
 
-function applySortFilters(array, searchValue, sec, user_id) {
+function applySortFilters(array, searchValue, sec, user_id, priority) {
   if (array.length == 0) return;
   // if (sec == "no") {
   //   return filter(array, (_items) => {
@@ -243,6 +263,16 @@ function applySortFilters(array, searchValue, sec, user_id) {
   if (user_id !== 0) {
     return filter(array, (_items) => {
       // if (_items.email) {
+      if (
+        _items.sections == parseInt(sec) &&
+        _items.p_sort &&
+        _items.p_sort.id == priority &&
+        _items?.assigned_to?.id === user_id
+      ) {
+        return true;
+      } else if (parseInt(priority) !== 0) {
+        return false;
+      }
       return (
         _items.sections == parseInt(sec) &&
         _items?.assigned_to?.id === user_id &&
@@ -266,6 +296,15 @@ function applySortFilters(array, searchValue, sec, user_id) {
   } else {
     return filter(array, (_items) => {
       // if (_items.email) {
+      if (
+        _items.sections == parseInt(sec) &&
+        _items.p_sort &&
+        _items.p_sort.id == priority
+      ) {
+        return true;
+      } else if (parseInt(priority) !== 0) {
+        return false;
+      }
       return (
         _items.sections == parseInt(sec) &&
         _items.results.id == 3 &&
@@ -323,6 +362,7 @@ const AdminUsers = (props) => {
   const [showCallVew, setCallView] = useState(false);
 
   const [sections, setSection] = useState(0);
+  const [priority, setPriority] = useState(0); //set by filter priority
 
   const handelCallModel = (show) => {
     setCallView(show);
@@ -557,6 +597,10 @@ const AdminUsers = (props) => {
   const CallSwitch = () => {
     setCallSwitch(() => !callSwitch);
   };
+  const filterByPriority = (val) => {
+    //console.log("prio", val);
+    setPriority(val);
+  };
 
   //console.log("offset", offset);
 
@@ -579,6 +623,21 @@ const AdminUsers = (props) => {
             >
               Add New Call
             </Link>
+
+            <select
+              name="p_sort"
+              onChange={(e) => filterByPriority(e.target.value)}
+              className="form-select"
+            >
+              <option value="0">Select Priority..</option>
+
+              {setting.priorities &&
+                setting.priorities.map((val, indx) => (
+                  <option key={indx} value={val?.id}>
+                    {val?.title}
+                  </option>
+                ))}
+            </select>
 
             {allCheck.length == 1 && (
               <Link
@@ -629,21 +688,6 @@ const AdminUsers = (props) => {
 
                   {setting.sections &&
                     setting.sections.map((val, indx) => (
-                      <option key={indx} value={val?.id}>
-                        {val?.title}
-                      </option>
-                    ))}
-                </select>
-
-                <select
-                  name="p_sort"
-                  onChange={(e) => bulkUpdate(e.target.name, e.target.value)}
-                  className="form-select"
-                >
-                  <option value="0">Select Priority..</option>
-
-                  {setting.priorities &&
-                    setting.priorities.map((val, indx) => (
                       <option key={indx} value={val?.id}>
                         {val?.title}
                       </option>
@@ -752,7 +796,8 @@ const AdminUsers = (props) => {
                             callData.contents,
                             search,
                             setting.sections,
-                            callSwitch ? logindata.userId : 0
+                            callSwitch ? logindata.userId : 0,
+                            priority
                           )}
                           setUserId={setCallId}
                           setCallState={setCallState}
@@ -784,7 +829,8 @@ const AdminUsers = (props) => {
                       callData.contents,
                       search,
                       val?.id,
-                      callSwitch ? logindata.userId : 0
+                      callSwitch ? logindata.userId : 0,
+                      priority
                     );
                     // if (calls.length == 0) return;
 

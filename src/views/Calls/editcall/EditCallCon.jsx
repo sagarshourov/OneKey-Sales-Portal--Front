@@ -722,9 +722,10 @@ const EditCallCon = (props) => {
                     placeholder=""
                     defaultValue={calls?.priority}
                   />
+               
                   <select
                     name="p_sort"
-                    defaultValue={calls?.priority && calls?.priority.id}
+                    defaultValue={calls?.p_sort && calls?.p_sort}
                     className="form-control"
                   >
                     <option value="0">Select Sort ..</option>

@@ -90,12 +90,12 @@ export const valueState = atom({
 // cancel  start
 export const cStartDate = atom({
   key: "cStartDate",
-  default: "2022-01-01",
+  default: null,
 });
 
 export const cEndDate = atom({
   key: "cEndDate",
-  default: "2028-01-01",
+  default: null,
 });
 
 export const searchAtom = atom({

@@ -129,8 +129,8 @@ const CancelMain = (props) => {
 
     setDateRange('');
 
-    CancelStartDate("2022-01-01");
-    CancelEndDate("2028-01-01");
+    CancelStartDate(null);
+    CancelEndDate(null);
 
 
   }

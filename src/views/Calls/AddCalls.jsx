@@ -1,9 +1,4 @@
-import {
-  Lucide,
-  Modal,
-  ModalBody,
-  LoadingIcon
-} from "@/base-components";
+import { Lucide, Modal, ModalBody, LoadingIcon } from "@/base-components";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -237,7 +232,7 @@ const AddCalls = (props) => {
 
   const checkEmail = async (e) => {
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(e.target.value)) {
-    //  console.log("Invalid Email");
+      //  console.log("Invalid Email");
       setEmailErr(["Email is not valid !"]);
       return false;
     } else {
@@ -457,7 +452,7 @@ const AddCalls = (props) => {
   };
 
   const handelEngTest = (e) => {
-   // console.log("handelEngTest", e.target.value);
+    // console.log("handelEngTest", e.target.value);
 
     if (parseInt(e.target.value) !== 0) {
       setScore(true);
@@ -568,26 +563,29 @@ const AddCalls = (props) => {
                   placeholder=""
                 />
               </div>
-              <div className="intro-x ">
+
+              <div className="intro-x  bg-slate-100 p-3">
                 <label className="form-label">Priority</label>
 
-                <input
-                  type="text"
-                  name="priority"
-                  className=" form-control"
-                  placeholder=""
-                />
-
-                {/* <select name="priority" className="form-control">
-                  <option value="0">Select..</option>
-                  {setting.priorities &&
-                    setting.priorities.map((val, indx) => (
-                      <option key={indx} value={val?.id}>
-                        {val?.title}
-                      </option>
-                    ))}
-                </select> */}
+                <div className="grid  grid-cols-2  gap-2">
+                  <input
+                    type="text"
+                    name="priority"
+                    className=" form-control"
+                    placeholder=""
+                  />
+                  <select name="p_sort" className="form-control">
+                    <option value="0">Select Sort ..</option>
+                    {setting.priorities &&
+                      setting.priorities.map((val, indx) => (
+                        <option key={indx} value={val?.id}>
+                          {val?.title}
+                        </option>
+                      ))}
+                  </select>
+                </div>
               </div>
+
               <div className="intro-x ">
                 <label className="form-label">Education level </label>
                 <select name="degree" className="form-control">
@@ -697,14 +695,20 @@ const AddCalls = (props) => {
               </div>
 
               <div className="intro-y bg-slate-100 pb-5">
-
                 {callScheduleState.map((data, index) => (
-                  <CallScheduleSection key={index} index={index} deleteCallSchedule={deleteCallSchedule} data={data} />
-
+                  <CallScheduleSection
+                    key={index}
+                    index={index}
+                    deleteCallSchedule={deleteCallSchedule}
+                    data={data}
+                  />
                 ))}
 
                 <div className="col-span-2 mt-5 flex  justify-center">
-                  <a className=" btn btn-elevated-primary" onClick={addCallSchedule}>
+                  <a
+                    className=" btn btn-elevated-primary"
+                    onClick={addCallSchedule}
+                  >
                     <Lucide icon="Plus" className="w-4 h-4" />
                   </a>
                 </div>

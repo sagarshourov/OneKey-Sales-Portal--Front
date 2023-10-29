@@ -137,28 +137,28 @@ const UsersTable = (props) => {
 
     remove_style_tr();
     const URL = adminApi() + "calls_sort";
-    // setLoading(true);
+    setLoading(true);
 
     // instructions on 26.10.2023 // change sort by Priority
 
-    // try {
-    //   const response = await axios.post(
-    //     URL,
-    //     { start: parseInt(startRow.target.id), end: parseInt(targetRow.id) },
-    //     {
-    //       headers,
-    //     }
-    //   );
+    try {
+      const response = await axios.post(
+        URL,
+        { start: parseInt(startRow.target.id), end: parseInt(targetRow.id) },
+        {
+          headers,
+        }
+      );
 
-    //   if (response?.data?.success) {
-    //     setLoading(false);
+      if (response?.data?.success) {
+        setLoading(false);
 
-    //     setCallState(response?.data?.data);
-    //   }
-    // } catch (err) {
-    //  // console.log(err);
-    //   setLoading(false);
-    // }
+        setCallState(response?.data?.data);
+      }
+    } catch (err) {
+     // console.log(err);
+      setLoading(false);
+    }
   };
 
   const DragLeave = (e) => {
