@@ -8,6 +8,7 @@ import {
   useRecoilStateLoadable,
   useSetRecoilState,
   useRecoilValue,
+  useRecoilRefresher_UNSTABLE
 } from "recoil";
 import {
   cancelListState,
@@ -78,7 +79,7 @@ const CancelMain = (props) => {
   const [allCheck, setAllCheck] = useState([]);
 
   const setting = useRecoilValue(settingState);
-
+  const refreshCall = useRecoilRefresher_UNSTABLE(cancelListState);
   useEffect(() => {
     if (loginData.role === 2) {
       setCallSwitch(true);
@@ -91,9 +92,9 @@ const CancelMain = (props) => {
       limitQuery(20);
       cancelOrder("DESC");
       canUser(0);
-
-      CancelStartDate("2022-01-01");
-      CancelEndDate("2028-01-01");
+      refreshCall();
+      CancelStartDate("null");
+      CancelEndDate("null");
     };
   }, []);
 

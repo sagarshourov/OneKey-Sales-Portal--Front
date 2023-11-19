@@ -609,7 +609,7 @@ const AdminUsers = (props) => {
       <h2 className="intro-y text-lg font-medium mt-10 ">Call List</h2>
       <div
         className={
-          offset && allCheck.length > 0
+          offset
             ? "fixed top-0 bg-white p-5 z-50 box "
             : ""
         }

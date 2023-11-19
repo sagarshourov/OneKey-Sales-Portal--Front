@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue, useRecoilStateLoadable } from "recoil";
 import { filter } from "lodash";
-
+import classnames from "classnames";
 import {
   callListState,
   notiState,
@@ -76,7 +76,7 @@ const EditCallCon = (props) => {
   const [callData, setCallState] = useRecoilState(callListState);
   const [userData, setUserState] = useRecoilStateLoadable(allUserListState);
   const [notiData, setNotiState] = useRecoilState(notiState);
-
+  const [callSwitch, setCallSwitch] = useState(false);
   // const restSingleCall = useResetRecoilState(singleCallState);
 
   // const restCallIdState = useResetRecoilState(callIdState);
@@ -92,7 +92,17 @@ const EditCallCon = (props) => {
   );
   const [score, setScore] = useState(false);
   const [cancelReason, setCancelReason] = useState(
-    calls.cancel_reason !== null ? true : false
+    calls?.cancel_reason !== null ? true : false
+  );
+
+  const [cancelReasonId, setCancelReasonId] = useState(
+    calls?.cancel_reason !== null ? calls?.cancel_reason?.id : 0
+  );
+  const [cancelReasonDate, setCancelReasonDate] = useState(
+    calls.cancel_date !== null ? calls.cancel_date : ""
+  );
+  const [cancelReasonNote, setCancelReasonNote] = useState(
+    calls.cancel_note !== null ? calls.cancel_note : ""
   );
 
   const [fCallResult, setFCallResult] = useState(false);
@@ -197,9 +207,16 @@ const EditCallCon = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    var data = new FormData(e.target);
+    if (
+      document.getElementById("cancel_reason").selectedIndex == 0 &&
+      callSwitch
+    ) {
+      alert("Cancel Reason Required ");
 
-    //// console.log('form_data',data);
+      return false;
+    }
+
+    var data = new FormData(e.target);
 
     // data.append("follow_up_date", helper.formatDate(followdate, "YYYY-MM-DD"));
     // data.append("first_contact", helper.formatDate(firstContact, "YYYY-MM-DD"));
@@ -207,6 +224,15 @@ const EditCallCon = (props) => {
     //data.append("last_status_date", lastStatus);
 
     data.append("user_id", logindata?.userId);
+
+    //calls?.cancel_reason && calls?.cancel_reason?.id > 0 && data.append("cancel", callSwitch);
+
+    // data.append("cancel_reason", cancelReasonId);
+    // data.append("cancel_date", cancelReasonDate);
+
+    // data.append("cancel", cancelReasonNote);
+
+    // console.log("call switch", callSwitch);
 
     //data.set("results", fCallResult);
 
@@ -503,6 +529,26 @@ const EditCallCon = (props) => {
     setCancelReason(true);
   };
 
+  const restCancel = () => {
+    console.log("called rest cancel");
+    setCancelReason(false);
+
+    setCancelReasonId(0);
+    setCancelReasonDate("");
+    setCancelReasonNote("");
+
+    document.getElementById("cancel_reason").selectedIndex = 0;
+  };
+
+  const CancelSwitch = () => {
+    // hit cancel again button
+    setCallSwitch(() => !callSwitch);
+
+    callSwitch === false && restCancel();
+
+    console.log("call switch", callSwitch);
+  };
+
   // console.log('calls', calls);
 
   let assigned_filter = calls.history
@@ -553,8 +599,26 @@ const EditCallCon = (props) => {
 
           <div className="intro-y box p-5">
             <div className="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-              <div className="lg:basis-7/12  ">
+              <div className="lg:basis-5/12  ">
                 <h3 className="text-xl font-medium">Form Information</h3>
+              </div>
+              <div className="lg:basis-2/12  ">
+                {/* {calls.cancel_reason && calls?.results?.id !== 1 && (
+                  <div
+                    onClick={CancelSwitch}
+                    className="dark-mode-switcher cursor-pointer shadow-md  bottom-0 left-0 box border rounded-full w-36 h-10 flex items-center justify-center z-50 "
+                  >
+                    <div className="mr-3 text-slate-600 dark:text-slate-200">
+                      Cancel Again
+                    </div>
+                    <div
+                      className={classnames({
+                        "dark-mode-switcher__toggle border": true,
+                        "dark-mode-switcher__toggle--active": callSwitch,
+                      })}
+                    ></div>
+                  </div>
+                )} */}
               </div>
               <div className="lg:basis-5/12">
                 {assigned_filter.length > 0 && (
@@ -722,7 +786,7 @@ const EditCallCon = (props) => {
                     placeholder=""
                     defaultValue={calls?.priority}
                   />
-               
+
                   <select
                     name="p_sort"
                     defaultValue={calls?.p_sort && calls?.p_sort}
@@ -836,7 +900,9 @@ const EditCallCon = (props) => {
                     defaultValue={calls?.assigned_to && calls?.assigned_to.id}
                     className="form-control"
                   >
-                    <option value="3">Select...</option>
+                    {logindata.role !== 3 && (
+                      <option value="3">Select...</option>
+                    )}
 
                     {users.map((val, index) => (
                       <option value={val.id} key={index}>
@@ -1415,15 +1481,16 @@ const EditCallCon = (props) => {
               <div className="intro-x ">
                 <label className="form-label">Cancellation reason </label>
                 <select
+                  id="cancel_reason"
                   required
                   name="cancel_reason"
                   onChange={handelCancelReason}
                   className="form-control"
-                  defaultValue={calls?.cancel_reason && calls?.cancel_reason.id}
+                  defaultValue={cancelReasonId}
                 >
                   <option value="0">Select...</option>
-                  {setting.cancel_reason &&
-                    setting.cancel_reason.map((val, indx) => (
+                  {setting?.cancel_reason &&
+                    setting?.cancel_reason.map((val, indx) => (
                       <option key={indx} value={val?.id}>
                         {val?.title}
                       </option>
@@ -1437,7 +1504,7 @@ const EditCallCon = (props) => {
                     type="date"
                     name="cancel_date"
                     className="form-control"
-                    defaultValue={calls?.cancel_date && calls?.cancel_date}
+                    defaultValue={cancelReasonDate}
                   />
                 </div>
               )}
@@ -1448,7 +1515,7 @@ const EditCallCon = (props) => {
                     name="cancel_note"
                     className=" form-control"
                     placeholder=""
-                    defaultValue={calls?.cancel_note}
+                    defaultValue={cancelReasonNote}
                   />
                 </div>
               )}

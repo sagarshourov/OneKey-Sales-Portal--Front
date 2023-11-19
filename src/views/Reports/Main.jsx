@@ -255,7 +255,7 @@ const AdminUsers = (props) => {
     setEmployee(dat);
   };
 
-  const CallSwitch = () => {
+  const CallSwitch = () => { 
     setCallSwitch(() => !callSwitch);
     setDateMode(true);
     if (callSwitch) {
