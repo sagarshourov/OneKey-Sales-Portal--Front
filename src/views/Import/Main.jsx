@@ -44,6 +44,7 @@ const Import = (props) => {
   };
 
   const ImportFile = async () => {
+    
     // if (file.length > 0) {
     //   alert("File required !");
 

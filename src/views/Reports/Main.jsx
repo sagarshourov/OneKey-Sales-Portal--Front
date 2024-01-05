@@ -635,6 +635,7 @@ const AdminUsers = (props) => {
               type="button"
               className="btn btn-danger w-24"
             >
+              
               Delete
               {loading && (
                 <LoadingIcon

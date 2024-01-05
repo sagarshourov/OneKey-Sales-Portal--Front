@@ -520,6 +520,7 @@ const EmpReports = (props) => {
         </div>
         {/* END: Data List */}
         {/* BEGIN: Pagination */}
+        
 
         {callData.state === "hasValue" && (
           <div className="intro-y  mt-5 col-span-12 flex flex-wrap sm:flex-row sm:flex-nowrap items-center">

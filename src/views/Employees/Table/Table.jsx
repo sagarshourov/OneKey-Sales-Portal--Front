@@ -71,6 +71,12 @@ export function Table({
     }
   };
 
+
+
+  //// // // /// // // // /// // ///// / / / // / // / / //
+
+
+
   function handleDragEnd(event) {
     const { active, over } = event;
     if (active.id !== over.id) {
@@ -119,7 +125,7 @@ export function Table({
       collisionDetection={closestCenter}
       modifiers={[restrictToVerticalAxis]}
     >
-      <table className="table " {...getTableProps()}>
+      <table className="table  table-report" {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>

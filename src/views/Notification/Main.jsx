@@ -61,6 +61,8 @@ const NotificationMain = (props) => {
     setRowCount(count);
   };
 
+  
+
   const handelSearch = (e) => {
     setSearch(e.target.value);
   };

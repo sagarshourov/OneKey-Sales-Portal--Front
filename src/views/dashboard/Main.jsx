@@ -207,7 +207,7 @@ const UserMain = () => {
                 </div>
                 <div>
                   <label htmlFor="regular-form-1" className="form-label">
-                    Gendar
+                    Gender
                   </label>
                   <div className="flex flex-col sm:flex-row mt-2">
                     <div className="form-check mr-2">

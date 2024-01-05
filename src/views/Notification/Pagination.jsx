@@ -14,6 +14,7 @@ const Pagination = (props) => {
           <a className="page-link" href="#">
             <Lucide icon="ChevronsLeft" className="w-4 h-4" />
           </a>
+          
         </li>
         <li className="page-item">
           <a className="page-link" href="#">

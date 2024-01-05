@@ -186,7 +186,7 @@ function tomorrowScheduleFilters(array, callSwitch, user_id) {
 }
 
 function applyAllFilters(array, searchValue, sections, user_id, priority) {
-  console.log("priority", priority);
+ //console.log("priority", priority);
   if (array.length == 0) return;
   if (user_id !== 0) {
     return filter(array, (_items) => {
@@ -194,6 +194,7 @@ function applyAllFilters(array, searchValue, sections, user_id, priority) {
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items.p_sort &&
         _items.p_sort.id == priority &&
+        _items.results.id == 3 &&
         _items?.assigned_to?.id === user_id
       ) {
         return true;
@@ -224,7 +225,8 @@ function applyAllFilters(array, searchValue, sections, user_id, priority) {
       if (
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items.p_sort &&
-        _items.p_sort.id == priority
+        _items.p_sort.id == priority &&
+        _items.results.id == 3
       ) {
         return true;
       } else if (parseInt(priority) !== 0) {
@@ -267,6 +269,7 @@ function applySortFilters(array, searchValue, sec, user_id, priority) {
         _items.sections == parseInt(sec) &&
         _items.p_sort &&
         _items.p_sort.id == priority &&
+        _items.results.id == 3 &&
         _items?.assigned_to?.id === user_id
       ) {
         return true;
@@ -299,7 +302,8 @@ function applySortFilters(array, searchValue, sec, user_id, priority) {
       if (
         _items.sections == parseInt(sec) &&
         _items.p_sort &&
-        _items.p_sort.id == priority
+        _items.p_sort.id == priority &&
+        _items.results.id == 3
       ) {
         return true;
       } else if (parseInt(priority) !== 0) {
@@ -607,13 +611,7 @@ const AdminUsers = (props) => {
   return (
     <div className="">
       <h2 className="intro-y text-lg font-medium mt-10 ">Call List</h2>
-      <div
-        className={
-          offset
-            ? "fixed top-0 bg-white p-5 z-50 box "
-            : ""
-        }
-      >
+      <div className={offset ? "fixed top-0 bg-white p-5 z-50 box " : ""}>
         <div className="intro-y   col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
           {/* <div className="bg-info bg-danger bg-success bg-warning bg-yellow-400 bg-secondary bg-purple-600 z-10 z-50"></div> */}
           <div className=" lg:basis-9/12 grid grid-cols-2 md:grid-cols-5 lg:grid-cols-8 gap-2 ">

@@ -64,6 +64,7 @@ const EditCallCon = (props) => {
 
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
   const logindata = useRecoilValue(loginState);
 
@@ -86,6 +87,8 @@ const EditCallCon = (props) => {
   const [call, setCall] = useState([]);
 
   const [show, setShow] = useState(false);
+
+  const [redirectFlag, setRedirectFlag] = useState(true);
 
   const [suppose, setSuppose] = useState(
     calls.marital_status && calls.marital_status.id == 2 ? true : false
@@ -244,7 +247,7 @@ const EditCallCon = (props) => {
 
     const URL = adminApi() + "calls";
 
-    setLoading(true);
+    redirectFlag ? setLoading(true) : setLoading2(true);
 
     try {
       const response = await axios.post(URL, data, {
@@ -253,9 +256,11 @@ const EditCallCon = (props) => {
       //console.log(response);
       if (response?.data?.success) {
         setLoading(false);
+        setLoading2(false);
         setCallState(response?.data?.data);
         // window.location.reload();
-        navigate("../calls/all", { replace: true });
+
+        redirectFlag && navigate("../calls/all", { replace: true });
       }
     } catch (err) {
       // console.log("Err", err);
@@ -576,6 +581,12 @@ const EditCallCon = (props) => {
       // console.log(err);
       setLoading(false);
     }
+  };
+
+  const setRedirect = (flag) => {
+    console.log("flag", flag);
+
+    setRedirectFlag(flag);
   };
 
   return Object.keys(calls).length > 0 ? (
@@ -1523,8 +1534,26 @@ const EditCallCon = (props) => {
           </div>
 
           <div className="intro-y col-span-12 flex items-center justify-center  mt-5">
-            <button type="submit" className="btn btn-elevated-primary w-24">
-              Save{" "}
+            <button
+              type="submit"
+              onClick={() => setRedirect(false)}
+              className="btn btn-elevated-success  text-white w-36"
+            >
+              Save and continue
+              {loading2 && (
+                <LoadingIcon
+                  icon="three-dots"
+                  color="white"
+                  className="w-4 h-4 ml-2"
+                />
+              )}
+            </button>
+            <button
+              type="submit"
+              className="btn btn-elevated-primary w-36 ml-5"
+              onClick={() => setRedirect(true)}
+            >
+              Save and exit
               {loading && (
                 <LoadingIcon
                   icon="three-dots"

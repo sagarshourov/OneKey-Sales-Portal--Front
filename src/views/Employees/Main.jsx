@@ -109,17 +109,17 @@ const AdminUsers = (props) => {
 
     const URL = adminApi() + "users";
     if (data.password !== formdata.cpassword) {
-      alert("Password Not mathing !");
+      alert("Password Not matching !");
 
       return false;
     }
     if (data.first_name == "") {
-      alert("First Name Not mathing !");
+      alert("First Name Not matching !");
       return false;
     }
 
     if (data.last_name == "") {
-      alert("Last Name Not mathing !");
+      alert("Last Name Not matching !");
       return false;
     }
 
@@ -418,6 +418,7 @@ const AdminUsers = (props) => {
           </div>
         </ModalBody>
       </Modal>
+      
       {/* END: Admin Confirmation Modal */}
 
       {/* BEGIN: Delete Confirmation Modal */}

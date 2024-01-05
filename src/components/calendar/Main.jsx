@@ -1,5 +1,4 @@
 // import "@fullcalendar/core/vdom";
-import interactionPlugin from "@fullcalendar/interaction";
 // import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
@@ -23,9 +22,11 @@ const Main = (props) => {
     loading,
   } = props;
 
-  //(events.contents);
+ 
   const [modelTitle, setModelTitle] = useState("");
   const [modelDescription, setModelDescription] = useState("");
+
+  const [callId, setCallId] = useState(0);
   // const options = {
   //   plugins: [interactionPlugin, dayGridPlugin, listPlugin],
   //   droppable: false,
@@ -84,6 +85,7 @@ const Main = (props) => {
           setModelTitle(info.event.title);
           setDeleteConfirmationModal(true);
           setEventId(info.event._def.extendedProps.ev_id);
+          setCallId(info.event._def.extendedProps.ev_id);
         }}
       />
 
@@ -103,6 +105,8 @@ const Main = (props) => {
             <div className="text-slate-500 mt-2">{modelDescription}</div>
           </div>
           <div className="px-5 pb-8 text-center">
+
+            <a href={"calls/edit/"+callId} className="btn btn-outline-success mr-3">Edit</a>
             <button
               type="button"
               onClick={() => {

@@ -150,6 +150,9 @@ const CustomTable = (props) => {
                       );
                     }
 
+
+                    
+
                     if (val.value == "next_step_date") {
                       return (
                         <td key={index} className="text-center">

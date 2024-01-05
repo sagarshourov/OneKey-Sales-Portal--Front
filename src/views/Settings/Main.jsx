@@ -56,6 +56,7 @@ const Settings = (props) => {
                       value={allTable.contents[key]}
                       data={allTable.contents}
                     />
+                    
                   </TabPanel>
                 );
               })}

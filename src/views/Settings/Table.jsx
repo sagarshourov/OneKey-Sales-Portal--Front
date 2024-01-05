@@ -187,7 +187,7 @@ const Table = (props) => {
               // onDrop={(e) => AllTableDrop(e)}
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
-              className="table table-hover "
+              className="table table-hover  table-report "
             >
               <thead className="table-light">
                 <tr>

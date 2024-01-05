@@ -14,6 +14,7 @@ const HandleWrapper = styled.div`
 `;
 
 export const DragHandle = (props) => {
+
   return (
     <HandleWrapper {...props}>
       <svg
@@ -33,3 +34,9 @@ export const DragHandle = (props) => {
     </HandleWrapper>
   );
 };
+
+<div className="test">
+
+  {console.log('sa')}
+
+</div>

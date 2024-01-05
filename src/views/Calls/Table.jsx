@@ -167,6 +167,8 @@ const UsersTable = (props) => {
     //console.log("drag leave", e);
   };
 
+  
+
   const feedbackCheck = (history) => {
     var is_admin = history.map((data) => {
       if (data.field === "feedbacks") {
@@ -231,7 +233,7 @@ const UsersTable = (props) => {
                   key={0}
                   type="checkbox"
                   name="allcheck"
-                  id={0}
+           
                   handleClick={handelAllCheck}
                   // isChecked={allCheck.length > 0 ? true : false}
                 />
@@ -447,7 +449,7 @@ const UsersTable = (props) => {
                   <td> {user.agreed_to_signed === 0 ? "No" : "Yes"}</td>
 
                   <td>
-                    <select
+                    {/* <select
                       onChange={(e) => handelChange(e, user.id, "n")}
                       name="status"
                       className="form-select form-select-sm mt-2 w-20"
@@ -461,7 +463,10 @@ const UsersTable = (props) => {
                             {val?.title}
                           </option>
                         ))}
-                    </select>
+                    </select> */}
+
+
+                    {user?.statu?.title}
                   </td>
                   <td>{extra_title(user, "my_step", 0)}</td>
                   <td>

@@ -11,6 +11,7 @@ const DropZoneCon = (props) => {
     var user = document.getElementById("user");
     return user.value;
   }
+  
   return (
     <Dropzone
       getRef={(el) => {

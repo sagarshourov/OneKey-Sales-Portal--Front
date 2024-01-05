@@ -53,7 +53,7 @@ const UsersView = (props) => {
   const assignUser = useRecoilValue(assignSelect(id));
 
   const [rowCount, setRowCount] = useState(10);
-  const [formdata, setFormdata] = useState([]);
+  const [formData, setFormData] = useState([]);
   const [search, setSearch] = useState("");
 
   const [selectMultiple, setSelectMultiple] = useState([]);
@@ -316,6 +316,8 @@ const UsersView = (props) => {
             </select>
           </div>
         </ModalBody>
+
+        
         <ModalFooter>
           <div className="px-5 mt-5 pb-8 text-center">
             <button

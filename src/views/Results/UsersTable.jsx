@@ -18,6 +18,7 @@ function extra_title(arr, group, index) {
       }
     });
   }
+  
 
   if (index === 0 && value !== "") {
     return helper.formatDate(value, "MMM D, YYYY");
@@ -56,6 +57,8 @@ const UsersTable = (props) => {
   const fText = (text) => {
     return text ? text.substr(0, 10) + "..." : "";
   };
+
+  
   return (
     <>
       <table className="table table-report -mt-2">
