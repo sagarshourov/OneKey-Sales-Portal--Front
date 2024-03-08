@@ -233,9 +233,7 @@ export const searchListSelect = selector({
     try {
       const response = await getCallsPagination(
         get(loginState),
-
         get(searchUser),
-
         get(columnState),
         get(valueState),
         get(cStartDate),

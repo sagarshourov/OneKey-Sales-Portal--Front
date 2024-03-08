@@ -118,6 +118,7 @@ const UsersTable = (props) => {
           </tr>
         </thead>
         <tbody>
+          -
           {users &&
             users.slice(0, rowCount).map((user, key) => {
               let count = key + 1;
@@ -160,14 +161,12 @@ const UsersTable = (props) => {
                     {user.first_name} {user.last_name}
                   </td>
                   <td>{user?.email}</td>
-
                   <td>
                     {user?.assigned_to?.first_name}{" "}
                     {user?.assigned_to?.last_name}
                   </td>
                   <td>{user?.priority}</td>
                   <td>{user?.whatsapp}</td>
-
                   <td className="text-center">{user?.age}</td>
                   <td className="text-center">
                     {user?.call_schedule_date &&
@@ -176,12 +175,10 @@ const UsersTable = (props) => {
                         "MMM D, YYYY"
                       )}{" "}
                   </td>
-
                   <td className="text-center">
                     {user?.case_type == 1 && "F-1"}{" "}
                     {user?.case_type == 2 && "F-1/F2"}
                   </td>
-
                   <td className="text-center">
                     {user?.first_contact &&
                       helper.formatDate(
@@ -200,13 +197,10 @@ const UsersTable = (props) => {
                     </Tippy>
                   </td>
                   <td>{user?.package?.title}</td>
-
                   <td className="text-center">
                     {user.ag === 0 ? "No" : "Yes"}
                   </td>
-
                   <td> {user.agreed_to_signed === 0 ? "No" : "Yes"}</td>
-
                   <td>{user?.statu?.title}</td>
                   <td>{extra_title(user, "my_step", 0)}</td>
                   <td>
@@ -221,12 +215,10 @@ const UsersTable = (props) => {
                       </Tippy>
                     </div>
                   </td>
-
                   <td className="text-center">
                     {user?.follow_up_date &&
                       helper.formatDate(user?.follow_up_date, "MMM D, YYYY")}
                   </td>
-
                   <td
                     className="text-center"
                     onClick={() =>
@@ -244,7 +236,6 @@ const UsersTable = (props) => {
                       </Tippy>
                     </div>
                   </td>
-
                   <td className="text-center">
                     <div className="text-center">
                       {" "}

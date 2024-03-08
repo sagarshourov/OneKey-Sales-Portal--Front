@@ -40,8 +40,8 @@ const helpers = {
       let separator;
 
       if (thousand) {
-        separator = rest ? "." : "";
-        currency += separator + thousand.join(".");
+        separator = rest ? "," : "";
+        currency += separator + thousand.join(",");
       }
 
       return currency;

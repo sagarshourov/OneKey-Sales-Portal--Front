@@ -16,6 +16,8 @@ const AdminDashBoard = Loadable(
   lazy(() => import("../views/dashboard/AdminMain"))
 );
 
+const DashBoard = Loadable(lazy(() => import("../views/dashboard/Dashboard")));
+
 const Admins = Loadable(lazy(() => import("../views/Admins/Main")));
 const Supervisor = Loadable(lazy(() => import("../views/Supervisor/Main")));
 
@@ -82,9 +84,7 @@ const EmpFollowReport = Loadable(
   lazy(() => import("../views/Reports/EmpFollowReport"))
 );
 
-const Import = Loadable(
-  lazy(() => import("../views/Import/Main"))
-);
+const Import = Loadable(lazy(() => import("../views/Import/Main")));
 
 //import Calendar from "../views/calendar/Main";
 
@@ -108,6 +108,11 @@ function Router() {
           path: "/profile",
           element: <AdminDashBoard />,
         },
+        {
+          path: "/dashboard",
+          element: <DashBoard />,
+        },
+
         {
           path: "/admins",
           element: <Admins />,

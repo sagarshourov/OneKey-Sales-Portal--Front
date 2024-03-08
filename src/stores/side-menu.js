@@ -5,6 +5,11 @@ let supAdminObj = {
     "START MENU",
     {
       icon: "Home",
+      title: "Dashboard",
+      pathname: "/dashboard",
+    },
+    {
+      icon: "Home",
       title: "Super Admin Profile",
       pathname: "/profile",
     },

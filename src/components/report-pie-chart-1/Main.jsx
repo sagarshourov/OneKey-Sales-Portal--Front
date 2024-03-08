@@ -12,20 +12,13 @@ function Main(props) {
 
   const data = useMemo(() => {
     const configData = {
-      labels: ["17 - 30 Years old", "31 - 50 Years old", ">= 50 Years old"],
+      labels: props.labels,
       datasets: [
         {
-          data: [15, 10, 65],
-          backgroundColor: colorScheme
-            ? [colors.pending(0.5), colors.warning(0.5), colors.primary(0.5)]
-            : "",
-          hoverBackgroundColor: colorScheme
-            ? [colors.pending(0.5), colors.warning(0.5), colors.primary(0.5)]
-            : "",
+          data: props.data,
+      
           borderWidth: 1,
-          borderColor: colorScheme
-            ? [colors.pending(0.75), colors.warning(0.9), colors.primary(0.5)]
-            : "",
+     
         },
       ],
     };
@@ -60,12 +53,16 @@ Main.propTypes = {
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   className: PropTypes.string,
+  data: PropTypes.array,
+  labels: PropTypes.array
 };
 
 Main.defaultProps = {
   width: "auto",
   height: "auto",
   className: "",
+  data: [0],
+  labels: [],
 };
 
 export default Main;

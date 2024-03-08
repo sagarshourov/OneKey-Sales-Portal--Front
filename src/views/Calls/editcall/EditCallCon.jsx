@@ -93,7 +93,7 @@ const EditCallCon = (props) => {
   const [suppose, setSuppose] = useState(
     calls.marital_status && calls.marital_status.id == 2 ? true : false
   );
-  const [score, setScore] = useState(false);
+  const [score, setScore] = useState(calls.eng_test_score && calls.eng_test_score !== null ? true : false);
   const [cancelReason, setCancelReason] = useState(
     calls?.cancel_reason !== null ? true : false
   );

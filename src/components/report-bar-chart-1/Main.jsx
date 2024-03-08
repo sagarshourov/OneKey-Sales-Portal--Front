@@ -15,13 +15,31 @@ function Main(props) {
       labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
       datasets: [
         {
-          barPercentage: 0.35,
+          label: "Dataset 1",
           data: [4, 7, 5, 4, 9, 7, 5],
-          borderWidth: 1,
-          borderColor: colorScheme ? colors.primary(0.7) : "",
+
           backgroundColor: colorScheme ? colors.primary(0.11) : "",
         },
+        {
+          label: "Dataset 2",
+          data: [6, 8, 3, 9, 1, 4, 3],
+          backgroundColor: colorScheme ? colors.primary(1) : "",
+        },
       ],
+      // datasets: [
+      //   {
+      //     barPercentage: 0.35,
+      //     data: [
+      //       { count: 2, max: 36 },
+      //       { count: 2, max: 16 },
+      //       { count: 2, max: 10 },
+      //       { count: 2, max: 9 }
+      //     ],
+      //     borderWidth: 1,
+      //     borderColor: colorScheme ? colors.primary(0.7) : "",
+      //     backgroundColor: colorScheme ? colors.primary(0.11) : "",
+      //   },
+      // ],
     };
 
     return darkMode ? configData : configData;
@@ -29,33 +47,53 @@ function Main(props) {
 
   const options = useMemo(() => {
     return {
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
-      scales: {
-        x: {
-          ticks: {
-            display: false,
-          },
-          grid: {
-            display: false,
-            drawBorder: false,
+      type: "bar",
+      data: data,
+      options: {
+        plugins: {
+          title: {
+            display: true,
+            text: "Chart.js Bar Chart - Stacked",
           },
         },
-        y: {
-          ticks: {
-            display: false,
-            beginAtZero: true,
+        responsive: true,
+        scales: {
+          x: {
+            stacked: true,
           },
-          grid: {
-            display: false,
-            drawBorder: false,
+          y: {
+            stacked: true,
           },
         },
       },
+
+      // maintainAspectRatio: false,
+      // plugins: {
+      //   legend: {
+      //     display: false,
+      //   },
+      // },
+      // scales: {
+      //   x: {
+      //     ticks: {
+      //       display: true,
+      //     },
+      //     grid: {
+      //       display: true,
+      //       drawBorder: false,
+      //     },
+      //   },
+      //   y: {
+      //     ticks: {
+      //       display: true,
+      //       beginAtZero: true,
+      //     },
+      //     grid: {
+      //       display: true,
+      //       drawBorder: true,
+      //     },
+      //   },
+      // },
     };
   });
 
