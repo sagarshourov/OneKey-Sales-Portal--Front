@@ -194,7 +194,7 @@ function applyAllFilters(array, searchValue, sections, user_id, priority) {
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items.p_sort &&
         _items.p_sort.id == priority &&
-        _items.results.id == 3 &&
+        (_items.results.id == 3 || _items.results.id == 6) &&
         _items?.assigned_to?.id === user_id
       ) {
         return true;
@@ -206,7 +206,7 @@ function applyAllFilters(array, searchValue, sections, user_id, priority) {
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items?.assigned_to?.id === user_id &&
         _items.results &&
-        _items.results.id == 3 &&
+        (_items.results.id == 3 || _items.results.id == 6) &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
             -1) ||
@@ -226,7 +226,7 @@ function applyAllFilters(array, searchValue, sections, user_id, priority) {
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items.p_sort &&
         _items.p_sort.id == priority &&
-        _items.results.id == 3
+        (_items.results.id == 3 || _items.results.id == 6 )
       ) {
         return true;
       } else if (parseInt(priority) !== 0) {
@@ -235,7 +235,7 @@ function applyAllFilters(array, searchValue, sections, user_id, priority) {
       return (
         _items.sections !== sectionFind(sections, _items.sections) &&
         _items.results &&
-        _items.results.id == 3 &&
+        (_items.results.id == 3 || _items.results.id == 6) &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
             -1) ||
@@ -269,7 +269,7 @@ function applySortFilters(array, searchValue, sec, user_id, priority) {
         _items.sections == parseInt(sec) &&
         _items.p_sort &&
         _items.p_sort.id == priority &&
-        _items.results.id == 3 &&
+        (_items.results.id == 3 || _items.results.id == 6) &&
         _items?.assigned_to?.id === user_id
       ) {
         return true;
@@ -279,7 +279,7 @@ function applySortFilters(array, searchValue, sec, user_id, priority) {
       return (
         _items.sections == parseInt(sec) &&
         _items?.assigned_to?.id === user_id &&
-        _items.results.id == 3 &&
+        (_items.results.id == 3 || _items.results.id == 6) &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
             -1) ||
@@ -303,7 +303,7 @@ function applySortFilters(array, searchValue, sec, user_id, priority) {
         _items.sections == parseInt(sec) &&
         _items.p_sort &&
         _items.p_sort.id == priority &&
-        _items.results.id == 3
+        (_items.results.id == 3 || _items.results.id == 6)
       ) {
         return true;
       } else if (parseInt(priority) !== 0) {
@@ -311,7 +311,7 @@ function applySortFilters(array, searchValue, sec, user_id, priority) {
       }
       return (
         _items.sections == parseInt(sec) &&
-        _items.results.id == 3 &&
+        (_items.results.id == 3 || _items.results.id == 6) &&
         ((_items.email &&
           _items.email.toLowerCase().indexOf(searchValue.toLowerCase()) !==
             -1) ||
