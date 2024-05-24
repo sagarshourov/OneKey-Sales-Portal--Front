@@ -93,7 +93,9 @@ const EditCallCon = (props) => {
   const [suppose, setSuppose] = useState(
     calls.marital_status && calls.marital_status.id == 2 ? true : false
   );
-  const [score, setScore] = useState(calls.eng_test_score && calls.eng_test_score !== null ? true : false);
+  const [score, setScore] = useState(
+    calls.eng_test_score && calls.eng_test_score !== null ? true : false
+  );
   const [cancelReason, setCancelReason] = useState(
     calls?.cancel_reason !== null ? true : false
   );
@@ -614,6 +616,13 @@ const EditCallCon = (props) => {
                 <h3 className="text-xl font-medium">Form Information</h3>
               </div>
               <div className="lg:basis-2/12  ">
+                <h3 className="text-sm">
+                  Created At : 
+                  <span className="text-sm ml-2">
+                    {calls?.created_at &&
+                      helper.formatDate(calls?.created_at, "MMM D, YYYY")}{" "}
+                  </span>
+                </h3>
                 {/* {calls.cancel_reason && calls?.results?.id !== 1 && (
                   <div
                     onClick={CancelSwitch}

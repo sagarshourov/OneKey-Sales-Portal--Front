@@ -209,7 +209,7 @@ const Events = (props) => {
       </div>
       <div className="grid grid-cols-12 gap-5 mt-5">
         {/* BEGIN: Calendar Side Menu */}
-        <TabGroup className="col-span-12 xl:col-span-4 2xl:col-span-3">
+        {/* <TabGroup className="col-span-12 xl:col-span-4 2xl:col-span-3"> //instruction on 21/5/2024 whats app 3 no. video
           <div className="box p-2 intro-y">
             <TabList className="nav-pills">
               <Tab className="w-full py-2" tag="button">
@@ -231,10 +231,7 @@ const Events = (props) => {
                         <div className="event__title font-medium truncate">
                           {event?.description}
                         </div>
-                        {/* <Lucide
-                              icon="Edit"
-                              className="w-4 h-4 text-slate-500 ml-auto"
-                            /> */}
+                       
                       </div>
                       <div className="border-b border-t border-slate-200/60 dark:border-darkmode-400 py-5 my-5">
                         <div className="flex items-center">
@@ -262,10 +259,10 @@ const Events = (props) => {
                 })}
             </TabPanel>
           </TabPanels>
-        </TabGroup>
+        </TabGroup> */}
         {/* END: Calendar Side Menu */}
         {/* BEGIN: Calendar Content */}
-        <div className="col-span-12 xl:col-span-8 2xl:col-span-9">
+        <div className="col-span-12 xl:col-span-12 2xl:col-span-12">
           <div className=" p-5">
             <div className="flex justify-center">
               {loginData.role !== 3 && (
